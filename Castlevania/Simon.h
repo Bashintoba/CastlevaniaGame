@@ -1,0 +1,53 @@
+#ifndef sm_h
+#define sm_h
+
+#include "GameObject.h"
+#include "Whip.h"
+#include "SubWeapon.h"
+#include "Define.h"
+
+
+class Simon : public CGameObject
+{
+private:
+	Whip * whip ;
+	SubWeapon * subweapon ;
+	vector<SubWeapon*> SubWeaponList;
+public:
+	Simon();
+	~Simon();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
+	virtual void Render();
+	void SetState(int state);	
+	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
+	bool isJumping = false;
+	bool isAtk = false;
+	bool isWalking = false;
+	bool isSitting = false;
+	bool IsAtk();
+	bool IsWait = false;
+	bool isGotChainItem = false;
+	bool isAtkWithWhip = false;
+	bool isAtkWithSW = false;
+	bool isChangeScene = false;
+	bool isOnStair = false;//
+	int Subweapon = -1;
+	int SimonHP = 16;
+	int SimonMana = 15;
+	int SimonScore = 0;
+	int SimonLife = 3;
+	int SimonDoubleTri = -1;
+	Whip * GetWhip() { return whip; }
+	SubWeapon * GetSubWeapon() { return subweapon; }
+	vector<SubWeapon*> GetListSubWeapon() { return SubWeaponList; }
+	void SimonColliWithItems(vector<LPGAMEOBJECT> *listitem);
+	int GetHP() { return SimonHP; }
+	int GetMana() { return SimonMana; }
+	int GetScore() { return SimonScore; }
+	int Getsubweapon() { return Subweapon; }
+	int GetSimonLife() { return SimonLife; }
+	int GetSimonDoubleTri() { return SimonDoubleTri; }
+	void SetMana(int Mana) { SimonMana = Mana; }
+};
+
+#endif
