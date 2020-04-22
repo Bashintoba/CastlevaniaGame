@@ -29,6 +29,7 @@ protected:
 	HUD *hud;
 	CPlayScene *playscene;
 	int idMap;
+	int Switchmap = 0;
 	TileMaps *tilemaps = TileMaps::GetInstance();
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> listobjects;//
@@ -38,10 +39,10 @@ protected:
 
 	void _ParseSection_OBJECTS(string line);
 public:
-	CPlayScene(int map, vector<vector<string>> FileMap);
+	CPlayScene(int map, vector<vector<string>> FileInFMap);
 	Items* DropItems(int iditems ,float x, float y);
 	void LoadPlayer();
-	void SwitchMap(int map, vector<vector<string>> FileMap);
+	void SwitchMap(int map, vector<vector<string>> FileInFMap);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

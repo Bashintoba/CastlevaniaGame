@@ -8,10 +8,10 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int map,vector<vector<string>> FileMap) :CScene()
+CPlayScene::CPlayScene(int map,vector<vector<string>> FileInFMap) :CScene()
 {	
 	key_handler = new CPlaySceneKeyHandler(this);
-	this->FileInfMap = FileMap;
+	this->FileInfMap = FileInFMap;
 	LoadPlayer();
 	SwitchMap(map,FileInfMap);
 }
@@ -39,18 +39,18 @@ void CPlayScene::LoadPlayer()
 }
 	
 
-void CPlayScene::SwitchMap(int map, vector<vector<string>> FileMap)
+void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
 {
 	Unload();
 	int camx, camy;
 	for (int i = (map-1); i <= (map - 1); i++)
 	{
-		for (int j = 0; j < FileMap[i].size(); j++)
+		for (int j = 0; j < FileInFMap[i].size(); j++)
 		{
-			if (j == 0) { idMap = atoi(FileMap[i][j].c_str()); }
-			if (j == 1) { sceneFilePath = ToLPCWSTR(FileMap[i][j]); }
-			if (j == 2) { camx = atoi(FileMap[i][j].c_str()); }
-			if (j == 3) { camy = atoi(FileMap[i][j].c_str()); }			
+			if (j == 0) { idMap = atoi(FileInFMap[i][j].c_str()); }
+			if (j == 1) { sceneFilePath = ToLPCWSTR(FileInFMap[i][j]); }
+			if (j == 2) { camx = atoi(FileInFMap[i][j].c_str()); }
+			if (j == 3) { camy = atoi(FileInFMap[i][j].c_str()); }			
 		}
 	}
 	CGame::GetInstance()->SetKeyHandler(this->GetKeyEventHandler());
@@ -106,8 +106,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_GATE:
 	{
+		int switchmap = atof(tokens[3].c_str());
 		obj = new Gate();
 		obj->SetPosition(x, y);
+		Switchmap = switchmap;
 		objects.push_back(obj);
 		break;
 	}
@@ -235,12 +237,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		simon->isChangeScene = false;
 		
-		//if (idMap == MAP_1)
-		//{
-			//playscene = new CPlayScene(2);
-		SwitchMap(2,FileInfMap);//
-		//}
-
+		SwitchMap(Switchmap,FileInfMap);//
 	}
 	hud->Update(dt);
 	// Update camera to follow simon
@@ -370,7 +367,6 @@ void CPlaySceneKeyHandler::Simon_SubAtk()
 		if (simon->GetSubWeapon()->isDone == false) return;
 		if (simon->GetMana() >= 1)
 		{
-			//simon->GetSubWeapon()->isEnable = true;
 			int tam = simon->GetMana() - 1;
 			simon->SetMana(tam);
 			simon->isAtkWithSW = true;

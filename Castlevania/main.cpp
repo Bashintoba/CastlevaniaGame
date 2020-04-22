@@ -16,7 +16,7 @@ CGame *game;
 CPlayScene *playscene;//
 int mapstart = 0;
 int numberofmaps = 0;
-vector<vector<string>> map;
+vector<vector<string>> InFMap;
 LPCWSTR ResourcesFilePath = ToLPCWSTR("Scene/Castlevania.txt");
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -148,7 +148,7 @@ void _ParseSection_Map(string line)
 		Line = tokens[i].c_str();
 		stringline.push_back(Line);
 	}
-	map.push_back(stringline);
+	InFMap.push_back(stringline);
 }
 
 void LoadResources()
@@ -335,7 +335,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	game->InitKeyboard();
 	LoadResources();
 
-	playscene = new CPlayScene(mapstart,map);
+	playscene = new CPlayScene(mapstart, InFMap);
 
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH , SCREEN_HEIGHT , SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 

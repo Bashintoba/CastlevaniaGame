@@ -28,6 +28,9 @@
     <Filter Include="Weapon">
       <UniqueIdentifier>{91c00415-64de-43db-bb90-f01dd5032e10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HUD">
+      <UniqueIdentifier>{54260b19-ffc7-437a-bf39-770744c0de7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -82,13 +85,13 @@
       <Filter>StaticObject</Filter>
     </ClCompile>
     <ClCompile Include="HUD.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>HUD</Filter>
     </ClCompile>
     <ClCompile Include="Number.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>HUD</Filter>
     </ClCompile>
     <ClCompile Include="Stair.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>StaticObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,13 +150,13 @@
       <Filter>StaticObject</Filter>
     </ClInclude>
     <ClInclude Include="HUD.h">
-      <Filter>Header Files</Filter>
+      <Filter>HUD</Filter>
     </ClInclude>
     <ClInclude Include="Number.h">
-      <Filter>Header Files</Filter>
+      <Filter>HUD</Filter>
     </ClInclude>
     <ClInclude Include="Stair.h">
-      <Filter>Header Files</Filter>
+      <Filter>StaticObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
