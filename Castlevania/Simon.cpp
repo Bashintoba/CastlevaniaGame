@@ -34,7 +34,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CGameObject::Update(dt);
 	// Simple fall down
 	vy += SIMON_GRAVITY * dt;
-
+	if (isWalking == false && isJumping == false)
+	{
+		vx = 0;
+	}
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -93,13 +96,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void Simon::Render()
 {
 	int ani;
-
-	
-
-	if (isWalking == false && isJumping == false)
-	{
-		vx = 0;
-	}
 	
 	if (isSitting == true)
 	{
