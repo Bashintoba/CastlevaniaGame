@@ -73,9 +73,9 @@ void CGame::Draw(int nx, float x, float y, LPDIRECT3DTEXTURE9 texture, int left,
 	r.right = right;
 	r.bottom = bottom;
 
-	D3DXMATRIX oldmatran;
-	D3DXMATRIX newmatran;
-
+	D3DXMATRIX oldmatrix;
+	D3DXMATRIX newmatrix;
+	spriteHandler->GetTransform(&oldmatrix);
 	D3DXVECTOR2 pheplat;
 	if (nx > 0)
 	{
@@ -85,13 +85,12 @@ void CGame::Draw(int nx, float x, float y, LPDIRECT3DTEXTURE9 texture, int left,
 	{
 		pheplat = D3DXVECTOR2(1, 1);
 	}
-	D3DXVECTOR2 scale = D3DXVECTOR2(p.x + (right - left) / 2, p.y + (bottom - top) / 2);
-
-	D3DXMatrixTransformation2D(&newmatran, &scale, 0, &pheplat, NULL, 0, NULL);
-	spriteHandler->GetTransform(&oldmatran);
-	spriteHandler->SetTransform(&newmatran);
+	D3DXVECTOR2 scale = D3DXVECTOR2(p.x + (right - left) / 2, p.y + (bottom - top) / 2);//tam de xoay
+	D3DXMatrixTransformation2D(&newmatrix, &scale, 0, &pheplat, NULL, 0, NULL);//tra ve 1 ma tran moi
+	D3DXMATRIX matrixtemp = oldmatrix * newmatrix;//nhan voi ma tran cu de ra ma tran cuoi
+	spriteHandler->SetTransform(&matrixtemp);
 	spriteHandler->Draw(texture, &r, NULL, &p, D3DCOLOR_ARGB(alpha,255, 255, 255));
-	spriteHandler->SetTransform(&oldmatran);
+	spriteHandler->SetTransform(&oldmatrix);
 }
 
 int CGame::IsKeyDown(int KeyCode)
