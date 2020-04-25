@@ -146,7 +146,8 @@ void Simon::Render()
 			}
 		}
 	}
-	animation_set->at(ani)->Render(nx,x, y);
+	animation_set->at(ani)->Render(nx, x, y);
+	//animation_set->at(state)->Render(nx,x, y);
 	RenderBoundingBox();
 }
 

@@ -312,6 +312,10 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		return;
 	else
 	{
+		/*if (simon->isJumping == true)
+		{
+			simon->SetState(SIMON_JUMP);
+		}*/
 		simon->isAtk = false;
 		simon->isAtkWithSW = false;
 		simon->isAtkWithWhip = false;
@@ -402,6 +406,10 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 		simon->isAtk = false;
 		simon->isAtkWithSW = false;
 		simon->isAtkWithWhip = false;
+		/*if (simon->isJumping == true)
+		{
+			simon->SetState(SIMON_JUMP);
+		}*/
 	}
 
 	if (simon->isAtk == true || simon->isJumping == true)
