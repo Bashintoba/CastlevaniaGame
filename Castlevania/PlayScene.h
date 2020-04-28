@@ -43,6 +43,8 @@ public:
 	Items* DropItems(int iditems ,float x, float y);
 	void LoadPlayer();
 	void SwitchMap(int map, vector<vector<string>> FileInFMap);
+	vector<vector<string>>  GetFileInFMap() {return FileInfMap;}
+	vector<LPGAMEOBJECT> GetListStair() { return listStairs; }
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
@@ -58,6 +60,10 @@ public:
 	virtual void OnKeyUp(int KeyCode);
 	void Simon_Atk();
 	void Simon_SubAtk();
+	void Simon_StairDown();
+	void Simon_StairUp();
+	bool Simon_Stand_On_Stair();
+	bool StairCollisionsDetection();
 	CPlaySceneKeyHandler(CScene *s) :CSceneKeyHandler(s) {};
 };
 

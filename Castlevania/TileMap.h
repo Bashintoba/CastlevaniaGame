@@ -29,7 +29,7 @@ public:
 	void Load();
 	void LoadMap();
 	void Draw();	
-	int GetMapWdith() { return Map_Width; }
+	int GetMapWidth() { return Map_Width; }
 };
 
 typedef TileMap *LPTILEMAP;

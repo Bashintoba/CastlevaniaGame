@@ -34,7 +34,7 @@ void TileMap::Load()
 	while (f.getline(str, MAX_SCENE_LINE))
 	{		
 		string line(str);
-		vector<string> tokens = filemap(line);
+		vector<string> tokens = split(line," ");
 		vector<LPSPRITE> spriteline;
 		for (int i = 0; i < tokens.size(); i++)
 		{

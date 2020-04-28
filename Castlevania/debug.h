@@ -14,7 +14,6 @@ using namespace std;
 
 void DebugOut(const wchar_t *fmt, ...);
 vector<string> split(string line, string delimeter = "\t");
-vector<string> filemap(string line, string delimeter = " ");
 wstring ToWSTR(string st);
 
 LPCWSTR ToLPCWSTR(string st);

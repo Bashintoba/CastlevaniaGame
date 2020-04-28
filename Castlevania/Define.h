@@ -11,7 +11,7 @@
 #define SCREEN_WIDTH 528
 #define SCREEN_HEIGHT 500
 
-#define MAX_FRAME_RATE 120
+#define MAX_FRAME_RATE 150
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 
@@ -51,7 +51,7 @@
 
 #define SIMON_GRAVITY			0.0011f
 
-#define SIMON_BBOX_WIDTH		30
+#define SIMON_BBOX_WIDTH		32
 #define SIMON_BBOX_HEIGHT		62
 
 #define TIME_HENSHIN 450

@@ -1,11 +1,11 @@
-#ifndef sm_h
+﻿#ifndef sm_h
 #define sm_h
 
 #include "GameObject.h"
 #include "Whip.h"
 #include "SubWeapon.h"
 #include "Define.h"
-
+#include<math.h>
 
 class Simon : public CGameObject
 {
@@ -31,6 +31,12 @@ public:
 	bool isAtkWithSW = false;
 	bool isChangeScene = false;
 	bool isOnStair = false;//
+	bool CanMoveDown = false;//
+	bool CanMoveUp = false;//
+	bool isAutoWalk = false;
+	LPGAMEOBJECT stairCollided = nullptr;//
+	int stairnx = 0;//
+	void StandOnStair() { vx = vy = 0; }//
 	int Subweapon = -1;
 	int SimonHP = 16;
 	int SimonMana = 15;
@@ -41,6 +47,7 @@ public:
 	SubWeapon * GetSubWeapon() { return subweapon; }
 	vector<SubWeapon*> GetListSubWeapon() { return SubWeaponList; }
 	void SimonColliWithItems(vector<LPGAMEOBJECT> *listitem);
+	bool SimonColliWithStair(vector<LPGAMEOBJECT> *liststair);
 	int GetHP() { return SimonHP; }
 	int GetMana() { return SimonMana; }
 	int GetScore() { return SimonScore; }
@@ -48,6 +55,11 @@ public:
 	int GetSimonLife() { return SimonLife; }
 	int GetSimonDoubleTri() { return SimonDoubleTri; }
 	void SetMana(int Mana) { SimonMana = Mana; }
+	void AutoWalk(float distance, int new_state, int new_nx);
+	void SimonAutoWalk();
+	float autoWalkDistance = 0;		// Khoảng cách 
+	int stateAfterAutoWalk = -1;	// Trạng thái sau khi auto-walk
+	int nxAfterAutoWalk = 0;		// Hướng Simon sau khi auto-walk
 };
 
 #endif
