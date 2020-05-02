@@ -62,8 +62,9 @@ void Whip::Render( int nx,int currentID)
 	
 }
 
-void Whip::SetWhipPosition(float simonX, float simonY, bool isStand)
+void Whip::SetWhipPosition(int nx,float simonX, float simonY, bool isStand)
 {
+	this->nx = nx;
 	simonX -= 90;
 	if (isStand == false)
 		simonY += 15;

@@ -98,18 +98,6 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (e->ny != 0)
 				{
-					/*if (e->ny == CDIR_BOTTOM && (state != DEFLECT || (state == DEFLECT && vy > 0)))
-					{
-						vy = 0;
-						isTouchGround = true;
-						isFalling = false;
-
-						if (HP == 0)
-						{
-							SetState(DEAD);
-							return;
-						}
-					}*/
 					if (e->ny == -1)
 					{
 						vy = 0;
@@ -261,18 +249,25 @@ void Simon::SetState(int state)
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
 	case SIMON_STAIRDOWN:
-		if (nx > 0) vx = 0.079;//SIMON_STAIR_SPEED_X;
-		else vx = -0.079;//SIMON_STAIR_SPEED_X;
-		vy = 0.079;//SIMON_STAIR_SPEED_Y;
+		if (nx > 0) vx = 0.08;//SIMON_STAIR_SPEED_X;
+		else vx = -0.08;//SIMON_STAIR_SPEED_X;
+		vy = 0.08;//SIMON_STAIR_SPEED_Y;
 		isOnStair = true;
 		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
 	case SIMON_STAIRUP:
-		if (nx > 0) vx = 0.079;//SIMON_STAIR_SPEED_X;
-		else vx = -0.079;//SIMON_STAIR_SPEED_X;
-		vy = -0.079;//SIMON_STAIR_SPEED_Y;
+		if (nx > 0) vx = 0.08;//SIMON_STAIR_SPEED_X;
+		else vx = -0.08;//SIMON_STAIR_SPEED_X;
+		vy = -0.08;//SIMON_STAIR_SPEED_Y;
 		isOnStair = true;
+		animation_set->at(state)->Reset();
+		animation_set->at(state)->SetAniStartTime(GetTickCount());
+		break;
+	case SIMON_STAIRDOWN_ATK:
+	case SIMON_STAIRUP_ATK:
+		isAtk = true;
+		vx = vy = 0;
 		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
@@ -281,7 +276,7 @@ void Simon::SetState(int state)
 
 bool Simon::IsAtk()
 {
-	return state == SIMON_SIT_ATK || state == SIMON_ATK;
+	return state == SIMON_SIT_ATK || state == SIMON_ATK || state == SIMON_STAIRDOWN_ATK || state == SIMON_STAIRUP_ATK;
 }
 
 void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
@@ -351,6 +346,7 @@ void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
 					SimonDoubleTri = 1;
 					break;
 				case CROWN:
+					SimonScore += 1000;
 					break;
 				case MAGIC_CRYSTAL:
 					break;
@@ -365,42 +361,38 @@ void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
 
 bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 {
-	CanMoveUp = false;
-	CanMoveDown = false;
-
-
 	float simon_l, simon_t, simon_r, simon_b;
 	GetBoundingBox(simon_l, simon_t, simon_r, simon_b);
+	
+	simon_t += 50;	// thu nhỏ vùng xét va chạm, chỉ xét va chạm với chân của Simon
+	simon_b += 10;  // bottom +5 để xét cho va chạm với bậc thang đầu tiên khi bước xuống
 
-	// thu nhỏ vùng xét va chạm, chỉ xét va chạm với chân của Simon
-	simon_t += 50;
-	simon_b += 5;  // bottom +5 để xét cho va chạm với bậc thang đầu tiên khi bước xuống
+	CanMoveUp = false;
+	CanMoveDown = false;
 
 	for (UINT i = 0; i < liststair->size(); i++)
 	{
 		float stair_l, stair_t, stair_r, stair_b;
 		liststair->at(i)->GetBoundingBox(stair_l, stair_t, stair_r, stair_b);
 
-
 		if (CGameObject::AABB(simon_l, simon_t, simon_r, simon_b, stair_l, stair_t, stair_r, stair_b) == true)
 		{
 			if (liststair->at(i)->GetState() == 2|| liststair->at(i)->GetState() == 3|| liststair->at(i)->GetState() == 4) stairnx = -1;//trái trên phải dưới
 			else stairnx = 1;//trái dưới phải trên
 
-			stairCollided = liststair->at(i);
+			StairIsCollided = liststair->at(i);
 
-			// bậc thang ở dưới so với chân Simon->có thể di chuyển xuống.
-			if (simon_b < stair_b) CanMoveDown = true;
-			if (y >= stair_t - 35) CanMoveUp = true;
+			if (simon_b < stair_b) CanMoveDown = true;// có bật thang ở dưới simon
+			if (y >= stair_t - 32) CanMoveUp = true;// có bật thang ở trên simon
 
 			// kiểm tra xem simon có thể di chuyển lên/xuống hay ko
 			// (dựa vào toạ độ của 2 bậc liền kề hơn/kém nhau 32)
 
-			float upstair_x = -999, upstair_y = -999; // toạ độ của bậc thang liền kề
+			float upstair_x = -99999999999, upstair_y = -99999999999; // toạ độ của bậc thang liền kề
 
 			for (UINT j = 0; j < liststair->size(); j++)
 			{
-				if (i == j)
+				if (i == j)//trùng bật thang đg đứng
 					continue;
 
 				liststair->at(j)->GetPosition(upstair_x, upstair_y);
@@ -408,53 +400,80 @@ bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 				float dx = abs(upstair_x - stair_l);
 				float dy = upstair_y - stair_t;
 
-				if (dx == 32 && dy == -32) // vì bậc nằm trên nên dy = -...
+				if (dx == 32 && dy == -32) {// vì bậc nằm trên nên dy = -...
 					CanMoveUp = true;
-
-				if (dx == 32 && dy == 32) // vì bậc nằm duoi nên dy = +...
+				}	
+				if (dx == 32 && dy == 32) { // vì bậc nằm duoi nên dy = +...
 					CanMoveDown = true;
+				}
 			}
-
 
 			return true; // collision between Simon and stairs
 		}
 
 	}
-
 	return false;
 }
 
-void Simon::AutoWalk(float distance, int new_state, int new_nx)//
+void Simon::AutoWalk(float new_x, int new_state, int new_nx)//
 {
 	isAutoWalk = true;
-
-	autoWalkDistance = distance;
+	newposition = new_x;
 	stateAfterAutoWalk = new_state;
 	nxAfterAutoWalk = new_nx;
 }
 
-void Simon::SimonAutoWalk()//
+void Simon::SimonAutoWalk()
 {
-	if (abs(dx) <= abs(autoWalkDistance))
+	//if (abs(dx) <= abs(AutoWalkdx))//đi đến đúng khoảng cách
+	//{
+	//	x += dx;
+	//	y += dy;
+	//	AutoWalkdx -= dx;
+	//}
+	//else
+	//{
+	//	x += AutoWalkdx;
+	//	state = stateAfterAutoWalk;
+	//	nx = nxAfterAutoWalk;
+
+	//	SetState(state);
+	//	if (state == SIMON_STAIRDOWN) y += 1.0f; // để đảm bảo simon sẽ va chạm với bậc thang 
+
+	//	isAutoWalk = false;
+	//	AutoWalkdx = 0;
+	//	stateAfterAutoWalk = -1;
+	//	nxAfterAutoWalk = 0;
+	//}
+	if (x == newposition)
 	{
-		x += dx;
-		y += dy;
-		autoWalkDistance -= dx;
-	}
-	else
-	{
-		x += autoWalkDistance;
 		state = stateAfterAutoWalk;
 		nx = nxAfterAutoWalk;
-
 		SetState(state);
-		if (state == SIMON_STAIRDOWN) y += 1.0f; // + 1.0f để đảm bảo simon sẽ va chạm với bậc thang trong lần update kế tiếp
-
+		if (state == SIMON_STAIRDOWN) y += 1.0f; // để đảm bảo simon sẽ va chạm với bậc thang 
 		isAutoWalk = false;
-		autoWalkDistance = 0;
+		newposition = 0;
 		stateAfterAutoWalk = -1;
 		nxAfterAutoWalk = 0;
 	}
+	else
+	{
+		x += dx;
+		y += dy;
+		if ((nx == 1 && x >= newposition) || (nx == -1 && x <= newposition))
+		{
+			x = newposition;
+			state = stateAfterAutoWalk;
+			nx = nxAfterAutoWalk;
+			SetState(state);
+			if (state == SIMON_STAIRDOWN) y += 1.0f; // để đảm bảo simon sẽ va chạm với bậc thang 
+			isAutoWalk = false;
+			newposition = 0;
+			stateAfterAutoWalk = -1;
+			nxAfterAutoWalk = 0;
+		}
+	}
+
 }
 
 void Simon::GetBoundingBox(float &left, float &top, float &right, float &bottom)

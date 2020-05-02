@@ -62,8 +62,7 @@ public:
 	void Simon_SubAtk();
 	void Simon_StairDown();
 	void Simon_StairUp();
-	bool Simon_Stand_On_Stair();
-	bool StairCollisionsDetection();
+	bool Simon_StandOnStair();
 	CPlaySceneKeyHandler(CScene *s) :CSceneKeyHandler(s) {};
 };
 

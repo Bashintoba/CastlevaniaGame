@@ -194,8 +194,8 @@ void CPlayScene::Update(DWORD dt)
 	if (simon->GetState() == SIMON_SITDOWN || simon->GetState() == SIMON_SIT_ATK)
 		isSimonStand = false;
 
-	simon->GetWhip()->SetWhipPosition(simonx, simony, isSimonStand);
-	if (((simon->animation_set->at(SIMON_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_ATK) || ((simon->animation_set->at(SIMON_SIT_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_SIT_ATK))
+	simon->GetWhip()->SetWhipPosition(simon->nx,simonx, simony, isSimonStand);
+	if (((simon->animation_set->at(SIMON_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_ATK) || ((simon->animation_set->at(SIMON_SIT_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_SIT_ATK) || ((simon->animation_set->at(SIMON_STAIRUP_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_STAIRUP_ATK) || ((simon->animation_set->at(SIMON_STAIRDOWN_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_STAIRDOWN_ATK))
 	{
 		if (simon->isAtkWithSW == true)
 		{
@@ -255,7 +255,7 @@ void CPlayScene::Render()
 {	
 	hud->Render(idMap,CGame::GetInstance()->GetCamPosX());
 
-	//tilemaps->Get((idMap*10000))->Draw();//
+	tilemaps->Get((idMap*10000))->Draw();//
 	int nx = 0;
 	for (int i = 0; i < listItems.size(); i++)
 		listItems[i]->Render();
@@ -279,8 +279,8 @@ void CPlayScene::Render()
 			simon->GetWhip()->Render(simon->nx, simon->animation_set->at(simon->GetState())->GetCurrentFrame());
 		}
 	}
-	/*else
-		simon->GetWhip()->Render(simon->nx, -1);*/
+	else
+		simon->GetWhip()->Render(simon->nx, -1);
 	simon->GetSubWeapon()->Render(simon->GetSubWeapon()->nx, simon->animation_set->at(simon->GetState())->GetCurrentFrame());
 }
 
@@ -301,6 +301,203 @@ void CPlayScene::Unload()
 	listItems.clear();
 }
 
+void CPlaySceneKeyHandler::Simon_Atk()
+{
+	Simon *simon = ((CPlayScene*)scene)->simon;	
+	if (simon->IsAtk() == true) return;
+
+	simon->isAtkWithWhip = true;
+	if (simon->GetState() == SIMON_IDLE || simon->GetState() == SIMON_JUMP || simon->GetState() == SIMON_WALKING)
+	{
+		simon->SetState(SIMON_ATK);
+	}
+	else if (simon->GetState() == SIMON_SITDOWN)
+	{
+		simon->SetState(SIMON_SIT_ATK);
+	}
+	else if (simon->GetState() == SIMON_STAIRUP)
+	{
+		simon->SetState(SIMON_STAIRUP_ATK);
+	}
+	else if (simon->GetState() == SIMON_STAIRDOWN)
+	{
+		simon->SetState(SIMON_STAIRDOWN_ATK);
+	}
+}
+
+void CPlaySceneKeyHandler::Simon_SubAtk()
+{
+	Simon *simon = ((CPlayScene*)scene)->simon;
+	if (simon->Getsubweapon() != -1)
+	{
+		if (simon->IsAtk() == true) return;
+		if (simon->GetSubWeapon()->isDone == false) return;
+		if (simon->GetMana() >= 1)
+		{
+			int tam = simon->GetMana() - 1;
+			simon->SetMana(tam);
+			simon->isAtkWithSW = true;
+			simon->GetSubWeapon()->nx = simon->nx;
+			simon->GetSubWeapon()->SetState(simon->Subweapon);
+			if (simon->GetState() == SIMON_IDLE || simon->GetState() == SIMON_JUMP || simon->GetState() == SIMON_WALKING)
+			{
+				simon->SetState(SIMON_ATK);
+			}
+			else if (simon->GetState() == SIMON_SITDOWN)
+			{
+				simon->SetState(SIMON_SIT_ATK);
+			}
+			else if (simon->GetState() == SIMON_STAIRUP)
+			{
+				simon->SetState(SIMON_STAIRUP_ATK);
+			}
+			else if (simon->GetState() == SIMON_STAIRDOWN)
+			{
+				simon->SetState(SIMON_STAIRDOWN_ATK);
+			}
+		}
+	}
+		
+}
+
+void CPlaySceneKeyHandler::Simon_StairDown()
+{
+	Simon *simon = ((CPlayScene*)scene)->simon;
+	int Stairnx = simon->stairnx; //hướng cầu thang
+
+	if (simon->CanMoveDown == false)//ra khỏi cầu thang
+	{
+		if (simon->isOnStair == true)
+		{
+			//float stairx, stairy;
+			//simon->StairIsCollided->GetPosition(stairx, stairy);
+			///*if (Stairnx == 1)
+			//{
+			//	stairx += 5.0f;
+			//}
+			//else stairx -= 30.0f;*/
+			//simon->nx = simon->stairnx;
+			//simon->SetState(SIMON_STAIRDOWN);
+			//simon->AutoWalk(stairx, SIMON_IDLE, -simon->nx);
+				simon->SetState(SIMON_IDLE);
+		}
+		else
+			simon->SetState(SIMON_SITDOWN);
+		return;
+	}
+	// Auto-walk cho Simon đi đến đúng đầu cầu thang 
+	if (simon->isOnStair == false)
+	{
+		float stairx, simonx, stairy;
+		simon->GetPosition(simonx, stairy);
+		simon->StairIsCollided->GetPosition(stairx, stairy);
+		if (Stairnx == 1)
+		{
+			stairx += 4.0f;
+		}
+		else stairx -= 28.0f;
+
+		if (stairx < simonx) simon->nx = -1;
+		else if (stairx > simonx) simon->nx = 1;
+		simon->vy = 0;
+		simon->SetState(SIMON_WALKING);
+		simon->AutoWalk(stairx, SIMON_STAIRDOWN, -Stairnx);
+		simon->isOnStair = true;
+
+		return;
+	}
+	else
+	{
+		simon->nx = -simon->stairnx;
+		simon->SetState(SIMON_STAIRDOWN);
+	}
+
+	
+
+	return;
+}
+
+void CPlaySceneKeyHandler::Simon_StairUp()
+{
+	Simon *simon = ((CPlayScene*)scene)->simon;
+	int Stairnx = simon->stairnx;
+
+	if (simon->CanMoveUp == false)
+	{
+		if (simon->isOnStair == true)
+		{
+			float stairx, stairy;
+			simon->StairIsCollided->GetPosition(stairx, stairy);
+			if (Stairnx == 1)
+			{
+				stairx += 5.0f;
+			}
+			else stairx -= 30.0f;
+			simon->nx = simon->stairnx;
+			simon->SetState(SIMON_STAIRUP);
+			simon->AutoWalk(stairx, SIMON_IDLE, simon->nx);//tránh trường hợp ra khỏi cầu thang mà ko dụng vào mặt đất
+		}
+
+		return;
+	}
+	// Auto-walk cho Simon đi đến đúng chân cầu thang
+	if (simon->isOnStair == false)
+	{
+		float stairx, simonx, stairy;
+		simon->GetPosition(simonx, stairy);
+		simon->StairIsCollided->GetPosition(stairx, stairy);
+		if (Stairnx == 1)
+		{
+			stairx -= 31.0f;//simon đứng giữa cầu thang thì mới đúng animation 
+		}
+		else stairx += 4.0f;
+
+		if (stairx < simonx) simon->nx = -1;
+		else if (stairx > simonx)  simon->nx = 1;
+
+		simon->vy = 0;
+		simon->SetState(SIMON_WALKING);
+		simon->AutoWalk(stairx, SIMON_STAIRUP, Stairnx);
+		simon->isOnStair = true;
+
+		return;
+	}
+	else
+	{
+		simon->nx = Stairnx;
+		simon->SetState(SIMON_STAIRUP);
+	}
+
+	
+	return;
+}
+
+bool CPlaySceneKeyHandler::Simon_StandOnStair()
+{
+	Simon *simon = ((CPlayScene*)scene)->simon;
+	if (simon->GetState() == SIMON_STAIRUP || simon->GetState() == SIMON_STAIRDOWN|| simon->GetState() == SIMON_STAIRUP_ATK || simon->GetState() == SIMON_STAIRDOWN_ATK)
+	{
+		if (simon->GetState() == SIMON_STAIRDOWN_ATK)
+		{
+			simon->SetState(SIMON_STAIRDOWN);
+			simon->animation_set->at(SIMON_STAIRDOWN)->SetAniStartTime(0);
+		}
+		else if (simon->GetState() == SIMON_STAIRUP_ATK)
+		{
+			simon->SetState(SIMON_STAIRUP);
+			simon->animation_set->at(SIMON_STAIRUP)->SetAniStartTime(0);
+
+		}
+		
+		simon->StandOnStair();
+		simon->animation_set->at(SIMON_STAIRUP)->Reset();
+		simon->animation_set->at(SIMON_STAIRDOWN)->Reset();
+		return true;
+	}
+
+	return false;
+}
+
 void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 {
 	Simon *simon = ((CPlayScene*)scene)->simon;
@@ -314,6 +511,10 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	if (simon->GetState() == SIMON_STAIRDOWN && simon->animation_set->at(SIMON_STAIRDOWN)->IsOver(200) == false)
 		return;
 	if (simon->GetState() == SIMON_STAIRUP && simon->animation_set->at(SIMON_STAIRUP)->IsOver(200) == false)
+		return;
+	if (simon->GetState() == SIMON_STAIRDOWN_ATK && simon->animation_set->at(SIMON_STAIRDOWN_ATK)->IsOver(TIME_DELAY) == false)
+		return;
+	if (simon->GetState() == SIMON_STAIRUP_ATK && simon->animation_set->at(SIMON_STAIRUP_ATK)->IsOver(TIME_DELAY) == false)
 		return;
 	if (simon->isAutoWalk == true)
 		return;
@@ -359,185 +560,12 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 {}
 
-void CPlaySceneKeyHandler::Simon_Atk()
-{
-	Simon *simon = ((CPlayScene*)scene)->simon;	
-	if (simon->IsAtk() == true) return;
-
-	simon->isAtkWithWhip = true;
-	if (simon->GetState() == SIMON_IDLE || simon->GetState() == SIMON_JUMP || simon->GetState() == SIMON_WALKING)
-	{
-		simon->SetState(SIMON_ATK);
-	}
-	else if (simon->GetState() == SIMON_SITDOWN)
-	{
-		simon->SetState(SIMON_SIT_ATK);
-	}
-}
-
-void CPlaySceneKeyHandler::Simon_SubAtk()
-{
-	Simon *simon = ((CPlayScene*)scene)->simon;
-	if (simon->Getsubweapon() != -1)
-	{
-		if (simon->IsAtk() == true) return;
-		if (simon->GetSubWeapon()->isDone == false) return;
-		if (simon->GetMana() >= 1)
-		{
-			int tam = simon->GetMana() - 1;
-			simon->SetMana(tam);
-			simon->isAtkWithSW = true;
-			simon->GetSubWeapon()->nx = simon->nx;
-			simon->GetSubWeapon()->SetState(simon->Subweapon);
-			if (simon->GetState() == SIMON_IDLE || simon->GetState() == SIMON_JUMP || simon->GetState() == SIMON_WALKING)
-			{
-				simon->SetState(SIMON_ATK);
-			}
-			else if (simon->GetState() == SIMON_SITDOWN)
-			{
-				simon->SetState(SIMON_SIT_ATK);
-			}
-		}
-	}
-		
-}
-
-void CPlaySceneKeyHandler::Simon_StairDown()
-{
-	Simon *simon = ((CPlayScene*)scene)->simon;
-	int stairDirection = simon->stairnx;
-
-	if (simon->CanMoveDown == false)
-	{
-		if (simon->isOnStair == true)
-			simon->SetState(SIMON_IDLE);
-		else
-			simon->SetState(SIMON_SITDOWN);
-
-		return;
-	}
-
-	// Auto-walk của Simon đi đến đúng đầu cầu thang rồi mới bước xuống
-	if (simon->isOnStair == false)
-	{
-		float stair_x, simon_x, temp_y;
-
-		simon->stairCollided->GetPosition(stair_x, temp_y);
-		simon->GetPosition(simon_x, temp_y);
-
-		if (stairDirection == -1) stair_x -= 28.0f;
-
-		if (stair_x < simon_x) simon->nx = -1;
-		else if (stair_x > simon_x) simon->nx = 1;
-		else return;
-
-		simon->SetState(SIMON_WALKING);
-		simon->vy = 0;
-		simon->AutoWalk(stair_x - simon_x, SIMON_STAIRDOWN, -stairDirection);
-		simon->isOnStair = true;
-
-		return;
-	}
-	else
-	{
-		simon->nx = -simon->stairnx;
-		simon->SetState(SIMON_STAIRDOWN);
-	}
-
-	return;
-}
-
-void CPlaySceneKeyHandler::Simon_StairUp()
-{
-	Simon *simon = ((CPlayScene*)scene)->simon;
-	int stairDirection = simon->stairnx;
-
-	if (simon->CanMoveUp == false)
-	{
-		if (simon->isOnStair == true)
-		{
-			int nx = simon->stairnx;
-			simon->nx = nx;
-			simon->SetState(SIMON_STAIRUP);
-			simon->AutoWalk(14 * nx, SIMON_IDLE, nx);
-		}
-
-		return;
-	}
-
-	// Auto-walk của Simon đi đến đúng chân cầu thang rồi mới bước lên
-	if (simon->isOnStair == false)
-	{
-		float stair_x, simon_x, temp_y;
-
-		simon->stairCollided->GetPosition(stair_x, temp_y);
-		simon->GetPosition(simon_x, temp_y);
-
-		if (stairDirection == 1)
-		{
-			stair_x -= 31.0f;
-		}
-		else stair_x += 5.0f;
-
-		if (stair_x < simon_x) simon->nx = -1;
-		else if (stair_x > simon_x)  simon->nx = 1;
-		else return;
-		simon->SetState(SIMON_WALKING);
-		simon->vy = 0;
-		simon->AutoWalk(stair_x - simon_x, SIMON_STAIRUP, stairDirection);
-		simon->isOnStair = true;
-
-		return;
-	}
-	else
-	{
-		simon->nx = stairDirection;
-		simon->SetState(SIMON_STAIRUP);
-	}
-
-	return;
-}
-
-bool CPlaySceneKeyHandler::Simon_Stand_On_Stair()
-{
-	Simon *simon = ((CPlayScene*)scene)->simon;
-	if (simon->GetState() == SIMON_STAIRUP || simon->GetState() == SIMON_STAIRDOWN )
-	{
-		/*if (simon->GetState() == HIT_STAIR_UP)
-		{
-			simon->SetState(STAIR_UP);
-			isNeedToWaitingAnimation = false;
-		}
-		else if (simon->GetState() == HIT_STAIR_DOWN)
-		{
-			simon->SetState(STAIR_DOWN);
-			isNeedToWaitingAnimation = false;
-		}*/
-
-		simon->StandOnStair();
-		simon->animation_set->at(SIMON_STAIRUP)->Reset();
-		//simon->animations[STAIR_UP_INVISIBLE]->Reset();
-		simon->animation_set->at(SIMON_STAIRDOWN)->Reset();
-		//simon->animations[STAIR_DOWN_INVISIBLE]->Reset();
-
-		return true;
-	}
-
-	return false;
-}
-
-bool CPlaySceneKeyHandler::StairCollisionsDetection()
-{
-	Simon *simon = ((CPlayScene*)scene)->simon;
-	CPlayScene * playscene = ((CPlayScene*)scene);
-	return simon->SimonColliWithStair(&playscene->GetListStair());
-}
-
 void CPlaySceneKeyHandler::KeyState(BYTE *states)
 {
 	
 	CGame *game = CGame::GetInstance();
 	Simon *simon = ((CPlayScene*)scene)->simon;
+	CPlayScene * playscene = ((CPlayScene*)scene);
 
 	if (simon->GetState() == SIMON_HENSHIN && simon->animation_set->at(SIMON_HENSHIN)->IsOver(TIME_HENSHIN)  == false)
 		return;
@@ -548,6 +576,10 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	if (simon->GetState() == SIMON_STAIRDOWN && simon->animation_set->at(SIMON_STAIRDOWN)->IsOver(200) == false)
 		return;
 	if (simon->GetState() == SIMON_STAIRUP && simon->animation_set->at(SIMON_STAIRUP)->IsOver(200) == false)
+		return;
+	if (simon->GetState() == SIMON_STAIRDOWN_ATK && simon->animation_set->at(SIMON_STAIRDOWN_ATK)->IsOver(TIME_DELAY) == false)
+		return;
+	if (simon->GetState() == SIMON_STAIRUP_ATK && simon->animation_set->at(SIMON_STAIRUP_ATK)->IsOver(TIME_DELAY) == false)
 		return;
 	if (simon->isAutoWalk == true)
 		return;
@@ -567,7 +599,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 
 	if (game->IsKeyDown(DIK_DOWN))
 	{
-		if (StairCollisionsDetection() == true)
+		if (simon->SimonColliWithStair(&playscene->GetListStair()) == true)
 		{
 			Simon_StairDown();
 			return;
@@ -588,7 +620,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	}
 	else if (game->IsKeyDown(DIK_UP))
 	{
-		if (StairCollisionsDetection() == true)
+		if (simon->SimonColliWithStair(&playscene->GetListStair()) == true )
 		{
 			Simon_StairUp();
 				return;
@@ -598,7 +630,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	}
 	else if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if (StairCollisionsDetection() == true && simon->isOnStair == true)
+		if (simon->SimonColliWithStair(&playscene->GetListStair()) == true && simon->isOnStair == true)
 		{
 			if (simon->stairnx == 1) // cầu thang trái dưới - phải trên
 				Simon_StairUp();
@@ -613,7 +645,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		if (StairCollisionsDetection() == true && simon->isOnStair == true)
+		if (simon->SimonColliWithStair(&playscene->GetListStair()) == true && simon->isOnStair == true)
 		{
 			if (simon->stairnx == 1) // cầu thang trái dưới - phải trên
 				Simon_StairDown();
@@ -628,9 +660,9 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	}
 	else
 	{
-		if (StairCollisionsDetection() == true)
+		if (simon->SimonColliWithStair(&playscene->GetListStair()) == true)
 		{
-			if (Simon_Stand_On_Stair() == true)
+			if (Simon_StandOnStair() == true)
 				return;
 		}
 		simon->SetState(SIMON_IDLE);

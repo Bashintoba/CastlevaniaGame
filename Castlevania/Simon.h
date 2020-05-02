@@ -34,7 +34,7 @@ public:
 	bool CanMoveDown = false;//
 	bool CanMoveUp = false;//
 	bool isAutoWalk = false;
-	LPGAMEOBJECT stairCollided = nullptr;//
+	LPGAMEOBJECT StairIsCollided = nullptr;//
 	int stairnx = 0;//
 	void StandOnStair() { vx = vy = 0; }//
 	int Subweapon = -1;
@@ -55,9 +55,9 @@ public:
 	int GetSimonLife() { return SimonLife; }
 	int GetSimonDoubleTri() { return SimonDoubleTri; }
 	void SetMana(int Mana) { SimonMana = Mana; }
-	void AutoWalk(float distance, int new_state, int new_nx);
+	void AutoWalk(float new_x, int new_state, int new_nx);
 	void SimonAutoWalk();
-	float autoWalkDistance = 0;		// Khoảng cách 
+	float newposition = 0;		// Khoảng cách 
 	int stateAfterAutoWalk = -1;	// Trạng thái sau khi auto-walk
 	int nxAfterAutoWalk = 0;		// Hướng Simon sau khi auto-walk
 };

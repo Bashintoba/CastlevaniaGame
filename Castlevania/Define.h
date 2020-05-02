@@ -66,6 +66,8 @@
 #define SIMON_HENSHIN			6
 #define SIMON_STAIRDOWN			7
 #define SIMON_STAIRUP			8
+#define SIMON_STAIRDOWN_ATK		9
+#define SIMON_STAIRUP_ATK		10
 //define whip
 #define TIME_FRAME 100
 #define NORMAL_WHIP	0

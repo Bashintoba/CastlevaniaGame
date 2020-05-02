@@ -16,7 +16,7 @@ public:
 	virtual void Render() {}
 	void RenderSpark();
 	void Render(int nx,int currentID = -1);
-	void SetWhipPosition(float simonX,float simonY, bool isStand);
+	void SetWhipPosition(int nx,float simonX,float simonY, bool isStand);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	bool CheckCollision(float obj_left, float obj_top, float obj_right, float obj_bottom);
 	void PowerUp();
