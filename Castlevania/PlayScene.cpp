@@ -42,7 +42,7 @@ void CPlayScene::LoadPlayer()
 void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
 {
 	Unload();
-	int camx, camy;
+	int camx, camy, camx1, camy1;
 	for (int i = (map-1); i <= (map - 1); i++)
 	{
 		for (int j = 0; j < FileInFMap[i].size(); j++)
@@ -50,11 +50,21 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
 			if (j == 0) { idMap = atoi(FileInFMap[i][j].c_str()); }
 			if (j == 1) { sceneFilePath = ToLPCWSTR(FileInFMap[i][j]); }
 			if (j == 2) { camx = atoi(FileInFMap[i][j].c_str()); }
-			if (j == 3) { camy = atoi(FileInFMap[i][j].c_str()); }			
+			if (j == 3) { camy = atoi(FileInFMap[i][j].c_str()); }	
+			if (j == 4) { camx1 = atoi(FileInFMap[i][j].c_str()); }
+			if (j == 5) { camy1 = atoi(FileInFMap[i][j].c_str()); }
 		}
 	}
 	CGame::GetInstance()->SetKeyHandler(this->GetKeyEventHandler());
-	CGame::GetInstance()->SetCamPos(camx,/*cy*/ camy);
+	if (simon->IdCurrMap < simon->IdNextMap)
+	{
+		CGame::GetInstance()->SetCamPos(camx,/*cy*/ camy);
+	}
+	else if (simon->IdCurrMap > simon->IdNextMap)
+	{
+		CGame::GetInstance()->SetCamPos(camx1,/*cy*/ camy1);
+	}
+	
 	Load();
 	simon->IdCurrMap = map;
 }
@@ -92,15 +102,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			simon->nx = nx;
 			simon->SetPosition(x, y);
-			simon->SetState(st);
-			
+			simon->SetState(st);		
 		}
 		else if (simon->IdCurrMap > simon->IdNextMap)
 		{
 			simon->nx = nx1;
 			simon->SetPosition(x1, y1);
-			simon->SetState(st1);
-			
+			simon->SetState(st1);			
 		}
 		break;
 	}
@@ -577,6 +585,11 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_W:
 		simon->IdCurrMap = 2;
 		simon->IdNextMap = 3;
+		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap());
+		break;
+	case DIK_E:
+		simon->IdCurrMap = 3;
+		simon->IdNextMap = 4;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap());
 		break;
 	case DIK_1:
