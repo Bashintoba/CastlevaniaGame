@@ -11,7 +11,7 @@
 #define SCREEN_WIDTH 528
 #define SCREEN_HEIGHT 500
 
-#define MAX_FRAME_RATE 150
+#define MAX_FRAME_RATE 120
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 

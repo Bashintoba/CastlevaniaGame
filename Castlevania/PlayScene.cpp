@@ -56,6 +56,7 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
 	CGame::GetInstance()->SetKeyHandler(this->GetKeyEventHandler());
 	CGame::GetInstance()->SetCamPos(camx,/*cy*/ camy);
 	Load();
+	simon->IdCurrMap = map;
 }
 
 /*
@@ -80,7 +81,27 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 	case OBJECT_TYPE_SIMON:	
 	{
-		simon->SetPosition(x, y);
+		int nx = atof(tokens[3].c_str());
+		int nx1 = atof(tokens[7].c_str());
+		int st = atof(tokens[4].c_str());
+		int st1 = atof(tokens[8].c_str());
+		float x1 = atof(tokens[5].c_str());
+		float y1 = atof(tokens[6].c_str());
+
+		if (simon->IdCurrMap < simon->IdNextMap)
+		{
+			simon->nx = nx;
+			simon->SetPosition(x, y);
+			simon->SetState(st);
+			
+		}
+		else if (simon->IdCurrMap > simon->IdNextMap)
+		{
+			simon->nx = nx1;
+			simon->SetPosition(x1, y1);
+			simon->SetState(st1);
+			
+		}
 		break;
 	}
 	case OBJECT_TYPE_BRICK: 
@@ -97,9 +118,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_CANDLE: 
 	{
+		int st = atof(tokens[3].c_str());
 		int id = atof(tokens[4].c_str());
 		listobj = new Candle();
 		listobj->SetPosition(x, y);
+		listobj->SetState(st);
 		listobj->IDitems = id;
 		listobjects.push_back(listobj);
 		break;
@@ -109,7 +132,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int switchmap = atof(tokens[3].c_str());
 		obj = new Gate();
 		obj->SetPosition(x, y);
-		Switchmap = switchmap;
+		obj->IdNextMap = switchmap;
 		objects.push_back(obj);
 		break;
 	}
@@ -235,9 +258,8 @@ void CPlayScene::Update(DWORD dt)
 	}
 	if (simon->isChangeScene == true)
 	{
-		simon->isChangeScene = false;
-		
-		SwitchMap(Switchmap,FileInfMap);//
+		simon->isChangeScene = false;		
+		SwitchMap(simon->IdNextMap,FileInfMap);//
 	}
 	hud->Update(dt);
 	// Update camera to follow simon
@@ -253,8 +275,6 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {	
-	hud->Render(idMap,CGame::GetInstance()->GetCamPosX());
-
 	tilemaps->Get((idMap*10000))->Draw();//
 	int nx = 0;
 	for (int i = 0; i < listItems.size(); i++)
@@ -282,6 +302,7 @@ void CPlayScene::Render()
 	else
 		simon->GetWhip()->Render(simon->nx, -1);
 	simon->GetSubWeapon()->Render(simon->GetSubWeapon()->nx, simon->animation_set->at(simon->GetState())->GetCurrentFrame());
+	hud->Render(idMap, CGame::GetInstance()->GetCamPosX());
 }
 
 /*
@@ -549,10 +570,29 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		Simon_SubAtk();
 		break;
 	case DIK_Q:
-		playscene->SwitchMap(2, playscene->GetFileInFMap());
+		simon->IdCurrMap = 1;
+		simon->IdNextMap = 2;
+		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap());
+		break;
+	case DIK_W:
+		simon->IdCurrMap = 2;
+		simon->IdNextMap = 3;
+		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap());
 		break;
 	case DIK_1:
 		simon->Subweapon = 0;
+		break;
+	case DIK_2:
+		simon->Subweapon = 1;
+		break;
+	case DIK_3:
+		simon->Subweapon = 2;
+		break;
+	case DIK_4:
+		simon->Subweapon = 3;
+		break;
+	case DIK_5:
+		simon->Subweapon = 4;
 		break;
 	}
 }

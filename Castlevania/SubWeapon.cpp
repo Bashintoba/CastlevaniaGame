@@ -1,6 +1,8 @@
 ﻿#include "SubWeapon.h"
 #include "Candle.h"
 #include "Ground.h"
+#include "Simon.h"
+
 SubWeapon::SubWeapon() : CGameObject()
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
@@ -14,40 +16,44 @@ SubWeapon::SubWeapon() : CGameObject()
 
 void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (isHolyWaterShattered == true &&	GetTickCount() - holyWaterShatteredCounter > TIME_HOLY_WATER_SHATTERED)
-	{
-		isHolyWaterShattered = false;
-		holyWaterShatteredCounter = 0;
-		this->isDone = true;
-		return;
-	}
-	if (CheckOutCam(X) == true)
-	{
-		isDone = true;
-		isEnable = false;
-		return;
-	}
-	CGameObject::Update(dt);
-
-	switch (state)
-	{
-	case WEAPONS_AXE:
-		vy += WEAPONS_AXE_GRAVITY * dt;
-		break;
-	case WEAPONS_BOOMERANG:
-		if (nx > 0) vx -= WEAPONS_BOOMERANG_TURNBACK_SPEED;
-		else vx += WEAPONS_BOOMERANG_TURNBACK_SPEED;
-		break;
-	case WEAPONS_HOLY_WATER:
-		vy += WEAPONS_HOLY_WATER_GRAVITY * dt;
-		break;	
-	default:
-		break;
-	}
-
 	if (isDone == false)
 	{
-		
+		if (isHolyWaterShattered == true && GetTickCount() - holyWaterShatteredCounter > TIME_HOLY_WATER_SHATTERED)
+		{
+			isHolyWaterShattered = false;
+			holyWaterShatteredCounter = 0;
+			this->isDone = true;
+			return;
+		}
+
+		if (CheckOutCam(X) == true)
+		{
+			isDone = true;
+			isEnable = false;
+			return;
+		}
+
+		CGameObject::Update(dt);
+
+		switch (state)
+		{
+		case WEAPONS_AXE:
+			vy += WEAPONS_AXE_GRAVITY * dt;
+			break;
+		case WEAPONS_BOOMERANG:
+			if (nx > 0) vx -= WEAPONS_BOOMERANG_TURNBACK_SPEED;
+			else vx += WEAPONS_BOOMERANG_TURNBACK_SPEED;
+			break;
+		case WEAPONS_HOLY_WATER:
+			vy += WEAPONS_HOLY_WATER_GRAVITY * dt;
+			break;
+		default:
+			break;
+		}
+
+		//if (isDone == false)
+		//{
+
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -67,22 +73,37 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 			for (UINT i = 0; i < coEventsResult.size(); i++)
-			{				
+			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
 				if (dynamic_cast<Candle*>(e->obj))
 				{
-					Candle * candle = dynamic_cast<Candle*> (e->obj);					
+					Candle * candle = dynamic_cast<Candle*> (e->obj);
 					candle->SetState(CANDLE_DESTROYED);
-					this->isDone = true;
-					this->isEnable = false;
+					if (state != WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
 				}
 				else if (dynamic_cast<Ground*>(e->obj))
 				{
 					if (state == WEAPONS_HOLY_WATER && e->ny == -1)
+					{
 						SetState(WEAPONS_HOLY_WATER_SHATTERED);
-
-					x += dx;
-					y += dy;
+					}
+					else
+					{
+						x += dx;
+						y += dy;
+					}
+				}
+				else if (dynamic_cast<Simon*>(e->obj))
+				{
+					if (state == WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
 				}
 				//if (this->isDone == true) return;
 			}
@@ -141,7 +162,8 @@ void SubWeapon::SetState(int state)
 		vy = -WEAPONS_AXE_SPEED_Y;
 		break;
 	case WEAPONS_BOOMERANG:
-		vx = nx * WEAPONS_BOOMERANG_SPEED;
+		if (nx > 0) vx = WEAPONS_BOOMERANG_SPEED;
+		else vx = -WEAPONS_BOOMERANG_SPEED;
 		vy = 0;
 		break;
 	case WEAPONS_HOLY_WATER:

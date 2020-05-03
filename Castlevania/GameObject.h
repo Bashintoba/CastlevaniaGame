@@ -50,6 +50,8 @@ public:
 
 	int IDitems;
 
+	int IdNextMap;
+
 	bool isEnable = false;
 	bool isDone = false;
 	DWORD dt;
@@ -67,6 +69,7 @@ public:
 	bool IsEnable() { return this->isEnable; }//
 	int GetState() { return this->state; }
 	int GetIDitems() { return this->IDitems; }
+	int GetIdNextMap() { return this->IdNextMap; }
 	//bool SetIsEnable() { return this->IsEnable; }
 
 	void RenderBoundingBox();

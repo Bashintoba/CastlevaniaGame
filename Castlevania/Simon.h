@@ -39,10 +39,12 @@ public:
 	void StandOnStair() { vx = vy = 0; }//
 	int Subweapon = -1;
 	int SimonHP = 16;
-	int SimonMana = 15;
+	int SimonMana = 99;//15;
 	int SimonScore = 0;
 	int SimonLife = 3;
 	int SimonDoubleTri = -1;
+	int IdCurrMap = 0;
+	int IdNextMap = 0;
 	Whip * GetWhip() { return whip; }
 	SubWeapon * GetSubWeapon() { return subweapon; }
 	vector<SubWeapon*> GetListSubWeapon() { return SubWeaponList; }

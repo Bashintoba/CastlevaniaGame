@@ -21,6 +21,8 @@ Simon::Simon()
 		SubWeaponList.push_back(subweapon);
 	}*/
 	nx = 1;
+	IdCurrMap = 0;
+	IdNextMap = 1;
 	this->SetState(SIMON_IDLE);
 }
 
@@ -120,6 +122,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<Gate *>(e->obj)) // if e->obj is Goomba 
 			{
 				Gate *gate = dynamic_cast<Gate *>(e->obj);
+				IdNextMap = gate->GetIdNextMap();
 				isChangeScene = true;
 			}
 		}
@@ -445,19 +448,19 @@ void Simon::SimonAutoWalk()
 	//	stateAfterAutoWalk = -1;
 	//	nxAfterAutoWalk = 0;
 	//}
-	if (x == newposition)
-	{
-		state = stateAfterAutoWalk;
-		nx = nxAfterAutoWalk;
-		SetState(state);
-		if (state == SIMON_STAIRDOWN) y += 1.0f; // để đảm bảo simon sẽ va chạm với bậc thang 
-		isAutoWalk = false;
-		newposition = 0;
-		stateAfterAutoWalk = -1;
-		nxAfterAutoWalk = 0;
-	}
-	else
-	{
+	//if (x == newposition)
+	//{
+	//	state = stateAfterAutoWalk;
+	//	nx = nxAfterAutoWalk;
+	//	SetState(state);
+	//	if (state == SIMON_STAIRDOWN) y += 1.0f; // để đảm bảo simon sẽ va chạm với bậc thang 
+	//	isAutoWalk = false;
+	//	newposition = 0;
+	//	stateAfterAutoWalk = -1;
+	//	nxAfterAutoWalk = 0;
+	//}
+	//else
+	//{
 		x += dx;
 		y += dy;
 		if ((nx == 1 && x >= newposition) || (nx == -1 && x <= newposition))
@@ -472,7 +475,7 @@ void Simon::SimonAutoWalk()
 			stateAfterAutoWalk = -1;
 			nxAfterAutoWalk = 0;
 		}
-	}
+	//}
 
 }
 

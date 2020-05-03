@@ -133,9 +133,8 @@ void _ParseSection_TILE_MAP(string line)
 void _ParseSection_Start(string line)
 {
 	vector<string> tokens = split(line);
-	if (tokens.size() < 2) return;
+	if (tokens.size() < 1) return;
 	mapstart = atoi(tokens[0].c_str());
-	numberofmaps = atoi(tokens[1].c_str());
 }
 
 void _ParseSection_Map(string line)
