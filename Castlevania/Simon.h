@@ -34,7 +34,10 @@ public:
 	bool CanMoveDown = false;//
 	bool CanMoveUp = false;//
 	bool isAutoWalk = false;
+	bool CantMoveDown = true;
+	//bool asd1 = false;
 	LPGAMEOBJECT StairIsCollided = nullptr;//
+	LPGAMEOBJECT StairIsCollidedTemp = nullptr;//
 	int stairnx = 0;//
 	void StandOnStair() { vx = vy = 0; }//
 	int Subweapon = -1;

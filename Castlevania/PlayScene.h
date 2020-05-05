@@ -34,7 +34,8 @@ protected:
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> listobjects;//
 	vector<LPGAMEOBJECT> listItems;//ds item
-	vector<LPGAMEOBJECT> listStairs;//ds cau thang
+	vector<LPGAMEOBJECT> listStairsUp;//ds cau thang
+	vector<LPGAMEOBJECT> listStairsDown;//ds cau thang
 	vector<vector<string>> FileInfMap;
 
 	void _ParseSection_OBJECTS(string line);
@@ -44,7 +45,8 @@ public:
 	void LoadPlayer();
 	void SwitchMap(int map, vector<vector<string>> FileInFMap);
 	vector<vector<string>>  GetFileInFMap() {return FileInfMap;}
-	vector<LPGAMEOBJECT> GetListStair() { return listStairs; }
+	vector<LPGAMEOBJECT> GetListStairUp() { return listStairsUp; }
+	vector<LPGAMEOBJECT> GetListStairDown() { return listStairsDown; }
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
@@ -63,6 +65,8 @@ public:
 	void Simon_StairDown();
 	void Simon_StairUp();
 	bool Simon_StandOnStair();
+	bool StairCollisionsDetectionUp();
+	bool StairCollisionsDetectionDown();
 	CPlaySceneKeyHandler(CScene *s) :CSceneKeyHandler(s) {};
 };
 
