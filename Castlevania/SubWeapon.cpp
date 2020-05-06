@@ -2,6 +2,7 @@
 #include "Candle.h"
 #include "Ground.h"
 #include "Simon.h"
+#include "BreakBrick.h"
 
 SubWeapon::SubWeapon() : CGameObject()
 {
@@ -79,6 +80,16 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					Candle * candle = dynamic_cast<Candle*> (e->obj);
 					candle->SetState(CANDLE_DESTROYED);
+					if (state != WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
+				}
+				else if (dynamic_cast<BreakBrick*>(e->obj))
+				{
+					BreakBrick * BB = dynamic_cast<BreakBrick*> (e->obj);	
+					BB->isDone = true;
 					if (state != WEAPONS_BOOMERANG)
 					{
 						this->isDone = true;

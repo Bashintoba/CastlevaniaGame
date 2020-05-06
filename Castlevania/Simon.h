@@ -35,7 +35,7 @@ public:
 	bool CanMoveUp = false;//
 	bool isAutoWalk = false;
 	bool CantMoveDown = true;
-	//bool asd1 = false;
+	bool isOnMF = false;
 	LPGAMEOBJECT StairIsCollided = nullptr;//
 	LPGAMEOBJECT StairIsCollidedTemp = nullptr;//
 	int stairnx = 0;//

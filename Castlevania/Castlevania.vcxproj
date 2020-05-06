@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="BreakBrick.cpp" />
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="PlayScene.cpp" />
@@ -42,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
+    <ClInclude Include="BreakBrick.h" />
     <ClInclude Include="Candle.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="Define.h" />
@@ -52,6 +55,7 @@
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="PlayScene.h" />

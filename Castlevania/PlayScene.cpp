@@ -158,6 +158,28 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			listStairsDown.push_back(obj);
 		break;
 	}
+	case OBJECT_TYPE_BREAKBRICK:
+	{
+		int st = atof(tokens[3].c_str());
+		int id = atof(tokens[4].c_str());
+		obj = new BreakBrick();
+		obj->SetPosition(x, y);
+		obj->SetState(st);
+		obj->IDitems = id;
+		listobjects.push_back(obj);
+		objects.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_MOVINGPLATFORM:
+	{
+		int st = atof(tokens[3].c_str()); //state
+		obj = new MovingPlatform();
+		// General object setup
+		obj->SetPosition(x, y);
+		obj->SetState(st);
+		objects.push_back(obj);
+		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -262,6 +284,19 @@ void CPlayScene::Update(DWORD dt)
 			obj->isEnable = true;
 			int IdItems = obj->GetIDitems();
 			listItems.push_back(DropItems(IdItems,obj->GetPositionX(), obj->GetPositionY()));
+		}
+		if (dynamic_cast<BreakBrick*>(obj) && obj->isDone == true && obj->isEnable == false)
+		{
+			obj->isEnable = true;
+			int IdItems = obj->GetIDitems();
+			if (IdItems == 16)
+			{
+				listItems.push_back(DropItems(IdItems,160, 390));
+			}
+			else if (IdItems != -1)
+			{
+				listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
+			}
 		}
 	}
 	simon->SimonColliWithItems(&listItems);

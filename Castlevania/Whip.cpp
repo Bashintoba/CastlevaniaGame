@@ -1,5 +1,6 @@
 ﻿#include "Whip.h"
 #include "Candle.h"
+#include "BreakBrick.h"
 
 Whip::Whip() : CGameObject()
 {
@@ -25,6 +26,21 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
 			{
 				e->SetState(CANDLE_DESTROYED);				
+				sparkX.push_back(left);
+				sparkY.push_back(top);
+			}
+		}
+		else if (dynamic_cast<BreakBrick*>(obj))
+		{
+			BreakBrick * e = dynamic_cast<BreakBrick*> (obj);
+
+			float left, top, right, bottom;
+
+			e->GetBoundingBox(left, top, right, bottom);
+
+			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			{
+				e->isDone = true;
 				sparkX.push_back(left);
 				sparkY.push_back(top);
 			}

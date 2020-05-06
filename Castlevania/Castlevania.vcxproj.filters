@@ -93,6 +93,12 @@
     <ClCompile Include="Stair.cpp">
       <Filter>StaticObject</Filter>
     </ClCompile>
+    <ClCompile Include="BreakBrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MovingPlatform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -157,6 +163,12 @@
     </ClInclude>
     <ClInclude Include="Stair.h">
       <Filter>StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakBrick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingPlatform.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

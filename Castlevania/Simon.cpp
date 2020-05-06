@@ -6,6 +6,8 @@
 #include "SubWeapon.h"
 #include "Gate.h"
 #include "Ground.h"
+#include "BreakBrick.h"
+#include "MovingPlatform.h"
 
 Simon::Simon()
 {
@@ -54,7 +56,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		return;
 	}
-	/*if (isWalking == false && isJumping == false)
+
+	/*if (isWalking == false && isJumping == false && isOnMF == false)
 	{
 		vx = 0;
 	}*/
@@ -84,8 +87,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// block 
 		if (isAutoWalk == false)//
 		{
-			x += min_tx * dx + nx * 0.4f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
-			y += min_ty * dy + ny * 0.4f;
+			x += min_tx * dx + nx * 0.1f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
+			y += min_ty * dy + ny * 0.1f;
 		}
 				
 		/*if (nx != 0) vx = 0;
@@ -96,7 +99,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<Ground*>(e->obj))
+			if (dynamic_cast<Ground*>(e->obj) || (dynamic_cast<BreakBrick*>(e->obj)))
 			{
 				if (e->ny != 0)
 				{
@@ -113,17 +116,34 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 
 				// Khi đang lên/xuống cầu thang, va chạm theo trục x sẽ không được xét tới
-				if (state == SIMON_STAIRUP || state == SIMON_STAIRDOWN)
+				if (state == SIMON_STAIRUP || state == SIMON_STAIRDOWN || isOnMF == true)
 				{
-					if (nx != 0) x -= nx * 0.4f;
+					if (nx != 0) x -= nx * 0.1f;
 				}
 			}
 
-			if (dynamic_cast<Gate *>(e->obj)) // if e->obj is Goomba 
+			if (dynamic_cast<Gate *>(e->obj)) 
 			{
 				Gate *gate = dynamic_cast<Gate *>(e->obj);
 				IdNextMap = gate->GetIdNextMap();
 				isChangeScene = true;
+			}
+
+			if (dynamic_cast<MovingPlatform *>(e->obj))
+			{
+				if (e->ny < 0)
+				{
+					if (isJumping == true)
+					{
+						isJumping = false;
+					}
+					isOnMF = true;
+					vx = e->obj->Getvx();
+				}
+			}
+			else
+			{
+				isOnMF = false;
 			}
 		}
 	}
@@ -132,59 +152,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 void Simon::Render()
-{
-	/*int ani;
-	
-	if (isSitting == true)
-	{
-		if (isAtk == true)
-		{
-			ani = SIMON_SIT_ATK;
-		}
-		else
-		{
-			ani = SIMON_SITDOWN;
-		}
-	}
-	else if (isAtk == true && isSitting == false)
-	{
-		ani = SIMON_ATK;
-	}
-	else 
-	{
-		if (isGotChainItem == true || IsWait == true)
-		{
-			ani = SIMON_HENSHIN;
-		}
-		else if (isWalking == true)
-		{			
-		if (isJumping == false)
-			{
-				ani = SIMON_WALKING;
-			}
-			else if (isSitting == true)
-			{
-				ani = SIMON_SITDOWN;
-			}
-			else
-			{
-				ani = SIMON_JUMP;
-			}
-
-		}
-		else
-		{
-			if (isJumping == true)
-			{
-				ani = SIMON_JUMP;
-			}
-			else
-			{
-				ani = SIMON_IDLE;
-			}
-		}
-	}
-	animation_set->at(ani)->Render(nx, x, y);*/
+{	
 	animation_set->at(state)->Render(nx,x, y);
 	RenderBoundingBox();
 }
@@ -205,6 +173,10 @@ void Simon::SetState(int state)
 		break;
 	case SIMON_JUMP:
 		isOnStair = false;
+		if (isOnMF == true)
+		{
+			vx = 0;
+		}
 		if (isJumping == false)
 		{
 			isJumping = true;
@@ -216,7 +188,10 @@ void Simon::SetState(int state)
 		isOnStair = false;
 		isWalking = false;
 		isSitting = false;
-		vx = 0;
+		if (isOnMF == false)
+		{
+			vx = 0;
+		}
 		break;
 	case SIMON_SITDOWN:
 		CantMoveDown = true;

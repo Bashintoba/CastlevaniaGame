@@ -32,6 +32,8 @@
 #define OBJECT_TYPE_CANDLE	2
 #define OBJECT_TYPE_GATE	3
 #define OBJECT_TYPE_STAIR	4
+#define OBJECT_TYPE_BREAKBRICK 5
+#define OBJECT_TYPE_MOVINGPLATFORM 6
 //define time
 #define DEFAULT_TIME_PLAY 300
 //define map
