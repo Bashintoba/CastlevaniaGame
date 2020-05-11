@@ -7,10 +7,6 @@ Gate::Gate()
 
 Gate::~Gate() {}
 
-void Gate::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
-{
-	
-}
 
 void Gate::Render()
 {

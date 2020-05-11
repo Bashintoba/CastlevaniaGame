@@ -118,7 +118,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Ground();
 		// General object setup
 		obj->SetPosition(x, y);
-		obj->SetState(st);
+		obj->ani = st;
+		//obj->SetState(st);
 		listobjects.push_back(obj);
 		objects.push_back(obj);
 
@@ -149,7 +150,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int st = atof(tokens[4].c_str()); //state
 		obj = new Stair();
 		obj->SetPosition(x, y);
-		obj->SetState(st);
+		obj->ani = st;
 		if (st == 0 || st == 1 || st == 5 || st == 6)
 		{
 			listStairsUp.push_back(obj);
@@ -164,7 +165,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int id = atof(tokens[4].c_str());
 		obj = new BreakBrick();
 		obj->SetPosition(x, y);
-		obj->SetState(st);
+		obj->ani = st;
 		obj->IDitems = id;
 		listobjects.push_back(obj);
 		objects.push_back(obj);
@@ -176,7 +177,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new MovingPlatform();
 		// General object setup
 		obj->SetPosition(x, y);
-		obj->SetState(st);
+		obj->ani = st;
 		objects.push_back(obj);
 		break;
 	}
@@ -254,18 +255,17 @@ void CPlayScene::Update(DWORD dt)
 
 	simon->GetWhip()->SetWhipPosition(simon->nx,simonx, simony, isSimonStand);
 	if (((simon->animation_set->at(SIMON_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_ATK) || ((simon->animation_set->at(SIMON_SIT_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_SIT_ATK) || ((simon->animation_set->at(SIMON_STAIRUP_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_STAIRUP_ATK) || ((simon->animation_set->at(SIMON_STAIRDOWN_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_STAIRDOWN_ATK))
-	{
-		if (simon->isAtkWithSW == true)
-		{
-			simon->GetSubWeapon()->SetWeaponPosition(simon->nx, simonx, simony, isSimonStand);
-			simon->GetSubWeapon()->isDone = false;
-		}
-		else if (simon->isAtkWithWhip == true)
+	{		
+		if (simon->isAtkWithWhip == true)
 		{
 			simon->GetWhip()->Update(dt, &listobjects);
 		}
 	}
-	simon->GetSubWeapon()->Update(dt, &listobjects);
+	//simon->GetSubWeapon()->Update(dt, &listobjects);
+	for (int i = 0; i < 3; i++)
+	{
+		simon->GetListSubWeapon()[i]->Update(dt, &listobjects);
+	}
 	if (simon->isGotChainItem == true) // update trạng thái của whip
 	{
 		simon->IsWait = true;
@@ -339,19 +339,18 @@ void CPlayScene::Render()
 	simon->Render();
 	if (simon->IsAtk() == true)///////////////
 	{
-		if (simon->isAtkWithSW == true)
-		{
-			nx = simon->nx;
-			simon->GetSubWeapon()->nx = nx;	
-		}
-		else if (simon->isAtkWithWhip == true)
+		if (simon->isAtkWithWhip == true)
 		{
 			simon->GetWhip()->Render(simon->nx, simon->animation_set->at(simon->GetState())->GetCurrentFrame());
 		}
 	}
 	else
 		simon->GetWhip()->Render(simon->nx, -1);
-	simon->GetSubWeapon()->Render(simon->GetSubWeapon()->nx, simon->animation_set->at(simon->GetState())->GetCurrentFrame());
+	for (int i = 0; i < 3; i++)
+	{
+		simon->GetListSubWeapon()[i]->Render(simon->animation_set->at(simon->GetState())->GetCurrentFrame());
+	}
+	
 	hud->Render(idMap, CGame::GetInstance()->GetCamPosX());
 }
 
@@ -402,17 +401,43 @@ void CPlaySceneKeyHandler::Simon_Atk()
 void CPlaySceneKeyHandler::Simon_SubAtk()
 {
 	Simon *simon = ((CPlayScene*)scene)->simon;
+	vector<SubWeapon*> weaponlist = simon->GetListSubWeapon();
+	SubWeapon * subweapon;
+
+	float simonx, simony;
+	simon->GetPosition(simonx, simony);
+	bool isSimonStand = true;
+
+	if (simon->GetState() == SIMON_SITDOWN || simon->GetState() == SIMON_SIT_ATK)
+		isSimonStand = false;
+
+	if (weaponlist[0]->IsEnable() == false)
+		subweapon = weaponlist[0];
+	else if ((weaponlist[1]->IsEnable() == false && (simon->GetSimonDoubleTri()==0 || simon->GetSimonDoubleTri() == 1)))
+		subweapon = weaponlist[1];
+	else if (weaponlist[2]->IsEnable() == false && simon->GetSimonDoubleTri() == 1)
+		subweapon = weaponlist[2];
+	else return;
+
 	if (simon->Getsubweapon() != -1)
 	{
 		if (simon->IsAtk() == true) return;
-		if (simon->GetSubWeapon()->isDone == false) return;
+		//if (simon->GetSubWeapon()->isDone == false) return;
+		if (subweapon->isDone == false) return;
 		if (simon->GetMana() >= 1)
 		{
 			int tam = simon->GetMana() - 1;
 			simon->SetMana(tam);
 			simon->isAtkWithSW = true;
-			simon->GetSubWeapon()->nx = simon->nx;
+			/*simon->GetSubWeapon()->nx = simon->nx;
 			simon->GetSubWeapon()->SetState(simon->Subweapon);
+			simon->GetSubWeapon()->SetWeaponPosition(simonx, simony, isSimonStand);
+			simon->GetSubWeapon()->isDone = false;*/
+			subweapon->nx = simon->nx;
+			subweapon->SetState(simon->Subweapon);
+			subweapon->SetWeaponPosition(simonx, simony, isSimonStand);
+			subweapon->isDone = false; 
+			subweapon->SetEnable(true);
 			if (simon->GetState() == SIMON_IDLE || simon->GetState() == SIMON_JUMP || simon->GetState() == SIMON_WALKING)
 			{
 				simon->SetState(SIMON_ATK);
@@ -429,6 +454,7 @@ void CPlaySceneKeyHandler::Simon_SubAtk()
 			{
 				simon->SetState(SIMON_STAIRDOWN_ATK);
 			}
+
 		}
 	}
 		
@@ -668,6 +694,12 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_5:
 		simon->Subweapon = 4;
+		break;
+	case DIK_8:
+		simon->SimonDoubleTri = 0;
+		break;
+	case DIK_9:
+		simon->SimonDoubleTri = 1;
 		break;
 	}
 }

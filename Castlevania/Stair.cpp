@@ -13,7 +13,7 @@ Stair::~Stair()
 
 void Stair::Render()
 {
-	animation_set->at(state)->Render(-1, x, y);
+	animation_set->at(ani)->Render(-1, x, y);
 	//RenderBoundingBox();
 }
 
@@ -25,17 +25,3 @@ void Stair::GetBoundingBox(float & l, float & t, float & r, float & b)
 	b = y + STAIR_BBOX_HEIGHT;
 }
 
-void Stair::SetState(int state)
-{
-	CGameObject::SetState(state);
-
-	switch (state)
-	{
-	case MAP2Stair:
-		break;
-	case MAP21Stair:
-		break;
-	default:
-		break;
-	}
-}

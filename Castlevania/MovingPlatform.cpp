@@ -58,14 +58,14 @@ void MovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void MovingPlatform::Render()
 {
-	animation_set->at(state)->Render(-1, x, y);
+	animation_set->at(ani)->Render(-1, x, y);
 	//RenderBoundingBox();
 }
 
-void MovingPlatform::SetState(int state)
-{
-	CGameObject::SetState(state);
-}
+//void MovingPlatform::SetState(int state)
+//{
+//	CGameObject::SetState(state);
+//}
 
 void MovingPlatform::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {

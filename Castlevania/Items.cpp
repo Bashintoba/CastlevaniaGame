@@ -19,20 +19,19 @@ void Items::Render()
 
 void Items::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
 {
-		if (timeAppear == -1)
-			timeAppear = GetTickCount();
-		else
-		{
-			DWORD now = GetTickCount();
+	if (timeAppear == -1)
+		timeAppear = GetTickCount();
+	else
+	{
+		DWORD now = GetTickCount();
 
-			if (now - timeAppear > ITEM_TIME_DESTROYED)
-			{
-				isEnable = false;
-				isDone = true;
-				return;
-			}
+		if (now - timeAppear > ITEM_TIME_DESTROYED)
+		{
+			isEnable = false;
+			isDone = true;
+			return;
 		}
-	//}
+	}
 
 	CGameObject::Update(dt);
 	// Check collision between item and ground (falling on ground)
@@ -150,11 +149,6 @@ void Items::SetState(int state)
 {
 	CGameObject::SetState(state);
 
-	switch (state)
-	{
-	default:
-		vx = 0;
-		vy = ITEM_FALLING_SPEED_Y;
-		break;
-	}
+	vx = 0;
+	vy = ITEM_FALLING_SPEED_Y;
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Windows.h>
 #include <d3dx9.h>
@@ -46,6 +46,8 @@ public:
 
 	int nx;
 
+	int ani;// dành cho những obj chỉ có 1 state
+
 	int state;
 
 	int IDitems;
@@ -71,7 +73,7 @@ public:
 	int GetState() { return this->state; }
 	int GetIDitems() { return this->IDitems; }
 	int GetIdNextMap() { return this->IdNextMap; }
-	//bool SetIsEnable() { return this->IsEnable; }
+	//void SetEnable(bool enable) { this->IsEnable = enable; }
 
 	void RenderBoundingBox();
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }//

@@ -4,15 +4,15 @@
 #include "Simon.h"
 #include "BreakBrick.h"
 
-SubWeapon::SubWeapon() : CGameObject()
+SubWeapon::SubWeapon(LPGAMEOBJECT simon) : CGameObject()
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(SW_ANIMATION_SET);
 	SetAnimationSet(ani_set);
 	SetState(-1);
-	//nx = 1;
 	vx = 0;
 	isDone = true;
+	this->simon = simon;
 }
 
 void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -24,6 +24,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			isHolyWaterShattered = false;
 			holyWaterShatteredCounter = 0;
 			this->isDone = true;
+			this->isEnable = false;
 			return;
 		}
 
@@ -52,15 +53,19 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			break;
 		}
 
-		//if (isDone == false)
-		//{
-
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
-
+		vector<LPGAMEOBJECT> ListsColl;			
 		coEvents.clear();
+		
+		ListsColl.clear();
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			ListsColl.push_back(coObjects->at(i));
+		}
+		ListsColl.push_back(simon);
 
-		CalcPotentialCollisions(coObjects, coEvents);
+		CalcPotentialCollisions(&ListsColl, coEvents);
 
 		if (coEvents.size() == 0)
 		{
@@ -123,7 +128,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 }
 
-void SubWeapon::Render(int nx, int currentID)
+void SubWeapon::Render(int currentID)
 {
 	if (isDone == false && CheckOutCam(X) == false && state != WEAPONS_STOP_WATCH)
 	{
@@ -140,7 +145,7 @@ void SubWeapon::Render(int nx, int currentID)
 	}
 }
 
-void SubWeapon::SetWeaponPosition(int nx,float simonX, float simonY, bool isStand)
+void SubWeapon::SetWeaponPosition(float simonX, float simonY, bool isStand)
 {
 	if (nx > 0)
 	{
@@ -153,6 +158,7 @@ void SubWeapon::SetWeaponPosition(int nx,float simonX, float simonY, bool isStan
 	else
 		simonY += 15;
 	X = simonX;
+
 	SetPosition(simonX, simonY);
 }
 

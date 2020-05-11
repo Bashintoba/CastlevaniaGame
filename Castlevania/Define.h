@@ -116,6 +116,10 @@
 #define TRIPLE_SHOT	15
 #define CROWN 16
 #define MAGIC_CRYSTAL	17
+//define MF
+#define PLAT_BBOX_WIDTH			64
+#define PLAT_BBOX_HEIGHT		16
+#define PLAT_MOVING_SPEED		0.05f	
 //define candle
 #define BIG_CANDLE 0
 #define SMALL_CANDLE 1

@@ -15,13 +15,13 @@ Simon::Simon()
 	LPANIMATION_SET ani_set = animation_sets->Get(SIMON_ANIMATION_SET);
 	SetAnimationSet(ani_set);
 	whip = new Whip();
-	subweapon = new SubWeapon();
-	/*for (int i = 1; i <= 3; i++)
+	//subweapon = new SubWeapon(this);
+	for (int i = 0; i <3; i++)
 	{
-		subweapon = new SubWeapon();
+		subweapon = new SubWeapon(this);
 		subweapon->SetEnable(false);
 		SubWeaponList.push_back(subweapon);
-	}*/
+	}
 	nx = 1;
 	IdCurrMap = 0;
 	IdNextMap = 1;
@@ -321,7 +321,12 @@ void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
 				case INVISIBILITY_POTION:
 					break;
 				case DOUBLE_SHOT:
-					SimonDoubleTri = 0;
+					if (SimonDoubleTri == 1)
+					{
+						SimonDoubleTri = 1;
+					}
+					else
+						SimonDoubleTri = 0;
 					break;
 				case TRIPLE_SHOT:
 					SimonDoubleTri = 1;
@@ -358,7 +363,7 @@ bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 
 		if (CGameObject::AABB(simon_l, simon_t, simon_r, simon_b, stair_l, stair_t, stair_r, stair_b) == true)
 		{
-			if (liststair->at(i)->GetState() == 2 || liststair->at(i)->GetState() == 3 || liststair->at(i)->GetState() == 4 || liststair->at(i)->GetState() == 7) stairnx = -1;//trái trên phải dưới
+			if (liststair->at(i)->ani == 2 || liststair->at(i)->ani == 3 || liststair->at(i)->ani == 4 || liststair->at(i)->ani == 7) stairnx = -1;//trái trên phải dưới
 			else stairnx = 1;//trái dưới phải trên
 
 			StairIsCollided = liststair->at(i);
