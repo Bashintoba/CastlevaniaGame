@@ -293,9 +293,10 @@ void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
 					SimonScore += 700;
 					break;
 				case PORK_CHOP:
-					if (SimonHP <= 12)
+					SimonHP += 4;
+					if (SimonHP >= 16)
 					{
-						SimonHP += 4;
+						SimonHP = 16;
 					}
 					break;
 				case CHAIN:

@@ -422,17 +422,12 @@ void CPlaySceneKeyHandler::Simon_SubAtk()
 	if (simon->Getsubweapon() != -1)
 	{
 		if (simon->IsAtk() == true) return;
-		//if (simon->GetSubWeapon()->isDone == false) return;
 		if (subweapon->isDone == false) return;
 		if (simon->GetMana() >= 1)
 		{
 			int tam = simon->GetMana() - 1;
 			simon->SetMana(tam);
 			simon->isAtkWithSW = true;
-			/*simon->GetSubWeapon()->nx = simon->nx;
-			simon->GetSubWeapon()->SetState(simon->Subweapon);
-			simon->GetSubWeapon()->SetWeaponPosition(simonx, simony, isSimonStand);
-			simon->GetSubWeapon()->isDone = false;*/
 			subweapon->nx = simon->nx;
 			subweapon->SetState(simon->Subweapon);
 			subweapon->SetWeaponPosition(simonx, simony, isSimonStand);
