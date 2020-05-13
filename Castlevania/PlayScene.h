@@ -54,7 +54,7 @@ public:
 	vector<LPGAMEOBJECT> GetListStairUp() { return listStairsUp; }
 	vector<LPGAMEOBJECT> GetListStairDown() { return listStairsDown; }
 	void GetObjectFromGrid();//
-	//void UpdateGrid();
+	void UpdateGrid();
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

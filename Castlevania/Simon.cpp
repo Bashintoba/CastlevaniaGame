@@ -40,7 +40,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 	// Simple fall down
-	if (isOnStair == false && isAutoWalk == false)//
+	if (isOnStair == false && isAutoWalk == false /*&& isOnMF == false*/)//
 	{
 		vy += SIMON_GRAVITY * dt;
 	}
@@ -55,15 +55,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			x += dx;
 			y += dy;
 		}
-
 		return;
 	}
 
-	/*if (isWalking == false && isJumping == false && isOnMF == false)
-	{
-		vx = 0;
-	}*/
-	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	vector<LPGAMEOBJECT> ListsColl;
@@ -83,7 +77,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 
 	// No collision occured, proceed normally
-	if (coEvents.size() == 0 && isAutoWalk == false)
+	if (coEvents.size() == 0 && isAutoWalk == false )
 	{
 		x += dx;
 		y += dy;

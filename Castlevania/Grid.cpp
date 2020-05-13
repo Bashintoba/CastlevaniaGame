@@ -14,11 +14,17 @@ Grid::Grid(int map_width, int map_height, int cell_width, int cell_height)
 	cells.resize(nums_row);
 
 	for (int i = 0; i < nums_row; i++)
+	{
 		cells[i].resize(nums_col);
+	}
 
 	for (int i = 0; i < nums_row; i++)
+	{
 		for (int j = 0; j < nums_col; j++)
+		{
 			cells[i][j].clear();
+		}
+	}
 }
 
 Grid::~Grid()
@@ -29,8 +35,8 @@ void Grid::PushObjIntoGrid(vector<LPGAMEOBJECT> lists)
 {
 	for (int i = 0; i < lists.size(); i++)
 	{
-		int row = (int)(lists[i]->y / cell_height);
-		int col = (int)(lists[i]->x / cell_width);
+		int row = (int)(lists[i]->GetPositionY() / cell_height);
+		int col = (int)(lists[i]->GetPositionX() / cell_width);
 
 		cells[row][col].push_back(lists[i]);
 	}
@@ -49,11 +55,37 @@ void Grid::GetObjFromGrid(float Camx,float Camy,vector<LPGAMEOBJECT>& lists)
 			{
 				lists.push_back(cells[i][j][k]);
 			}
-			/*for (LPGAMEOBJECT k : cells[i][j])
-			{
-				lists.push_back(k);
-			}*/
 		}
+	}
+}
+
+void Grid::ResetGrid(vector<LPGAMEOBJECT> lists)
+{
+	/*for (int i = 0; i < nums_row; i++)//delete lại sai ak hmm
+	{
+		for (int j = 0; j < nums_col; j++)
+		{
+			for (int k = 0; k < cells[i][j].size(); k++)
+			{
+				delete cells[i][j][k];
+			}
+		}
+	}*/
+
+	for (int i = 0; i < nums_row; i++)
+	{
+		for (int j = 0; j < nums_col; j++)
+		{
+			cells[i][j].clear();
+		}
+	}
+
+	for (int i = 0; i < lists.size(); i++)
+	{
+		int row = (int)(lists[i]->GetPositionY() / cell_height);
+		int col = (int)(lists[i]->GetPositionX() / cell_width);
+
+		cells[row][col].push_back(lists[i]);
 	}
 }
 

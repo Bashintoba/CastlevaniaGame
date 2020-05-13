@@ -15,6 +15,9 @@
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 
+#define GRID_CELL_WIDTH 264
+#define GRID_CELL_HEIGHT 250
+
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_TEXTURES 2
 #define SCENE_SECTION_SPRITES 3

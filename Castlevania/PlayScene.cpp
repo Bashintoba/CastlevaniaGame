@@ -217,14 +217,12 @@ void CPlayScene::GetObjectFromGrid()
 	AllObjects.clear();
 	CGame* game = CGame::GetInstance();
 	grid->GetObjFromGrid(game->GetCamPosX(), game->GetCamPosY(), ListObjects);
-	//DebugOut(L"%d \n", ListObjects.size());
+	//DebugOut(L"%d \n", ListObjects.size());// đừng mở lag lắm :(((
 
 	for (UINT i = 0; i < ListObjects.size(); i++)
 	{
 		LPGAMEOBJECT obj = ListObjects[i];
 
-		/*if (dynamic_cast<Ground*>(obj))
-			continue;*/
 		if (dynamic_cast<Stair*>(obj))
 		{
 			if (obj->ani == 0 || obj->ani == 1 || obj->ani == 5 || obj->ani == 6)
@@ -239,20 +237,10 @@ void CPlayScene::GetObjectFromGrid()
 	}
 }
 
-//void CPlayScene::UpdateGrid()
-//{
-//	for (int i = 0; i < ListObjects.size(); i++)
-//	{
-//		LPGAMEOBJECT obj = ListObjects[i]->GetObj();
-//
-//		if (obj->IsEnable() == false)
-//			continue;
-//
-//		float newPos_x, newPos_y;
-//		obj->GetPosition(newPos_x, newPos_y);
-//		ListObjects[i]->Move(newPos_x, newPos_y);
-//	}
-//}
+void CPlayScene::UpdateGrid()
+{
+	grid->ResetGrid(listObjects);
+}
 
 void CPlayScene::Load()
 {
@@ -384,7 +372,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		CGame::GetInstance()->SetCamPos(simon->x - (SCREEN_WIDTH / 2),/*cy*/ 0.0f);
 	}
-	//UpdateGrid();
+	UpdateGrid();
 }
 
 void CPlayScene::Render()
