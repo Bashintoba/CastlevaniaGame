@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿#ifndef go_h
+#define go_h
+#pragma once
 
 #include <Windows.h>
 #include <d3dx9.h>
@@ -111,3 +113,4 @@ public:
 	~CGameObject();
 };
 
+#endif

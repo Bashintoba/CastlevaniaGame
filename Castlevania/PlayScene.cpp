@@ -42,7 +42,7 @@ void CPlayScene::LoadPlayer()
 void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
 {
 	Unload();
-	int camx, camy, camx1, camy1;
+	int camx, camy, camx1, camy1,widthgrid,heightgrid;
 	for (int i = (map-1); i <= (map - 1); i++)
 	{
 		for (int j = 0; j < FileInFMap[i].size(); j++)
@@ -53,6 +53,8 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
 			if (j == 3) { camy = atoi(FileInFMap[i][j].c_str()); }	
 			if (j == 4) { camx1 = atoi(FileInFMap[i][j].c_str()); }
 			if (j == 5) { camy1 = atoi(FileInFMap[i][j].c_str()); }
+			if (j == 6) { widthgrid = atoi(FileInFMap[i][j].c_str()); }
+			if (j == 7) { heightgrid = atoi(FileInFMap[i][j].c_str()); }
 		}
 	}
 	CGame::GetInstance()->SetKeyHandler(this->GetKeyEventHandler());
@@ -64,8 +66,9 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
 	{
 		CGame::GetInstance()->SetCamPos(camx1,/*cy*/ camy1);
 	}
-	
+	grid = new Grid(widthgrid, heightgrid);
 	Load();
+	grid->PushObjIntoGrid(listObjects);
 	simon->IdCurrMap = map;
 }
 
@@ -119,10 +122,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		// General object setup
 		obj->SetPosition(x, y);
 		obj->ani = st;
+		//obj->SetEnable(true);
 		//obj->SetState(st);
-		listobjects.push_back(obj);
-		objects.push_back(obj);
-
+		listObjects.push_back(obj);
+		//objects.push_back(obj);
+		//unit = new Unit(grid, obj, x, y);
 		break;
 	}
 	case OBJECT_TYPE_CANDLE: 
@@ -133,7 +137,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listobj->SetPosition(x, y);
 		listobj->SetState(st);
 		listobj->IDitems = id;
-		listobjects.push_back(listobj);
+		//obj->SetEnable(true);
+		//unit = new Unit(grid, listobj, x, y);
+		listObjects.push_back(listobj);
+		//listobjects.push_back(listobj);
 		break;
 	}
 	case OBJECT_TYPE_GATE:
@@ -142,7 +149,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Gate();
 		obj->SetPosition(x, y);
 		obj->IdNextMap = switchmap;
-		objects.push_back(obj);
+		//obj->SetEnable(true);
+		//unit = new Unit(grid, obj, x, y);
+		listObjects.push_back(obj);
+		//objects.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_STAIR:
@@ -151,12 +161,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Stair();
 		obj->SetPosition(x, y);
 		obj->ani = st;
-		if (st == 0 || st == 1 || st == 5 || st == 6)
+		//obj->SetEnable(true);
+		//unit = new Unit(grid, obj, x, y);
+		/*if (st == 0 || st == 1 || st == 5 || st == 6)
 		{
 			listStairsUp.push_back(obj);
 		}
 		else
-			listStairsDown.push_back(obj);
+			listStairsDown.push_back(obj);*/
+		listObjects.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_BREAKBRICK:
@@ -167,8 +180,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->ani = st;
 		obj->IDitems = id;
-		listobjects.push_back(obj);
-		objects.push_back(obj);
+		//obj->SetEnable(true);
+		//unit = new Unit(grid, obj, x, y);
+		//listobjects.push_back(obj);
+		//objects.push_back(obj);
+		listObjects.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_MOVINGPLATFORM:
@@ -178,7 +194,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		// General object setup
 		obj->SetPosition(x, y);
 		obj->ani = st;
-		objects.push_back(obj);
+		//obj->SetEnable(true);
+		//unit = new Unit(grid, obj, x, y);
+		//objects.push_back(obj);
+		listObjects.push_back(obj);
 		break;
 	}
 	default:
@@ -189,6 +208,51 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	
 }
 
+
+void CPlayScene::GetObjectFromGrid()
+{
+	ListObjects.clear();
+	listStairsUp.clear();
+	listStairsDown.clear();
+	AllObjects.clear();
+	CGame* game = CGame::GetInstance();
+	grid->GetObjFromGrid(game->GetCamPosX(), game->GetCamPosY(), ListObjects);
+	//DebugOut(L"%d \n", ListObjects.size());
+
+	for (UINT i = 0; i < ListObjects.size(); i++)
+	{
+		LPGAMEOBJECT obj = ListObjects[i];
+
+		/*if (dynamic_cast<Ground*>(obj))
+			continue;*/
+		if (dynamic_cast<Stair*>(obj))
+		{
+			if (obj->ani == 0 || obj->ani == 1 || obj->ani == 5 || obj->ani == 6)
+			{
+				listStairsUp.push_back(obj);
+			}
+			else
+				listStairsDown.push_back(obj);
+		}
+		else
+			AllObjects.push_back(obj);
+	}
+}
+
+//void CPlayScene::UpdateGrid()
+//{
+//	for (int i = 0; i < ListObjects.size(); i++)
+//	{
+//		LPGAMEOBJECT obj = ListObjects[i]->GetObj();
+//
+//		if (obj->IsEnable() == false)
+//			continue;
+//
+//		float newPos_x, newPos_y;
+//		obj->GetPosition(newPos_x, newPos_y);
+//		ListObjects[i]->Move(newPos_x, newPos_y);
+//	}
+//}
 
 void CPlayScene::Load()
 {
@@ -228,24 +292,25 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
+	GetObjectFromGrid();
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	//Simon *simon = ((CPlayScene*)scene)->simon;//
-	vector<LPGAMEOBJECT> coObjects;
+	/*vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
-	}
+	}*/
 
-	for (size_t i = 0; i < objects.size(); i++)
+	for (size_t i = 0; i < AllObjects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		AllObjects[i]->Update(dt, &AllObjects);
 	}
-	simon->Update(dt, &coObjects);
-	for (size_t i = 0; i < listobjects.size(); i++)
+	simon->Update(dt, &AllObjects);
+	/*for (size_t i = 0; i < listobjects.size(); i++)
 	{
 		listobjects[i]->Update(dt, &coObjects);
-	}
+	}*/
 	float simonx, simony;
 	simon->GetPosition(simonx, simony);
 	bool isSimonStand = true;
@@ -258,13 +323,13 @@ void CPlayScene::Update(DWORD dt)
 	{		
 		if (simon->isAtkWithWhip == true)
 		{
-			simon->GetWhip()->Update(dt, &listobjects);
+			simon->GetWhip()->Update(dt, &AllObjects);
 		}
 	}
 	//simon->GetSubWeapon()->Update(dt, &listobjects);
 	for (int i = 0; i < 3; i++)
 	{
-		simon->GetListSubWeapon()[i]->Update(dt, &listobjects);
+		simon->GetListSubWeapon()[i]->Update(dt, &AllObjects);
 	}
 	if (simon->isGotChainItem == true) // update trạng thái của whip
 	{
@@ -276,9 +341,9 @@ void CPlayScene::Update(DWORD dt)
 	{
 		simon->IsWait = false;
 	}
-	for (UINT i = 0; i < listobjects.size(); i++)
+	for (UINT i = 0; i < AllObjects.size(); i++)
 	{
-		LPGAMEOBJECT obj = listobjects[i];
+		LPGAMEOBJECT obj = AllObjects[i];
 		if (dynamic_cast<Candle*>(obj) && obj->GetState() == CANDLE_DESTROYED && obj->isDone == false && obj->isEnable == false)
 		{
 			obj->isEnable = true;
@@ -302,7 +367,7 @@ void CPlayScene::Update(DWORD dt)
 	simon->SimonColliWithItems(&listItems);
 	for (int i = 0; i < listItems.size(); i++)
 	{
-		listItems[i]->Update(dt, &coObjects);
+		listItems[i]->Update(dt, &AllObjects);
 	}
 	if (simon->isChangeScene == true)
 	{
@@ -319,6 +384,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		CGame::GetInstance()->SetCamPos(simon->x - (SCREEN_WIDTH / 2),/*cy*/ 0.0f);
 	}
+	//UpdateGrid();
 }
 
 void CPlayScene::Render()
@@ -327,14 +393,14 @@ void CPlayScene::Render()
 	int nx = 0;
 	for (int i = 0; i < listItems.size(); i++)
 		listItems[i]->Render();
-	for (int i = 0; i < listobjects.size(); i++)
-		listobjects[i]->Render();
+	for (int i = 0; i < AllObjects.size(); i++)
+		AllObjects[i]->Render();
 	for (int i = 0; i < listStairsUp.size(); i++)
 		listStairsUp[i]->Render();
 	for (int i = 0; i < listStairsDown.size(); i++)
 		listStairsDown[i]->Render();
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	/*for (int i = 0; i < objects.size(); i++)
+		objects[i]->Render();*/
 
 	simon->Render();
 	if (simon->IsAtk() == true)///////////////
@@ -363,14 +429,14 @@ void CPlayScene::Unload()
 		delete listStairsUp[i];
 	for (int i = 0; i < listStairsDown.size(); i++)
 		delete listStairsDown[i];
-	for (int i = 0; i < listobjects.size(); i++)
-		delete listobjects[i];
+	for (int i = 0; i < AllObjects.size(); i++)
+		delete AllObjects[i];
 	for (int i = 0; i < listItems.size(); i++)
 		delete listItems[i];
 	listStairsUp.clear();
 	listStairsDown.clear();
-	objects.clear();
-	listobjects.clear();
+	AllObjects.clear();
+	listObjects.clear();
 	listItems.clear();
 }
 

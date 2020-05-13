@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "Grid.h"
 #include "Game.h"
 #include "Textures.h"
 #include "Scene.h"
@@ -29,12 +30,15 @@ class CPlayScene : public CScene
 protected:
 	Simon *simon;		// A play scene has to have player, right? 
 	HUD *hud;
+	Grid* grid;
+	//Unit* unit;
 	CPlayScene *playscene;
 	int idMap;
 	int Switchmap = 0;
 	TileMaps *tilemaps = TileMaps::GetInstance();
-	vector<LPGAMEOBJECT> objects;
-	vector<LPGAMEOBJECT> listobjects;//
+	vector<LPGAMEOBJECT> ListObjects;//dung de lay khoi grid
+	vector<LPGAMEOBJECT> AllObjects;
+	vector<LPGAMEOBJECT> listObjects;//dung de push vao grid
 	vector<LPGAMEOBJECT> listItems;//ds item
 	vector<LPGAMEOBJECT> listStairsUp;//ds cau thang
 	vector<LPGAMEOBJECT> listStairsDown;//ds cau thang
@@ -49,6 +53,8 @@ public:
 	vector<vector<string>>  GetFileInFMap() {return FileInfMap;}
 	vector<LPGAMEOBJECT> GetListStairUp() { return listStairsUp; }
 	vector<LPGAMEOBJECT> GetListStairDown() { return listStairsDown; }
+	void GetObjectFromGrid();//
+	//void UpdateGrid();
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

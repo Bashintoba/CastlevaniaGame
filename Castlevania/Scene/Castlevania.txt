@@ -318,9 +318,9 @@
 [START]
 1
 [MAP]
-1	Scene\scene1.txt	0	0	0	0
-2	Scene\scene2_1.txt	0	0	0	0
-3	Scene\scene2_2.txt	512	0	0	0
-4	Scene\scene3_1.txt	1020	0	0	0
-5	Scene\scene3_2.txt	0	0	1020	0
-6	Scene\scene4.txt	0	0	0	0
+1	Scene\scene1.txt	0	0	0	0	1584	500
+2	Scene\scene2_1.txt	0	0	0	0	528	500
+3	Scene\scene2_2.txt	512	0	0	0	1056	500
+4	Scene\scene3_1.txt	1020	0	0	0	1584	500
+5	Scene\scene3_2.txt	0	0	1020	0	1584	500
+6	Scene\scene4.txt	0	0	0	0	1584	500

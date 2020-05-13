@@ -6,6 +6,8 @@
 #include "SubWeapon.h"
 #include "Gate.h"
 #include "Ground.h"
+#include "Candle.h"
+#include "Stair.h"
 #include "BreakBrick.h"
 #include "MovingPlatform.h"
 
@@ -64,12 +66,20 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
-
+	vector<LPGAMEOBJECT> ListsColl;
 	coEvents.clear();
+	ListsColl.clear();
 
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (coObjects->at(i) != dynamic_cast<Candle*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Stair*>(coObjects->at(i)))
+		{
+			ListsColl.push_back(coObjects->at(i));
+		}
+	}
 	// turn off collision when die 
 	//if (state != MARIO_STATE_DIE)
-	CalcPotentialCollisions(coObjects, coEvents);
+	CalcPotentialCollisions(&ListsColl, coEvents);
 
 
 	// No collision occured, proceed normally
