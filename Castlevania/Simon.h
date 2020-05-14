@@ -41,7 +41,6 @@ public:
 	int stairnx = 0;//
 	void StandOnStair() { vx = vy = 0; }//
 	int Subweapon = -1;
-	int SimonHP = 16;
 	int SimonMana = 99;//15;
 	int SimonScore = 0;
 	int SimonLife = 3;
@@ -53,12 +52,12 @@ public:
 	vector<SubWeapon*> GetListSubWeapon() { return SubWeaponList; }
 	void SimonColliWithItems(vector<LPGAMEOBJECT> *listitem);
 	bool SimonColliWithStair(vector<LPGAMEOBJECT> *liststair);
-	int GetHP() { return SimonHP; }
 	int GetMana() { return SimonMana; }
 	int GetScore() { return SimonScore; }
 	int Getsubweapon() { return Subweapon; }
 	int GetSimonLife() { return SimonLife; }
 	int GetSimonDoubleTri() { return SimonDoubleTri; }
+	void AddScore(int score) { SimonScore += score; }
 	void SetMana(int Mana) { SimonMana = Mana; }
 	void AutoWalk(float new_x, int new_state, int new_nx);
 	void SimonAutoWalk();

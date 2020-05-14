@@ -1,3 +1,17 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+140	Textures\Knight.png	116	116	116
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#knight
+4000	0	0	40	80	140
+4001	40	0	80	80	140
+4002	80	0	120	82	140
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+4000	4000	150	4001	150	4002	150
+[ANIMATION_SETS]
+20	4000	70
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle , 3 = Gate
@@ -72,3 +86,5 @@
 # BreakBrick
 5	448	240	1	-1
 5	448	272	1	16
+# mobs
+7	160	159	20	0	1	150	280

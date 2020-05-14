@@ -16,6 +16,7 @@ Simon::Simon()
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(SIMON_ANIMATION_SET);
 	SetAnimationSet(ani_set);
+	HP = 16;
 	whip = new Whip();
 	for (int i = 0; i <3; i++)
 	{
@@ -299,10 +300,10 @@ void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
 					SimonScore += 700;
 					break;
 				case PORK_CHOP:
-					SimonHP += 4;
-					if (SimonHP >= 16)
+					this->HP += 4;
+					if (this->HP >= 16)
 					{
-						SimonHP = 16;
+						this->HP = 16;
 					}
 					break;
 				case CHAIN:

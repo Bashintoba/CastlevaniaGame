@@ -1,6 +1,7 @@
 ﻿#include "Whip.h"
 #include "Candle.h"
 #include "BreakBrick.h"
+#include "Knight.h"
 
 Whip::Whip() : CGameObject()
 {
@@ -25,9 +26,14 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
 			{
-				e->SetState(CANDLE_DESTROYED);				
-				sparkX.push_back(left);
-				sparkY.push_back(top);
+				e->AddHP(-2);
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->SetState(CANDLE_DESTROYED);
+					sparkX.push_back(left);
+					sparkY.push_back(top);
+				}				
 			}
 		}
 		else if (dynamic_cast<BreakBrick*>(obj))
@@ -40,9 +46,39 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
 			{
-				e->isDone = true;
-				sparkX.push_back(left);
-				sparkY.push_back(top);
+				e->AddHP(-2);
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->isDone = true;
+					sparkX.push_back(left);
+					sparkY.push_back(top);
+				}
+			}
+		}
+		else if (dynamic_cast<Knight*>(obj))
+		{
+			Knight* e = dynamic_cast<Knight*> (obj);
+
+			float left, top, right, bottom;
+
+			e->GetBoundingBox(left, top, right, bottom);
+
+			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			{
+				if (Dame1turn == false)
+				{
+					e->AddHP(-2);
+					Dame1turn = true;
+				}
+
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->SetState(KNIGHT_STATE_DIE);
+					sparkX.push_back(left);
+					sparkY.push_back(top);
+				}
 			}
 		}
 	}

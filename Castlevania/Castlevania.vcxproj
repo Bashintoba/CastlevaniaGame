@@ -30,6 +30,7 @@
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Items.cpp" />
+    <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="Number.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Knight.h" />
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="Scene.h" />

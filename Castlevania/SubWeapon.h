@@ -9,6 +9,8 @@ class SubWeapon :public CGameObject
 	LPGAMEOBJECT simon;
 	bool isHolyWaterShattered = false;
 	int holyWaterShatteredCounter = 0;
+	bool DameBoomerang1 = false; 
+	bool DameBoomerang2 = false;
 public:
 	SubWeapon(LPGAMEOBJECT simon);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

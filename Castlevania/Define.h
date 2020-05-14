@@ -37,6 +37,7 @@
 #define OBJECT_TYPE_STAIR	4
 #define OBJECT_TYPE_BREAKBRICK 5
 #define OBJECT_TYPE_MOVINGPLATFORM 6
+#define OBJECT_TYPE_KNIGHT 7
 //define time
 #define DEFAULT_TIME_PLAY 300
 //define map
@@ -144,5 +145,14 @@
 //define gate
 #define GATE_BBOX_WIDTH		48
 #define GATE_BBOX_HEIGHT	96
+//define Knight
+#define KNIGHT_WALKING_SPEED			0.06f
+#define KNIGHT_GRAVITY					0.002f
+
+#define KNIGHT_BBOX_WIDTH				40
+#define KNIGHT_BBOX_HEIGHT				80
+
+#define KNIGHT_STATE_WALKING			0
+#define KNIGHT_STATE_DIE				1
 
 #endif

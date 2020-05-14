@@ -37,8 +37,10 @@ void Grid::PushObjIntoGrid(vector<LPGAMEOBJECT> lists)
 	{
 		int row = (int)(lists[i]->GetPositionY() / cell_height);
 		int col = (int)(lists[i]->GetPositionX() / cell_width);
-
-		cells[row][col].push_back(lists[i]);
+		if (lists[i]->GetHP() > 0)
+		{
+			cells[row][col].push_back(lists[i]);
+		}
 	}
 }
 
@@ -85,7 +87,10 @@ void Grid::ResetGrid(vector<LPGAMEOBJECT> lists)
 		int row = (int)(lists[i]->GetPositionY() / cell_height);
 		int col = (int)(lists[i]->GetPositionX() / cell_width);
 
-		cells[row][col].push_back(lists[i]);
+		if (lists[i]->GetHP() > 0)
+		{
+			cells[row][col].push_back(lists[i]);
+		}
 	}
 }
 

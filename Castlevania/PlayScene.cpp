@@ -16,6 +16,27 @@ CPlayScene::CPlayScene(int map,vector<vector<string>> FileInFMap) :CScene()
 	SwitchMap(map,FileInfMap);
 }
 
+int CPlayScene::RandomItems()
+{
+	int random = rand() % 100;
+	if (random <= 20)
+		return 0;
+	else if (20 < random && random <= 40)
+		return 1;
+	else if (40 < random && random <= 50)
+		return 2;
+	else if (50 < random && random <= 60)
+		return 3;
+	else if (60 < random && random <= 70)
+		return 4;
+	else if (70 < random && random <= 80)
+		return 5;
+	else if (80 < random && random <= 90)
+		return 6;
+	else if (90 < random && random <= 100)
+		return 13;
+}
+
 Items * CPlayScene::DropItems(int iditems, float x, float y)
 {
 	Items *a = new Items();
@@ -72,6 +93,88 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
 	simon->IdCurrMap = map;
 }
 
+void CPlayScene::_ParseSection_TEXTURES(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 5) return; // skip invalid lines
+
+	int texID = atoi(tokens[0].c_str());
+	wstring path = ToWSTR(tokens[1]);
+	int R = atoi(tokens[2].c_str());
+	int G = atoi(tokens[3].c_str());
+	int B = atoi(tokens[4].c_str());
+
+	CTextures::GetInstance()->Add(texID, path.c_str(), D3DCOLOR_XRGB(R, G, B));
+}
+
+void CPlayScene::_ParseSection_SPRITES(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 6) return; // skip invalid lines
+
+	int ID = atoi(tokens[0].c_str());
+	int l = atoi(tokens[1].c_str());
+	int t = atoi(tokens[2].c_str());
+	int r = atoi(tokens[3].c_str());
+	int b = atoi(tokens[4].c_str());
+	int texID = atoi(tokens[5].c_str());
+
+	LPDIRECT3DTEXTURE9 tex = CTextures::GetInstance()->Get(texID);
+	if (tex == NULL)
+	{
+		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
+		return;
+	}
+
+	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
+}
+
+void CPlayScene::_ParseSection_ANIMATIONS(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
+
+	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+
+	LPANIMATION ani = new CAnimation();
+
+	int ani_id = atoi(tokens[0].c_str());
+	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
+	{
+		int sprite_id = atoi(tokens[i].c_str());
+		int frame_time = atoi(tokens[i + 1].c_str());
+		ani->Add(sprite_id, frame_time);
+	}
+
+	CAnimations::GetInstance()->Add(ani_id, ani);
+}
+
+void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return; // skip invalid lines - an animation set must at least id and one animation id
+
+	int ani_set_id = atoi(tokens[0].c_str());
+
+	LPANIMATION_SET s = new CAnimationSet();
+
+	CAnimations* animations = CAnimations::GetInstance();
+
+	for (int i = 1; i < tokens.size(); i++)
+	{
+		int ani_id = atoi(tokens[i].c_str());
+
+		LPANIMATION ani = animations->Get(ani_id);
+		s->push_back(ani);
+	}
+
+	CAnimationSets::GetInstance()->Add(ani_set_id, s);
+}
+
 /*
 	Parse a line in section [OBJECTS]
 */
@@ -117,16 +220,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_BRICK: 
 	{
-		int st = atof(tokens[4].c_str()); //state
+		int st = atof(tokens[4].c_str());
 		obj = new Ground();
-		// General object setup
 		obj->SetPosition(x, y);
 		obj->ani = st;
-		//obj->SetEnable(true);
-		//obj->SetState(st);
 		listObjects.push_back(obj);
-		//objects.push_back(obj);
-		//unit = new Unit(grid, obj, x, y);
 		break;
 	}
 	case OBJECT_TYPE_CANDLE: 
@@ -137,10 +235,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listobj->SetPosition(x, y);
 		listobj->SetState(st);
 		listobj->IDitems = id;
-		//obj->SetEnable(true);
-		//unit = new Unit(grid, listobj, x, y);
 		listObjects.push_back(listobj);
-		//listobjects.push_back(listobj);
 		break;
 	}
 	case OBJECT_TYPE_GATE:
@@ -149,26 +244,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Gate();
 		obj->SetPosition(x, y);
 		obj->IdNextMap = switchmap;
-		//obj->SetEnable(true);
-		//unit = new Unit(grid, obj, x, y);
 		listObjects.push_back(obj);
-		//objects.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_STAIR:
 	{
-		int st = atof(tokens[4].c_str()); //state
+		int st = atof(tokens[4].c_str());
 		obj = new Stair();
 		obj->SetPosition(x, y);
 		obj->ani = st;
-		//obj->SetEnable(true);
-		//unit = new Unit(grid, obj, x, y);
-		/*if (st == 0 || st == 1 || st == 5 || st == 6)
-		{
-			listStairsUp.push_back(obj);
-		}
-		else
-			listStairsDown.push_back(obj);*/
 		listObjects.push_back(obj);
 		break;
 	}
@@ -180,23 +264,32 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->ani = st;
 		obj->IDitems = id;
-		//obj->SetEnable(true);
-		//unit = new Unit(grid, obj, x, y);
-		//listobjects.push_back(obj);
-		//objects.push_back(obj);
 		listObjects.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_MOVINGPLATFORM:
 	{
-		int st = atof(tokens[3].c_str()); //state
+		int st = atof(tokens[3].c_str());
 		obj = new MovingPlatform();
-		// General object setup
 		obj->SetPosition(x, y);
 		obj->ani = st;
-		//obj->SetEnable(true);
-		//unit = new Unit(grid, obj, x, y);
-		//objects.push_back(obj);
+		listObjects.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_KNIGHT:
+	{
+		int Xstart = atof(tokens[6].c_str());
+		int Xend = atof(tokens[7].c_str());
+		obj = new Knight(Xstart, Xend);
+		int idaniset = atof(tokens[3].c_str());
+		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+		LPANIMATION_SET ani_set = animation_sets->Get(idaniset);
+		obj->SetAnimationSet(ani_set);
+		int st = atof(tokens[4].c_str());
+		obj->SetState(st);
+		int nX = atof(tokens[5].c_str());
+		obj->nx = nX;	
+		obj->SetPosition(x, y);
 		listObjects.push_back(obj);
 		break;
 	}
@@ -204,8 +297,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
-
-	
 }
 
 
@@ -259,16 +350,21 @@ void CPlayScene::Load()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 
-		if (line == "[OBJECTS]") {
-			section = SCENE_SECTION_OBJECTS; continue;
-		}
+		if (line == "[TEXTURES]") { section = SCENE_SECTION_TEXTURES; continue; }
+		if (line == "[SPRITES]") { section = SCENE_SECTION_SPRITES; continue; }
+		if (line == "[ANIMATIONS]") { section = SCENE_SECTION_ANIMATIONS; continue; }
+		if (line == "[ANIMATION_SETS]") { section = SCENE_SECTION_ANIMATION_SETS; continue; }
+		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
-
 		//
 		// data section
 		//
 		switch (section)
 		{
+		case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
+		case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
+		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
+		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
@@ -281,24 +377,11 @@ void CPlayScene::Load()
 void CPlayScene::Update(DWORD dt)
 {
 	GetObjectFromGrid();
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
-	//Simon *simon = ((CPlayScene*)scene)->simon;//
-	/*vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		coObjects.push_back(objects[i]);
-	}*/
-
 	for (size_t i = 0; i < AllObjects.size(); i++)
 	{
 		AllObjects[i]->Update(dt, &AllObjects);
 	}
 	simon->Update(dt, &AllObjects);
-	/*for (size_t i = 0; i < listobjects.size(); i++)
-	{
-		listobjects[i]->Update(dt, &coObjects);
-	}*/
 	float simonx, simony;
 	simon->GetPosition(simonx, simony);
 	bool isSimonStand = true;
@@ -314,7 +397,6 @@ void CPlayScene::Update(DWORD dt)
 			simon->GetWhip()->Update(dt, &AllObjects);
 		}
 	}
-	//simon->GetSubWeapon()->Update(dt, &listobjects);
 	for (int i = 0; i < 3; i++)
 	{
 		simon->GetListSubWeapon()[i]->Update(dt, &AllObjects);
@@ -329,6 +411,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		simon->IsWait = false;
 	}
+
 	for (UINT i = 0; i < AllObjects.size(); i++)
 	{
 		LPGAMEOBJECT obj = AllObjects[i];
@@ -351,7 +434,15 @@ void CPlayScene::Update(DWORD dt)
 				listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
 			}
 		}
+		if (dynamic_cast<Knight*>(obj) && obj->GetState() == KNIGHT_STATE_DIE && obj->isDone == false && obj->isEnable == false)
+		{
+			obj->isEnable = true;
+			simon->AddScore(200);
+			int IdItems = RandomItems();
+			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
+		}
 	}
+
 	simon->SimonColliWithItems(&listItems);
 	for (int i = 0; i < listItems.size(); i++)
 	{
@@ -379,16 +470,16 @@ void CPlayScene::Render()
 {	
 	tilemaps->Get((idMap*10000))->Draw();//
 	int nx = 0;
-	for (int i = 0; i < listItems.size(); i++)
-		listItems[i]->Render();
-	for (int i = 0; i < AllObjects.size(); i++)
-		AllObjects[i]->Render();
+
 	for (int i = 0; i < listStairsUp.size(); i++)
 		listStairsUp[i]->Render();
 	for (int i = 0; i < listStairsDown.size(); i++)
 		listStairsDown[i]->Render();
-	/*for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();*/
+	for (int i = 0; i < listItems.size(); i++)
+		listItems[i]->Render();
+	for (int i = 0; i < AllObjects.size(); i++)
+		AllObjects[i]->Render();
+	
 
 	simon->Render();
 	if (simon->IsAtk() == true)///////////////
@@ -683,6 +774,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		simon->isAtk = false;
 		simon->isAtkWithSW = false;
 		simon->isAtkWithWhip = false;
+		simon->GetWhip()->SetDame1Turn(false);
 	}
 	
 	CGame *game = CGame::GetInstance();
@@ -790,6 +882,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 		{
 			simon->SetState(SIMON_JUMP);
 		}
+		simon->GetWhip()->SetDame1Turn(false);
 	}
 
 	if (simon->isAtk == true || simon->isJumping == true)

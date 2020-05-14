@@ -3,6 +3,7 @@
 #include "Ground.h"
 #include "Simon.h"
 #include "BreakBrick.h"
+#include "Knight.h"
 
 SubWeapon::SubWeapon(LPGAMEOBJECT simon) : CGameObject()
 {
@@ -32,6 +33,8 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			isDone = true;
 			isEnable = false;
+			this->DameBoomerang1 = false;
+			this->DameBoomerang2 = false;
 			return;
 		}
 
@@ -84,7 +87,13 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (dynamic_cast<Candle*>(e->obj))
 				{
 					Candle * candle = dynamic_cast<Candle*> (e->obj);
-					candle->SetState(CANDLE_DESTROYED);
+					candle->AddHP(-2);
+					if (candle->GetHP() <= 0)
+					{
+						candle->SetHP(0);
+						candle->SetState(CANDLE_DESTROYED);
+					}
+					
 					if (state != WEAPONS_BOOMERANG)
 					{
 						this->isDone = true;
@@ -93,8 +102,51 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				else if (dynamic_cast<BreakBrick*>(e->obj))
 				{
-					BreakBrick * BB = dynamic_cast<BreakBrick*> (e->obj);	
-					BB->isDone = true;
+					BreakBrick * BB = dynamic_cast<BreakBrick*> (e->obj);
+					BB->AddHP(-2);
+					if (BB->GetHP() <= 0)
+					{
+						BB->SetHP(0);
+						BB->isDone = true;
+					}
+					if (state != WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
+				}
+				else if (dynamic_cast<Knight*>(e->obj))
+				{
+					Knight* knight = dynamic_cast<Knight*> (e->obj);
+
+					if (knight->GetHP() <= 0)
+					{
+						knight->SetHP(0);
+						knight->SetState(KNIGHT_STATE_DIE);
+					}
+
+					if (state == WEAPONS_BOOMERANG)
+					{
+						x += dx;
+						y += dy;
+						if (DameBoomerang1 == false)
+						{
+							knight->AddHP(-2);
+							DameBoomerang1 = true;
+							return;
+						}
+						if (DameBoomerang2 == false)
+						{
+							knight->AddHP(-2);
+							DameBoomerang2 = true;
+							return;
+						}
+					}
+					else
+					{
+						knight->AddHP(-2);
+					}
+						
 					if (state != WEAPONS_BOOMERANG)
 					{
 						this->isDone = true;
@@ -119,6 +171,8 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						this->isDone = true;
 						this->isEnable = false;
+						this->DameBoomerang1 = false;
+						this->DameBoomerang2 = false;
 					}
 				}
 				//if (this->isDone == true) return;

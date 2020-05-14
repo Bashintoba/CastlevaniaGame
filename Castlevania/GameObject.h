@@ -56,6 +56,8 @@ public:
 
 	int IdNextMap;
 
+	int HP;
+
 	bool isEnable = false;
 	bool isDone = false;
 	DWORD dt;
@@ -75,7 +77,9 @@ public:
 	int GetState() { return this->state; }
 	int GetIDitems() { return this->IDitems; }
 	int GetIdNextMap() { return this->IdNextMap; }
-	//void SetEnable(bool enable) { this->IsEnable = enable; }
+	void AddHP(int hp) { HP += hp; }
+	int GetHP() { return this->HP; }
+	void SetHP(int hp) { HP = hp; }
 
 	void RenderBoundingBox();
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }//

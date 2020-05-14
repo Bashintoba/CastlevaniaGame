@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "Knight.h"
 #include "Grid.h"
 #include "Game.h"
 #include "Textures.h"
@@ -44,9 +45,14 @@ protected:
 	vector<LPGAMEOBJECT> listStairsDown;//ds cau thang
 	vector<vector<string>> FileInfMap;
 
+	void _ParseSection_TEXTURES(string line);
+	void _ParseSection_SPRITES(string line);
+	void _ParseSection_ANIMATIONS(string line);
+	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
 public:
 	CPlayScene(int map, vector<vector<string>> FileInFMap);
+	int RandomItems();
 	Items* DropItems(int iditems ,float x, float y);
 	void LoadPlayer();
 	void SwitchMap(int map, vector<vector<string>> FileInFMap);
