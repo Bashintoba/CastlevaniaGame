@@ -4,6 +4,7 @@
 #include "Simon.h"
 #include "BreakBrick.h"
 #include "Knight.h"
+#include "Darkenbat.h"
 
 SubWeapon::SubWeapon(LPGAMEOBJECT simon) : CGameObject()
 {
@@ -119,12 +120,6 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					Knight* knight = dynamic_cast<Knight*> (e->obj);
 
-					if (knight->GetHP() <= 0)
-					{
-						knight->SetHP(0);
-						knight->SetState(KNIGHT_STATE_DIE);
-					}
-
 					if (state == WEAPONS_BOOMERANG)
 					{
 						x += dx;
@@ -133,12 +128,22 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						{
 							knight->AddHP(-2);
 							DameBoomerang1 = true;
+							if (knight->GetHP() <= 0)
+							{
+								knight->SetHP(0);
+								knight->SetState(KNIGHT_STATE_DIE);
+							}
 							return;
 						}
 						if (DameBoomerang2 == false)
 						{
 							knight->AddHP(-2);
 							DameBoomerang2 = true;
+							if (knight->GetHP() <= 0)
+							{
+								knight->SetHP(0);
+								knight->SetState(KNIGHT_STATE_DIE);
+							}
 							return;
 						}
 					}
@@ -147,6 +152,28 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						knight->AddHP(-2);
 					}
 						
+					if (knight->GetHP() <= 0)
+					{
+						knight->SetHP(0);
+						knight->SetState(KNIGHT_STATE_DIE);
+					}
+
+					if (state != WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
+				}
+				else if (dynamic_cast<Darkenbat*>(e->obj))
+				{
+					Darkenbat* db = dynamic_cast<Darkenbat*> (e->obj);
+					db->AddHP(-2);
+					if (db->GetHP() <= 0)
+					{
+						db->SetHP(0);
+						db->SetState(DARKBAT_STATE_DIE);
+					}
+
 					if (state != WEAPONS_BOOMERANG)
 					{
 						this->isDone = true;

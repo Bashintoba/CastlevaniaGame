@@ -293,6 +293,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listObjects.push_back(obj);
 		break;
 	}
+	case OBJECT_TYPE_DARKENBAT:
+	{
+		int st = atof(tokens[4].c_str());
+		obj = new Darkenbat(simon);
+		int idaniset = atof(tokens[3].c_str());
+		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+		LPANIMATION_SET ani_set = animation_sets->Get(idaniset);
+		obj->SetAnimationSet(ani_set);
+		obj->SetPosition(x, y);
+		obj->SetState(st);
+		listObjects.push_back(obj);
+		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -438,6 +451,13 @@ void CPlayScene::Update(DWORD dt)
 		{
 			obj->isEnable = true;
 			simon->AddScore(200);
+			int IdItems = RandomItems();
+			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
+		}
+		if (dynamic_cast<Darkenbat*>(obj) && obj->GetState() == DARKBAT_STATE_DIE && obj->isDone == false && obj->isEnable == false)
+		{
+			obj->isEnable = true;
+			simon->AddScore(100);
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
 		}

@@ -22,6 +22,7 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BreakBrick.cpp" />
     <ClCompile Include="Candle.cpp" />
+    <ClCompile Include="Darkenbat.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="BreakBrick.h" />
     <ClInclude Include="Candle.h" />
+    <ClInclude Include="Darkenbat.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Game.h" />

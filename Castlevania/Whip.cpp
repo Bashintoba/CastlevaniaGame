@@ -2,6 +2,7 @@
 #include "Candle.h"
 #include "BreakBrick.h"
 #include "Knight.h"
+#include "Darkenbat.h"
 
 Whip::Whip() : CGameObject()
 {
@@ -51,8 +52,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					e->SetHP(0);
 					e->isDone = true;
-					sparkX.push_back(left);
-					sparkY.push_back(top);
+					sparkX.push_back(right);
+					sparkY.push_back(bottom);
 				}
 			}
 		}
@@ -76,6 +77,26 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					e->SetHP(0);
 					e->SetState(KNIGHT_STATE_DIE);
+				}
+				sparkX.push_back(left);
+				sparkY.push_back(top);
+			}
+		}
+		else if (dynamic_cast<Darkenbat*>(obj))
+		{
+			Darkenbat* e = dynamic_cast<Darkenbat*> (obj);
+
+			float left, top, right, bottom;
+
+			e->GetBoundingBox(left, top, right, bottom);
+
+			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			{
+				e->AddHP(-2);
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->SetState(DARKBAT_STATE_DIE);
 					sparkX.push_back(left);
 					sparkY.push_back(top);
 				}

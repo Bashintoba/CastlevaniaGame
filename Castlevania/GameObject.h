@@ -80,6 +80,7 @@ public:
 	void AddHP(int hp) { HP += hp; }
 	int GetHP() { return this->HP; }
 	void SetHP(int hp) { HP = hp; }
+	float GetDistance(float x1,float y1,float x2,float y2);
 
 	void RenderBoundingBox();
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }//
@@ -112,6 +113,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
+
 
 
 	~CGameObject();

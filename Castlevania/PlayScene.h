@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Knight.h"
+#include "Darkenbat.h"
 #include "Grid.h"
 #include "Game.h"
 #include "Textures.h"

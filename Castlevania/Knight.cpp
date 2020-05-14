@@ -3,7 +3,7 @@
 #include "BreakBrick.h"
 #include "Candle.h"
 #include "Stair.h"
-
+#include "Darkenbat.h"
 
 Knight::Knight(float Xstart, float Xend)
 {
@@ -37,7 +37,7 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
 
 	for (UINT i = 0; i < coObject->size(); i++)
 	{
-		if (coObject->at(i) != dynamic_cast<Candle*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Stair*>(coObject->at(i)))
+		if (coObject->at(i) != dynamic_cast<Candle*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Stair*>(coObject->at(i))&& coObject->at(i) != dynamic_cast<Darkenbat*>(coObject->at(i)))
 		{
 			ListsColl.push_back(coObject->at(i));
 		}

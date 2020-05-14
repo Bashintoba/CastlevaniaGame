@@ -1,17 +1,26 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 140	Textures\Knight.png	116	116	116
+150	Textures\DarkenBat.png	255	0	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #knight
 4000	0	0	40	80	140
 4001	40	0	80	80	140
 4002	80	0	120	82	140
+# Darkenbat
+4003	0	0	32	32	150
+4004	32	0	64	32	150
+4005	64	0	96	32	150
+4006	96	0	128	32	150
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 4000	4000	150	4001	150	4002	150
+4001	4003	100
+4002	4004	120	4005	120	4006	120
 [ANIMATION_SETS]
 20	4000	70
+21	4001	4002	70
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle , 3 = Gate
@@ -88,3 +97,4 @@
 5	448	272	1	16
 # mobs
 7	160	159	20	0	1	150	280
+8	128	120	21	0
