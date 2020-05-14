@@ -17,7 +17,6 @@ Simon::Simon()
 	LPANIMATION_SET ani_set = animation_sets->Get(SIMON_ANIMATION_SET);
 	SetAnimationSet(ani_set);
 	whip = new Whip();
-	//subweapon = new SubWeapon(this);
 	for (int i = 0; i <3; i++)
 	{
 		subweapon = new SubWeapon(this);
@@ -40,7 +39,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 	// Simple fall down
-	if (isOnStair == false && isAutoWalk == false /*&& isOnMF == false*/)//
+	if (isOnStair == false && isAutoWalk == false)
 	{
 		vy += SIMON_GRAVITY * dt;
 	}
@@ -110,6 +109,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (e->ny == -1)
 					{
 						vy = 0;
+						isOnMF = false;
 						if (isJumping == true)
 						{
 							isJumping = false;
@@ -135,19 +135,21 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<MovingPlatform *>(e->obj))
 			{
-				if (e->ny < 0)
+				if (e->ny != 0)
 				{
-					if (isJumping == true)
+					if (e->ny == -1)
 					{
-						isJumping = false;
+						vy = 0;
+						if (isJumping == true)
+						{
+							isJumping = false;
+						}
+						isOnMF = true;
+						vx = e->obj->Getvx();
 					}
-					isOnMF = true;
-					vx = e->obj->Getvx();
+					else
+						y += dy;
 				}
-			}
-			else
-			{
-				isOnMF = false;
 			}
 		}
 	}
@@ -177,10 +179,10 @@ void Simon::SetState(int state)
 		break;
 	case SIMON_JUMP:
 		isOnStair = false;
-		if (isOnMF == true)
+		/*if (isOnMF == true)
 		{
 			vx = 0;
-		}
+		}*/
 		if (isJumping == false)
 		{
 			isJumping = true;
