@@ -2,7 +2,7 @@
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle , 3 = Gate
 # Simon
-0	1470	336	-1	0	128	50	1	7
+0	1470	336	-1	0	128	50	1	6
 # Brick
 1	1504	272	2	2
 1	1504	400	2	2

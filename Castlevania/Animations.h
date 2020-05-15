@@ -34,6 +34,7 @@ public:
 	void Add(int spriteId, DWORD time = 0);
 	void Render(int nx, float x, float y, int alpha = 255);
 	void RenderByID(int currentID, int nx, float x, float y, int alpha = 255);
+	void SetFrame(int x) { currentFrame = x; }
 	int GetCurrentFrame() { return currentFrame; }
 	int GetFramesSize() { return frames.size(); }
 };

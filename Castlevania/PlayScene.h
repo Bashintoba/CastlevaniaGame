@@ -37,6 +37,7 @@ protected:
 	CPlayScene *playscene;
 	int idMap;
 	int Switchmap = 0;
+	bool Simonisdead = false;
 	TileMaps *tilemaps = TileMaps::GetInstance();
 	vector<LPGAMEOBJECT> ListObjects;//dung de lay khoi grid
 	vector<LPGAMEOBJECT> AllObjects;
@@ -45,6 +46,8 @@ protected:
 	vector<LPGAMEOBJECT> listStairsUp;//ds cau thang
 	vector<LPGAMEOBJECT> listStairsDown;//ds cau thang
 	vector<vector<string>> FileInfMap;
+
+	Timer* simonDeadTimer = new Timer(3000);
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);

@@ -42,6 +42,12 @@ void HUD::Update(DWORD dt)
 	doubletri = simon->GetSimonDoubleTri();
 	Time += dt;
 	RemainingTime = DEFAULT_TIME_PLAY - Time / CLOCKS_PER_SEC;
+
+	if (RemainingTime <= 0)
+	{
+		RemainingTime = 0;
+		isTimeover = true;
+	}
 }
 
 void HUD::Render(int map, int CamX, int CamY)

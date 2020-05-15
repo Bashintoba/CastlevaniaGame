@@ -10,6 +10,8 @@
 #include "Stair.h"
 #include "BreakBrick.h"
 #include "MovingPlatform.h"
+#include "Knight.h"
+#include "Darkenbat.h"
 
 Simon::Simon()
 {
@@ -48,6 +50,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (isAutoWalk == true)//
 		SimonAutoWalk();
 
+	// Reset untouchable timer if untouchable time has passed
+	if (untouchableTimer->IsTimeUp() == true)
+		untouchableTimer->Stop();
+
+	// Reset invisibility timer if invisibility time has passed
+	if (invisibilityTimer->IsTimeUp() == true)
+		invisibilityTimer->Stop();
+
 	if (coObjects == NULL)
 	{
 		if (isAutoWalk == false)
@@ -72,7 +82,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 	// turn off collision when die 
-	//if (state != MARIO_STATE_DIE)
+	//if (state != SIMON_DEAD)
 	CalcPotentialCollisions(&ListsColl, coEvents);
 
 
@@ -107,17 +117,18 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (e->ny != 0)
 				{
-					if (e->ny == -1)
+					if (e->ny == -1 && (state != SIMON_DEFLECT || (state == SIMON_DEFLECT && vy > 0)))
 					{
 						vy = 0;
 						isOnMF = false;
 						if (isJumping == true)
 						{
 							isJumping = false;
-						}
+						}			
 					}
 					else
-						y += dy;
+						y += dy;	
+			
 				}
 
 				// Khi đang lên/xuống cầu thang, va chạm theo trục x sẽ không được xét tới
@@ -126,15 +137,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (nx != 0) x -= nx * 0.1f;
 				}
 			}
-
-			if (dynamic_cast<Gate *>(e->obj)) 
+			else if (dynamic_cast<Gate *>(e->obj)) 
 			{
 				Gate *gate = dynamic_cast<Gate *>(e->obj);
 				IdNextMap = gate->GetIdNextMap();
 				isChangeScene = true;
 			}
-
-			if (dynamic_cast<MovingPlatform *>(e->obj))
+			else if (dynamic_cast<MovingPlatform *>(e->obj))
 			{
 				if (e->ny != 0)
 				{
@@ -152,15 +161,83 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						y += dy;
 				}
 			}
+			else if (dynamic_cast<Knight*>(e->obj)|| dynamic_cast<Darkenbat*>(e->obj))
+			{
+				if (state != SIMON_DEAD &&state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
+				{
+					untouchableTimer->Start();
+					if (dynamic_cast<Knight*>(e->obj))
+					{
+						//Knight* knight = dynamic_cast<Knight*>(e->obj);
+						this->AddHP(-2);
+					}
+					else if (dynamic_cast<Darkenbat*>(e->obj))
+					{
+						Darkenbat* dk = dynamic_cast<Darkenbat*>(e->obj);
+						dk->SetState(DARKBAT_STATE_DIE);
+						this->AddHP(-2);
+					}
+
+					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+					{
+						// đặt trạng thái deflect cho simon
+						if (e->nx != 0)
+						{
+							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
+							else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
+						}
+
+						SetState(SIMON_DEFLECT);
+					}
+
+				}
+				else
+				{
+					if (e->nx != 0) x += dx;
+					if (e->ny != 0) y += dy;
+				}
+			}
+
 		}
 	}
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
+	if (this->HP <= 0)
+	{
+		this->HP = 0;
+		SetState(SIMON_DEAD);
+		return;
+	}
 }
 void Simon::Render()
 {	
-	animation_set->at(state)->Render(nx,x, y);
+	int alpha = 255;
+	int tempState = state;
+	if (untouchableTimer->IsTimeUp() == false)  // Để render Simon nhấp nháy trong trạng thái isUntouchable
+		alpha = rand() % 255;
+	else if (invisibilityTimer->IsTimeUp() == false) // invisible
+	{
+		switch (tempState)
+		{
+		case SIMON_IDLE:	tempState = SIMON_INV_IDLE; break;
+		case SIMON_WALKING:	tempState = SIMON_INV_WALKING; break;
+		case SIMON_JUMP:	tempState = SIMON_INV_JUMP; break;
+		case SIMON_SITDOWN:	tempState = SIMON_INV_SITDOWN; break;
+		case SIMON_ATK:	tempState = SIMON_INV_ATK; break;
+		case SIMON_SIT_ATK:	tempState = SIMON_INV_SIT_ATK; break;
+		case SIMON_STAIRDOWN:tempState = SIMON_INV_STAIRDOWN; break;
+		case SIMON_STAIRUP:	tempState = SIMON_INV_STAIRUP; break;
+		case SIMON_STAIRDOWN_ATK: tempState = SIMON_INV_STAIRDOWN_ATK; break;
+		case SIMON_STAIRUP_ATK:	tempState = SIMON_INV_STAIRUP_ATK; break;
+		default:
+			break;
+		}
+	}
+	
+	animation_set->at(tempState)->Render(nx,x, y,alpha);
+	animation_set->at(state)->SetFrame(animation_set->at(tempState)->GetCurrentFrame());
 	RenderBoundingBox();
 }
 
@@ -259,12 +336,26 @@ void Simon::SetState(int state)
 		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
+	case SIMON_DEFLECT:
+		vy = -SIMON_DEFLECT_SPEED_Y;
+		if (nx > 0) vx = -SIMON_DEFLECT_SPEED_X;
+		else vx = SIMON_DEFLECT_SPEED_X;
+		animation_set->at(state)->Reset();
+		animation_set->at(state)->SetAniStartTime(GetTickCount());
+		break;
+	case SIMON_DEAD:
+		untouchableTimer->Stop();
+		invisibilityTimer->Stop();
+		vx = 0;
+		vy = 0;
+		//SimonLife -= 1;
+		break;
 	}
 }
 
 bool Simon::IsAtk()
 {
-	return state == SIMON_SIT_ATK || state == SIMON_ATK || state == SIMON_STAIRDOWN_ATK || state == SIMON_STAIRUP_ATK;
+	return state == SIMON_SIT_ATK || state == SIMON_ATK || state == SIMON_STAIRDOWN_ATK || state == SIMON_STAIRUP_ATK ;
 }
 
 void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
@@ -327,6 +418,7 @@ void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
 				case CROSS:
 					break;
 				case INVISIBILITY_POTION:
+					invisibilityTimer->Start();
 					break;
 				case DOUBLE_SHOT:
 					if (SimonDoubleTri == 1)

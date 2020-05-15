@@ -6,8 +6,6 @@ Darkenbat::Darkenbat(LPGAMEOBJECT target)
 	isEnable = false;
 	directionY = 1;
 	this->target = target;
-	this->tempY = y;
-	this->tempX = x;
 }
 
 Darkenbat::~Darkenbat()

@@ -79,7 +79,7 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
 		}
 	}
 	CGame::GetInstance()->SetKeyHandler(this->GetKeyEventHandler());
-	if (simon->IdCurrMap < simon->IdNextMap)
+	if (simon->IdCurrMap <= simon->IdNextMap)
 	{
 		CGame::GetInstance()->SetCamPos(camx,/*cy*/ camy);
 	}
@@ -204,7 +204,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float x1 = atof(tokens[5].c_str());
 		float y1 = atof(tokens[6].c_str());
 
-		if (simon->IdCurrMap < simon->IdNextMap)
+		if (simon->IdCurrMap <= simon->IdNextMap)
 		{
 			simon->nx = nx;
 			simon->SetPosition(x, y);
@@ -395,6 +395,7 @@ void CPlayScene::Update(DWORD dt)
 		AllObjects[i]->Update(dt, &AllObjects);
 	}
 	simon->Update(dt, &AllObjects);
+	
 	float simonx, simony;
 	simon->GetPosition(simonx, simony);
 	bool isSimonStand = true;
@@ -403,7 +404,7 @@ void CPlayScene::Update(DWORD dt)
 		isSimonStand = false;
 
 	simon->GetWhip()->SetWhipPosition(simon->nx,simonx, simony, isSimonStand);
-	if (((simon->animation_set->at(SIMON_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_ATK) || ((simon->animation_set->at(SIMON_SIT_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_SIT_ATK) || ((simon->animation_set->at(SIMON_STAIRUP_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_STAIRUP_ATK) || ((simon->animation_set->at(SIMON_STAIRDOWN_ATK)->GetCurrentFrame() == 2) && simon->state == SIMON_STAIRDOWN_ATK))
+	if (((simon->animation_set->at(SIMON_ATK)->GetCurrentFrame() == 2) && simon->GetState() == SIMON_ATK) || ((simon->animation_set->at(SIMON_SIT_ATK)->GetCurrentFrame() == 2) && simon->GetState() == SIMON_SIT_ATK) || ((simon->animation_set->at(SIMON_STAIRUP_ATK)->GetCurrentFrame() == 2) && simon->GetState() == SIMON_STAIRUP_ATK) || ((simon->animation_set->at(SIMON_STAIRDOWN_ATK)->GetCurrentFrame() == 2) && simon->GetState() == SIMON_STAIRDOWN_ATK))
 	{		
 		if (simon->isAtkWithWhip == true)
 		{
@@ -484,6 +485,56 @@ void CPlayScene::Update(DWORD dt)
 		CGame::GetInstance()->SetCamPos(simon->x - (SCREEN_WIDTH / 2),/*cy*/ 0.0f);
 	}
 	UpdateGrid();
+
+	if (Simonisdead == true && simonDeadTimer->IsTimeUp() == true)
+	{
+		simonDeadTimer->Stop();
+		if (simon->GetSimonLife() > 0)
+		{
+			int life = simon->GetSimonLife();
+			life -= 1;
+			Simonisdead = false;
+			simon->SetSimonLife(life);
+			simon->SetHP(16);
+			simon->GetWhip()->SetState(NORMAL_WHIP);
+			simon->SetMana(15);
+			SwitchMap(simon->IdCurrMap, FileInfMap);
+			hud->SetisTimeover(false);
+			hud->SetTime(0);
+		}
+		else
+		{
+			Simonisdead = false;
+			simon->SetSimonLife(3);
+			simon->SetHP(16);
+			simon->GetWhip()->SetState(NORMAL_WHIP);
+			simon->SetMana(15);
+			simon->Setsubweapon(-1);
+			simon->SetScore(0);
+			simon->SetSimonDoubleTri(-1);
+			SwitchMap(1, FileInfMap);
+			hud->SetisTimeover(false);
+			hud->SetTime(0);
+		}
+	}
+
+	if (hud->GetisTimeover() == true)
+	{
+		simon->SetState(SIMON_DEAD);
+		//return;
+	}
+
+	if (simon->GetState() == SIMON_DEAD)
+	{
+		if (Simonisdead == false)
+		{
+			Simonisdead = true;
+			simonDeadTimer->Start();
+		}
+		return;
+	}
+
+	
 }
 
 void CPlayScene::Render()
@@ -506,7 +557,20 @@ void CPlayScene::Render()
 	{
 		if (simon->isAtkWithWhip == true)
 		{
-			simon->GetWhip()->Render(simon->nx, simon->animation_set->at(simon->GetState())->GetCurrentFrame());
+			int tempState = simon->GetState();
+			if (simon->invisibilityTimer->IsTimeUp() == false)
+			{
+				switch (tempState)
+				{
+				case SIMON_ATK:	tempState = SIMON_INV_ATK; break;
+				case SIMON_SIT_ATK:	tempState = SIMON_INV_SIT_ATK; break;
+				case SIMON_STAIRDOWN_ATK: tempState = SIMON_INV_STAIRDOWN_ATK; break;
+				case SIMON_STAIRUP_ATK:	tempState = SIMON_INV_STAIRUP_ATK; break;
+				default:
+					break;
+				}
+			}
+			simon->GetWhip()->Render(simon->nx, simon->animation_set->at(tempState)->GetCurrentFrame());
 		}
 	}
 	else
@@ -743,6 +807,8 @@ bool CPlaySceneKeyHandler::Simon_StandOnStair()
 		simon->StandOnStair();
 		simon->animation_set->at(SIMON_STAIRUP)->Reset();
 		simon->animation_set->at(SIMON_STAIRDOWN)->Reset();
+		simon->animation_set->at(SIMON_INV_STAIRUP)->Reset();
+		simon->animation_set->at(SIMON_INV_STAIRDOWN)->Reset();
 		return true;
 	}
 
@@ -783,7 +849,11 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		return;
 	if (simon->GetState() == SIMON_STAIRUP_ATK && simon->animation_set->at(SIMON_STAIRUP_ATK)->IsOver(TIME_DELAY) == false)
 		return;
+	if (simon->GetState() == SIMON_DEFLECT && simon->animation_set->at(SIMON_DEFLECT)->IsOver(TIME_DELAY * 2) == false)
+		return;
 	if (simon->isAutoWalk == true)
+		return;
+	if (simon->GetState() == SIMON_DEAD)
 		return;
 	else
 	{
@@ -856,6 +926,9 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_5:
 		simon->Subweapon = 4;
 		break;
+	case DIK_7:
+		simon->invisibilityTimer->Start();
+		break;
 	case DIK_8:
 		simon->SimonDoubleTri = 0;
 		break;
@@ -891,7 +964,11 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 		return;
 	if (simon->GetState() == SIMON_STAIRUP_ATK && simon->animation_set->at(SIMON_STAIRUP_ATK)->IsOver(TIME_DELAY) == false)
 		return;
+	if (simon->GetState() == SIMON_DEFLECT && simon->animation_set->at(SIMON_DEFLECT)->IsOver(TIME_DELAY*2) == false)
+		return;
 	if (simon->isAutoWalk == true)
+		return;
+	if (simon->GetState() == SIMON_DEAD)
 		return;
 	else
 	{

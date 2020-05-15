@@ -71,6 +71,7 @@
     <ClInclude Include="SubWeapon.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="TileMap.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Whip.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -61,6 +61,10 @@
 #define SIMON_BBOX_WIDTH		32
 #define SIMON_BBOX_HEIGHT		62
 
+#define SIMON_DEFLECT_SPEED_X		0.1f
+#define SIMON_DEFLECT_SPEED_Y		0.2f
+
+
 #define TIME_HENSHIN 450
 #define TIME_DELAY 300
 
@@ -70,11 +74,24 @@
 #define SIMON_SITDOWN			3
 #define SIMON_ATK				4
 #define SIMON_SIT_ATK			5
-#define SIMON_HENSHIN			6
-#define SIMON_STAIRDOWN			7
-#define SIMON_STAIRUP			8
-#define SIMON_STAIRDOWN_ATK		9
-#define SIMON_STAIRUP_ATK		10
+#define SIMON_STAIRDOWN			6
+#define SIMON_STAIRUP			7
+#define SIMON_STAIRDOWN_ATK		8
+#define SIMON_STAIRUP_ATK		9
+#define SIMON_INV_IDLE				10
+#define SIMON_INV_WALKING			11
+#define SIMON_INV_JUMP			    12
+#define SIMON_INV_SITDOWN			13
+#define SIMON_INV_ATK				14
+#define SIMON_INV_SIT_ATK			15
+#define SIMON_INV_STAIRDOWN			16
+#define SIMON_INV_STAIRUP			17
+#define SIMON_INV_STAIRDOWN_ATK		18
+#define SIMON_INV_STAIRUP_ATK		19
+#define SIMON_HENSHIN		20
+#define SIMON_DEFLECT		21
+#define SIMON_DEAD			22
+#define SIMON_BACK			23
 //define whip
 #define TIME_FRAME 100
 #define NORMAL_WHIP	0
@@ -155,5 +172,15 @@
 
 #define KNIGHT_STATE_WALKING			0
 #define KNIGHT_STATE_DIE				1
+//define Darken bat
+#define DARKBAT_FLYING_SPEED_X			0.2f
+#define DARKBAT_FLYING_SPEED_Y			0.25f
+
+#define DARKBAT_BBOX_WIDTH				32
+#define DARKBAT_BBOX_HEIGHT				32
+
+#define DARKBAT_STATE_INACTIVE			0
+#define DARKBAT_STATE_FLYING			1
+#define DARKBAT_STATE_DIE				2
 
 #endif

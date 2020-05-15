@@ -28,11 +28,16 @@ class HUD
 	int doubletri;
 	int simonHP;
 	int bossHP = 16;
-	int RemainingTime;
+	bool isTimeover = false;
 public:
 	HUD(Simon * simon);
 	~HUD();
+	int RemainingTime;
 	void Update(DWORD dt);
 	void Render(int map,int CamX, int CamY = 0);
+	bool GetisTimeover() { return isTimeover; }
+	void SetisTimeover(bool timeover) { isTimeover = timeover; }
+	void SetRemainTime(int time) { RemainingTime = time; }
+	void SetTime(int time) { Time = time; }
 };
 
