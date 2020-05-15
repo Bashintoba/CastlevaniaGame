@@ -17,7 +17,7 @@ SubWeapon::SubWeapon(LPGAMEOBJECT simon) : CGameObject()
 	this->simon = simon;
 }
 
-void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 {
 	if (isDone == false)
 	{

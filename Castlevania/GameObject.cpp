@@ -17,7 +17,7 @@ CGameObject::CGameObject()
 	isEnable = true;
 }
 
-void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
+void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 {
 	this->dt = dt;
 	dx = vx * dt;

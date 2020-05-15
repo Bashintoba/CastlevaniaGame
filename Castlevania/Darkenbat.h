@@ -10,7 +10,7 @@ class Darkenbat : public CGameObject
 public:
 	Darkenbat(LPGAMEOBJECT target);
 	~Darkenbat();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL, bool stopMovement = false);
 	virtual void Render();
 	void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

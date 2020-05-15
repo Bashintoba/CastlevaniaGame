@@ -17,7 +17,7 @@ private:
 public:
 	Simon();
 	~Simon();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL, bool stopMovement = false);
 	virtual void Render();
 	void SetState(int state);	
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
@@ -30,6 +30,7 @@ public:
 	bool IsAtk();
 	bool IsWait = false;
 	bool isGotChainItem = false;
+	bool isGotCross = false;
 	bool isAtkWithWhip = false;
 	bool isAtkWithSW = false;
 	bool isChangeScene = false;

@@ -12,7 +12,7 @@ Whip::Whip() : CGameObject()
 	SetState(NORMAL_WHIP);
 }
 
-void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 {
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{

@@ -9,7 +9,7 @@ Candle::Candle() : CGameObject()
 	isEnable = false;
 }
 
-void Candle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+void Candle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
 	if (isDone == false)
 	{

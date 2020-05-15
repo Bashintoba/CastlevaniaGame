@@ -12,7 +12,7 @@ class Whip : public CGameObject
 	bool Dame1turn = false;
 public:
 	Whip();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL, bool stopMovement = false);
 	virtual void Render() {}
 	void RenderSpark();
 	void Render(int nx,int currentID = -1);

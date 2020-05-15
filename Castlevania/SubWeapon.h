@@ -13,7 +13,7 @@ class SubWeapon :public CGameObject
 	bool DameBoomerang2 = false;
 public:
 	SubWeapon(LPGAMEOBJECT simon);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL, bool stopMovement = false);
 	virtual void Render() {}
 	void Render(int currentID = -1);
 	void SetWeaponPosition(float simonX,float simonY, bool isStand);

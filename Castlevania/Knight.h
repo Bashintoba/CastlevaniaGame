@@ -9,7 +9,7 @@ class Knight : public CGameObject
 public:
 	Knight(float Xstart,float Xend);
 	~Knight();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObject = NULL, bool stopMovement = false);
 	virtual void Render();
 	void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

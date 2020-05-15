@@ -17,7 +17,7 @@ void Items::Render()
 	}
 }
 
-void Items::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+void Items::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
 	if (timeAppear == -1)
 		timeAppear = GetTickCount();

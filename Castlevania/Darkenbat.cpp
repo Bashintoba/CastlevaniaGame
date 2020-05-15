@@ -12,8 +12,11 @@ Darkenbat::~Darkenbat()
 {
 }
 
-void Darkenbat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+void Darkenbat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
+	if (stopMovement == true)
+		return;
+
 	if (state != DARKBAT_STATE_DIE)
 	{
 		CGameObject::Update(dt);

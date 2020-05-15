@@ -9,7 +9,7 @@ BreakBrick::BreakBrick()
 	isEnable = false;
 }
 
-void BreakBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+void BreakBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
 
 }

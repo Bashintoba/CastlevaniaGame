@@ -37,7 +37,7 @@ Simon::~Simon()
 {
 }
 
-void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
+void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -416,6 +416,7 @@ void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
 					Subweapon = 3;
 					break;
 				case CROSS:
+					isGotCross = true;
 					break;
 				case INVISIBILITY_POTION:
 					invisibilityTimer->Start();

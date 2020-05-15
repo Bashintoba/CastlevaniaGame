@@ -18,8 +18,11 @@ Knight::~Knight()
 {
 }
 
-void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject)
+void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
+	if (stopMovement == true)
+		return;
+
 	CGameObject::Update(dt);
 	vy += SIMON_GRAVITY * dt;
 

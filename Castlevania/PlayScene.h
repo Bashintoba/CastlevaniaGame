@@ -47,7 +47,9 @@ protected:
 	vector<LPGAMEOBJECT> listStairsDown;//ds cau thang
 	vector<vector<string>> FileInfMap;
 
+	Timer* stopWatchTimer = new Timer(2000);
 	Timer* simonDeadTimer = new Timer(3000);
+	Timer* crossTimer = new Timer(500);
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
@@ -65,6 +67,8 @@ public:
 	vector<LPGAMEOBJECT> GetListStairDown() { return listStairsDown; }
 	void GetObjectFromGrid();//
 	void UpdateGrid();
+	bool IsInCam(LPGAMEOBJECT object);
+	void Cross();
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

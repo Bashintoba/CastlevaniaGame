@@ -346,6 +346,44 @@ void CPlayScene::UpdateGrid()
 	grid->ResetGrid(listObjects);
 }
 
+bool CPlayScene::IsInCam(LPGAMEOBJECT object)
+{
+	CGame* game = CGame::GetInstance();
+	float x, y;
+	object->GetPosition(x, y);
+
+	return x >= game->GetCamPosX() && x < (game->GetCamPosX() + SCREEN_WIDTH )&& (y >= game->GetCamPosY() && y < (game->GetCamPosY() + SCREEN_HEIGHT));
+}
+
+void CPlayScene::Cross()
+{
+	if (simon->isGotCross== true)
+	{
+		simon->isGotCross = false;
+		crossTimer->Start();
+
+		for (UINT i = 0; i < listObjects.size(); i++)
+		{
+			// Cross chỉ tác dụng với các object hiện trên màn hình
+			if (IsInCam(listObjects[i]) == false)
+				continue;
+
+			if (dynamic_cast<Knight*>(listObjects[i]) && listObjects[i]->GetHP()>0)
+			{
+				auto knight = dynamic_cast<Knight*>(listObjects[i]);
+				knight->SetHP(0);
+				knight->SetState(KNIGHT_STATE_DIE);
+			}
+			else if (dynamic_cast<Darkenbat*>(listObjects[i]) && listObjects[i]->GetHP() > 0)
+			{
+				auto db = dynamic_cast<Darkenbat*>(listObjects[i]);
+				db->SetHP(0);
+				db->SetState(DARKBAT_STATE_DIE);
+			}
+		}
+	}
+}
+
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
@@ -390,9 +428,18 @@ void CPlayScene::Load()
 void CPlayScene::Update(DWORD dt)
 {
 	GetObjectFromGrid();
+
+	if (stopWatchTimer->IsTimeUp() == true)
+		stopWatchTimer->Stop();
+
+	if (crossTimer->IsTimeUp() == true)
+		crossTimer->Stop();
+
+	Cross();
+
 	for (size_t i = 0; i < AllObjects.size(); i++)
 	{
-		AllObjects[i]->Update(dt, &AllObjects);
+		AllObjects[i]->Update(dt, &AllObjects, stopWatchTimer->IsTimeUp() == false);
 	}
 	simon->Update(dt, &AllObjects);
 	
@@ -630,6 +677,7 @@ void CPlaySceneKeyHandler::Simon_Atk()
 void CPlaySceneKeyHandler::Simon_SubAtk()
 {
 	Simon *simon = ((CPlayScene*)scene)->simon;
+	CPlayScene* playscene = ((CPlayScene*)scene);
 	vector<SubWeapon*> weaponlist = simon->GetListSubWeapon();
 	SubWeapon * subweapon;
 
@@ -639,6 +687,16 @@ void CPlaySceneKeyHandler::Simon_SubAtk()
 
 	if (simon->GetState() == SIMON_SITDOWN || simon->GetState() == SIMON_SIT_ATK)
 		isSimonStand = false;
+
+	if (simon->Getsubweapon() == WEAPONS_STOP_WATCH)
+	{
+		if (simon->GetMana() < 5)
+			return;
+		if (playscene->stopWatchTimer->IsTimeUp() == false) // đang sử dụng stop watch
+			return;
+
+		weaponlist[0]->SetEnable(false);
+	}
 
 	if (weaponlist[0]->IsEnable() == false)
 		subweapon = weaponlist[0];
@@ -652,7 +710,15 @@ void CPlaySceneKeyHandler::Simon_SubAtk()
 	{
 		if (simon->IsAtk() == true) return;
 		if (subweapon->isDone == false) return;
-		if (simon->GetMana() >= 1)
+
+		if (simon->Getsubweapon() == WEAPONS_STOP_WATCH)
+		{
+			int tam = simon->GetMana() - 5;
+			simon->SetMana(tam);
+			subweapon->SetState(simon->Subweapon);
+			playscene->stopWatchTimer->Start();
+		}
+		else
 		{
 			int tam = simon->GetMana() - 1;
 			simon->SetMana(tam);
@@ -925,6 +991,9 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_5:
 		simon->Subweapon = 4;
+		break;
+	case DIK_6:
+		simon->isGotCross = true;
 		break;
 	case DIK_7:
 		simon->invisibilityTimer->Start();
