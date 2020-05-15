@@ -17,6 +17,7 @@ CPlayScene *playscene;//
 int mapstart = 0;
 int numberofmaps = 0;
 vector<vector<string>> InFMap;
+vector<vector<string>> InFClear;
 LPCWSTR ResourcesFilePath = ToLPCWSTR("Scene/Castlevania.txt");
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -150,6 +151,19 @@ void _ParseSection_Map(string line)
 	InFMap.push_back(stringline);
 }
 
+void _ParseSection_ClearMap(string line)
+{
+	vector<string> tokens = split(line);
+	vector<string> stringline;
+	for (int i = 0; i < tokens.size(); i++)
+	{
+		string Line;
+		Line = tokens[i].c_str();
+		stringline.push_back(Line);
+	}
+	InFClear.push_back(stringline);
+}
+
 void LoadResources()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", ResourcesFilePath);
@@ -186,6 +200,9 @@ void LoadResources()
 		if (line == "[MAP]") {
 			section = SCENE_SECTION_MAP; continue;
 		}
+		if (line == "[CLEARMAP]") {
+			section = SCENE_SECTION_CLEARMAP; continue;
+		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -200,6 +217,7 @@ void LoadResources()
 		case SCENE_SECTION_TILEMAP: _ParseSection_TILE_MAP(line); break;
 		case SCENE_SECTION_START:  _ParseSection_Start(line); break;
 		case SCENE_SECTION_MAP: _ParseSection_Map(line); break;
+		case SCENE_SECTION_CLEARMAP: _ParseSection_ClearMap(line); break;
 		}
 	}
 
@@ -334,7 +352,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	game->InitKeyboard();
 	LoadResources();
 
-	playscene = new CPlayScene(mapstart, InFMap);
+	playscene = new CPlayScene(mapstart, InFMap,InFClear);
 
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH , SCREEN_HEIGHT , SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 

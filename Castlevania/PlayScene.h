@@ -46,6 +46,7 @@ protected:
 	vector<LPGAMEOBJECT> listStairsUp;//ds cau thang
 	vector<LPGAMEOBJECT> listStairsDown;//ds cau thang
 	vector<vector<string>> FileInfMap;
+	vector<vector<string>> FileInfClearMap;
 
 	Timer* stopWatchTimer = new Timer(2000);
 	Timer* simonDeadTimer = new Timer(3000);
@@ -55,20 +56,26 @@ protected:
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
+	void _ParseSection_CLEARTEXTURES(string line);
+	void _ParseSection_CLEARSPRITES(string line);
+	void _ParseSection_CLEARANIMATIONS(string line);
+	void _ParseSection_CLEARANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
 public:
-	CPlayScene(int map, vector<vector<string>> FileInFMap);
+	CPlayScene(int map, vector<vector<string>> FileInFMap, vector<vector<string>> FileInFClearMap);
 	int RandomItems();
 	Items* DropItems(int iditems ,float x, float y);
 	void LoadPlayer();
-	void SwitchMap(int map, vector<vector<string>> FileInFMap);
+	void SwitchMap(int map, vector<vector<string>> FileInFMap, vector<vector<string>> FileInFClearMap);
 	vector<vector<string>>  GetFileInFMap() {return FileInfMap;}
+	vector<vector<string>> GetFileClearMap() { return FileInfClearMap; }
 	vector<LPGAMEOBJECT> GetListStairUp() { return listStairsUp; }
 	vector<LPGAMEOBJECT> GetListStairDown() { return listStairsDown; }
 	void GetObjectFromGrid();//
 	void UpdateGrid();
 	bool IsInCam(LPGAMEOBJECT object);
 	void Cross();
+	void Clear(int map, vector<vector<string>> FileInFClearMap);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

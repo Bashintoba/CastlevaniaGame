@@ -8,12 +8,13 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int map,vector<vector<string>> FileInFMap) :CScene()
+CPlayScene::CPlayScene(int map,vector<vector<string>> FileInFMap, vector<vector<string>> FileInFClearMap) :CScene()
 {	
 	key_handler = new CPlaySceneKeyHandler(this);
 	this->FileInfMap = FileInFMap;
+	this->FileInfClearMap = FileInFClearMap;
 	LoadPlayer();
-	SwitchMap(map,FileInfMap);
+	SwitchMap(map,FileInfMap, FileInfClearMap);
 }
 
 int CPlayScene::RandomItems()
@@ -60,9 +61,10 @@ void CPlayScene::LoadPlayer()
 }
 	
 
-void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap)
+void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap ,vector<vector<string>> FileInFClearMap)
 {
 	Unload();
+	Clear(simon->IdCurrMap,FileInFClearMap);
 	int camx, camy, camx1, camy1,widthgrid,heightgrid;
 	for (int i = (map-1); i <= (map - 1); i++)
 	{
@@ -173,6 +175,34 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 	}
 
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
+}
+
+void CPlayScene::_ParseSection_CLEARTEXTURES(string line)
+{
+	vector<string> tokens = split(line);
+	for (int i = 0; i < tokens.size(); i++)
+		CTextures::GetInstance()->Clear(atoi(tokens[i].c_str()));
+}
+
+void CPlayScene::_ParseSection_CLEARSPRITES(string line)
+{
+	vector<string> tokens = split(line);
+	for (int i = 0; i < tokens.size(); i++)
+		CSprites::GetInstance()->Clear(atoi(tokens[i].c_str()));
+}
+
+void CPlayScene::_ParseSection_CLEARANIMATIONS(string line)
+{
+	vector<string> tokens = split(line);
+	for (int i = 0; i < tokens.size(); i++)
+		CAnimations::GetInstance()->Clear(atoi(tokens[i].c_str()));
+}
+
+void CPlayScene::_ParseSection_CLEARANIMATION_SETS(string line)
+{
+	vector<string> tokens = split(line);
+	for (int i = 0; i < tokens.size(); i++)
+		CAnimationSets::GetInstance()->Clear(atoi(tokens[i].c_str()));
 }
 
 /*
@@ -384,6 +414,50 @@ void CPlayScene::Cross()
 	}
 }
 
+void CPlayScene::Clear(int map, vector<vector<string>> FileInFClearMap)
+{
+	
+	for (int i = (map-1); i <= (map-1); i++)
+	{
+		for (int j = 0; j < FileInFClearMap[i].size(); j++)
+		{
+			if (j == 0) { clearFilePath = ToLPCWSTR(FileInFClearMap[i][j]); }
+		}
+	}
+
+	ifstream f;
+	f.open(clearFilePath);
+
+	// current resource section flag
+	int section = SCENE_SECTION_UNKNOWN;
+
+	char str[MAX_SCENE_LINE];
+	while (f.getline(str, MAX_SCENE_LINE))
+	{
+		string line(str);
+
+		if (line[0] == '#') continue;	// skip comment lines	
+
+		if (line == "[CLEARTEXTURES]") { section = SCENE_SECTION_CLEARTEXT; continue; }
+		if (line == "[CLEARSPRITES]") { section = SCENE_SECTION_CLEARSP; continue; }
+		if (line == "[CLEARANIMATIONS]") { section = SCENE_SECTION_CLEARANI; continue; }
+		if (line == "[CLEARANIMATION_SETS]") { section = SCENE_SECTION_CLEARANISET; continue; }
+		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
+		//
+		// data section
+		//
+		switch (section)
+		{
+		case SCENE_SECTION_CLEARTEXT:_ParseSection_CLEARTEXTURES(line); break;
+		case SCENE_SECTION_CLEARSP: _ParseSection_CLEARSPRITES(line); break;
+		case SCENE_SECTION_CLEARANI: _ParseSection_CLEARANIMATIONS(line); break;
+		case SCENE_SECTION_CLEARANISET: _ParseSection_CLEARANIMATION_SETS(line); break;
+		}
+	}
+
+	f.close();
+}
+
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
@@ -519,7 +593,7 @@ void CPlayScene::Update(DWORD dt)
 	if (simon->isChangeScene == true)
 	{
 		simon->isChangeScene = false;		
-		SwitchMap(simon->IdNextMap,FileInfMap);//
+		SwitchMap(simon->IdNextMap,FileInfMap,FileInfClearMap);//
 	}
 	hud->Update(dt);
 	// Update camera to follow simon
@@ -545,7 +619,7 @@ void CPlayScene::Update(DWORD dt)
 			simon->SetHP(16);
 			simon->GetWhip()->SetState(NORMAL_WHIP);
 			simon->SetMana(15);
-			SwitchMap(simon->IdCurrMap, FileInfMap);
+			SwitchMap(simon->IdCurrMap, FileInfMap, FileInfClearMap);
 			hud->SetisTimeover(false);
 			hud->SetTime(0);
 		}
@@ -559,7 +633,7 @@ void CPlayScene::Update(DWORD dt)
 			simon->Setsubweapon(-1);
 			simon->SetScore(0);
 			simon->SetSimonDoubleTri(-1);
-			SwitchMap(1, FileInfMap);
+			SwitchMap(1, FileInfMap, FileInfClearMap);
 			hud->SetisTimeover(false);
 			hud->SetTime(0);
 		}
@@ -953,29 +1027,29 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		Simon_SubAtk();
 		break;
 	case DIK_Q:
-		simon->IdCurrMap = 1;
+		//simon->IdCurrMap = 1;
 		simon->IdNextMap = 2;
-		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap());
+		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(),playscene->GetFileClearMap());
 		break;
 	case DIK_W:
-		simon->IdCurrMap = 2;
+		//simon->IdCurrMap = 2;
 		simon->IdNextMap = 3;
-		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap());
+		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
 	case DIK_E:
-		simon->IdCurrMap = 3;
+		//simon->IdCurrMap = 3;
 		simon->IdNextMap = 4;
-		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap());
+		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
 	case DIK_R:
-		simon->IdCurrMap = 4;
+		//simon->IdCurrMap = 4;
 		simon->IdNextMap = 5;
-		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap());
+		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
 	case DIK_T:
-		simon->IdCurrMap = 5;
+		//simon->IdCurrMap = 5;
 		simon->IdNextMap = 6;
-		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap());
+		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
 	case DIK_1:
 		simon->Subweapon = 0;

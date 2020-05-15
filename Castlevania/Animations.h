@@ -50,7 +50,7 @@ class CAnimations
 public:
 	void Add(int id, LPANIMATION ani);
 	LPANIMATION Get(int id);
-	void Clear();
+	void Clear(unsigned int id);
 
 	static CAnimations * GetInstance();
 };
@@ -73,7 +73,7 @@ public:
 	CAnimationSets();
 	void Add(int id, LPANIMATION_SET ani);
 	LPANIMATION_SET Get(unsigned int id);
-
+	void Clear(unsigned int id);
 
 	static CAnimationSets * GetInstance();
 };

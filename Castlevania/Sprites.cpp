@@ -38,15 +38,12 @@ LPSPRITE CSprites::Get(int id)
 	return sprites[id];
 }
 
-void CSprites::Clear()
+void CSprites::Clear(unsigned int id)
 {
-	for (auto x : sprites)
-	{
-		LPSPRITE s = x.second;
-		delete s;
-	}
+	LPSPRITE s = sprites[id];
+	delete s;
 
-	sprites.clear();
+	sprites.erase(id);
 }
 
 

@@ -9,6 +9,7 @@ protected:
 	CKeyEventHandler * key_handler;
 	LPCWSTR ResourcesFilePath;
 	LPCWSTR sceneFilePath;
+	LPCWSTR clearFilePath;
 
 public:
 	CScene();

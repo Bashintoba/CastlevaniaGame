@@ -27,7 +27,7 @@ Simon::Simon()
 		SubWeaponList.push_back(subweapon);
 	}
 	nx = 1;
-	IdCurrMap = 0;
+	IdCurrMap = 1;
 	IdNextMap = 1;
 	this->SetState(SIMON_IDLE);
 }
