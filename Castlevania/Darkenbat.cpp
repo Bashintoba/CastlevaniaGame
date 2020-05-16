@@ -24,13 +24,6 @@ void Darkenbat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMoveme
 		y += dy;
 	}
 
-	if ( x < 0 || x > SCREEN_WIDTH || y> SCREEN_HEIGHT )
-	{
-		this->HP = 0;
-		SetState(DARKBAT_STATE_DIE);
-		return;
-	}
-
 	if (isDone == false)
 	{
 		if (state == DARKBAT_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
@@ -39,7 +32,7 @@ void Darkenbat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMoveme
 
 	if (target != NULL)
 	{
-		if (GetDistance(this->x, this->y, target->x, target->y)<= 200)
+		if (GetDistance(this->x, this->y, target->x, target->y)<= 170)
 		{
 			if (target->GetState() != SIMON_STAIRDOWN && target->GetState() != SIMON_STAIRUP && target->GetState() != SIMON_STAIRDOWN_ATK && target->GetState() != SIMON_STAIRUP_ATK)
 			{

@@ -45,10 +45,11 @@ public:
 	int stairnx = 0;//
 	void StandOnStair() { vx = vy = 0; }//
 	int Subweapon = -1;
-	int SimonMana = 99;//15;
+	int SimonMana = 15;
 	int SimonScore = 0;
 	int SimonLife = 3;
 	int SimonDoubleTri = -1;
+	int IdSwithMap = 0;
 	int IdCurrMap = 0;
 	int IdNextMap = 0;
 	Whip * GetWhip() { return whip; }

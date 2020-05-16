@@ -22,6 +22,8 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
 	if (stopMovement == true)
 		return;
+	if (state == KNIGHT_STATE_INACTIVE)
+		return;
 
 	CGameObject::Update(dt);
 	vy += SIMON_GRAVITY * dt;
@@ -87,7 +89,7 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 void Knight::Render()
 {
-	if (this->isDone == false)
+	if (this->isDone == false && state!=KNIGHT_STATE_INACTIVE)
 	{
 		animation_set->at(state)->Render(nx, x, y);
 		//RenderBoundingBox();

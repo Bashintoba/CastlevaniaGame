@@ -9,7 +9,7 @@ MovingPlatform::MovingPlatform()
 	vx = PLAT_MOVING_SPEED;
 }
 
-void MovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void MovingPlatform::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 {
 	CGameObject::Update(dt);
 

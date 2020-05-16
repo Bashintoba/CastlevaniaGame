@@ -175,6 +175,7 @@
 #define KNIGHT_BBOX_WIDTH				40
 #define KNIGHT_BBOX_HEIGHT				80
 
+#define KNIGHT_STATE_INACTIVE			-1
 #define KNIGHT_STATE_WALKING			0
 #define KNIGHT_STATE_DIE				1
 //define Darken bat

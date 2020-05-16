@@ -5,6 +5,7 @@
 #include "BreakBrick.h"
 #include "Knight.h"
 #include "Darkenbat.h"
+#include "MovingPlatform.h"
 
 SubWeapon::SubWeapon(LPGAMEOBJECT simon) : CGameObject()
 {
@@ -95,7 +96,13 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						candle->SetState(CANDLE_DESTROYED);
 					}
 					
-					if (state != WEAPONS_BOOMERANG)
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = candle->x;
+						this->y = candle->y;
+					}
+					else if (state != WEAPONS_BOOMERANG)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -110,7 +117,14 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						BB->SetHP(0);
 						BB->isDone = true;
 					}
-					if (state != WEAPONS_BOOMERANG)
+
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = BB->x;
+						this->y = BB->y;
+					}
+					else if (state != WEAPONS_BOOMERANG)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -158,7 +172,13 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						knight->SetState(KNIGHT_STATE_DIE);
 					}
 
-					if (state != WEAPONS_BOOMERANG)
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = knight->x;
+						this->y = knight->y;
+					}
+					else if (state != WEAPONS_BOOMERANG)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -174,13 +194,19 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						db->SetState(DARKBAT_STATE_DIE);
 					}
 
-					if (state != WEAPONS_BOOMERANG)
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = db->x;
+						this->y = db->y;
+					}
+					else if (state != WEAPONS_BOOMERANG)
 					{
 						this->isDone = true;
 						this->isEnable = false;
 					}
 				}
-				else if (dynamic_cast<Ground*>(e->obj))
+				else if (dynamic_cast<Ground*>(e->obj)||dynamic_cast<MovingPlatform*>(e->obj))
 				{
 					if (state == WEAPONS_HOLY_WATER && e->ny == -1)
 					{

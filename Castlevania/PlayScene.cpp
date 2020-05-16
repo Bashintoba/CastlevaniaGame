@@ -65,6 +65,7 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap ,vector<ve
 {
 	Unload();
 	Clear(simon->IdCurrMap,FileInFClearMap);
+	simon->IdCurrMap = simon->IdSwithMap;
 	int camx, camy, camx1, camy1,widthgrid,heightgrid;
 	for (int i = (map-1); i <= (map - 1); i++)
 	{
@@ -92,7 +93,7 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap ,vector<ve
 	grid = new Grid(widthgrid, heightgrid);
 	Load();
 	grid->PushObjIntoGrid(listObjects);
-	simon->IdCurrMap = map;
+	simon->IdCurrMap = simon->IdSwithMap = map;
 }
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -392,21 +393,21 @@ void CPlayScene::Cross()
 		simon->isGotCross = false;
 		crossTimer->Start();
 
-		for (UINT i = 0; i < listObjects.size(); i++)
+		for (UINT i = 0; i < AllObjects.size(); i++)
 		{
 			// Cross chỉ tác dụng với các object hiện trên màn hình
-			if (IsInCam(listObjects[i]) == false)
+			if (IsInCam(AllObjects[i]) == false)
 				continue;
 
-			if (dynamic_cast<Knight*>(listObjects[i]) && listObjects[i]->GetHP()>0)
+			if (dynamic_cast<Knight*>(AllObjects[i]) && AllObjects[i]->GetHP()>0)
 			{
-				auto knight = dynamic_cast<Knight*>(listObjects[i]);
+				auto knight = dynamic_cast<Knight*>(AllObjects[i]);
 				knight->SetHP(0);
 				knight->SetState(KNIGHT_STATE_DIE);
 			}
-			else if (dynamic_cast<Darkenbat*>(listObjects[i]) && listObjects[i]->GetHP() > 0)
+			else if (dynamic_cast<Darkenbat*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
 			{
-				auto db = dynamic_cast<Darkenbat*>(listObjects[i]);
+				auto db = dynamic_cast<Darkenbat*>(AllObjects[i]);
 				db->SetHP(0);
 				db->SetState(DARKBAT_STATE_DIE);
 			}
@@ -605,6 +606,21 @@ void CPlayScene::Update(DWORD dt)
 	{
 		CGame::GetInstance()->SetCamPos(simon->x - (SCREEN_WIDTH / 2),/*cy*/ 0.0f);
 	}
+	
+	//dành cho những mobs có thể di chuyển ra khỏi map làm grid báo lỗi p.s chỉ dành cho đi như game
+	for (UINT i = 0; i < AllObjects.size(); i++)
+	{
+		if (IsInCam(AllObjects[i]) == true)
+			continue;
+
+		if (dynamic_cast<Darkenbat*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+		{
+			auto db = dynamic_cast<Darkenbat*>(AllObjects[i]);
+			db->SetHP(0);
+			db->SetState(DARKBAT_STATE_DIE);
+		}
+	}
+
 	UpdateGrid();
 
 	if (Simonisdead == true && simonDeadTimer->IsTimeUp() == true)
@@ -1027,27 +1043,27 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		Simon_SubAtk();
 		break;
 	case DIK_Q:
-		//simon->IdCurrMap = 1;
+		simon->IdSwithMap = 1;
 		simon->IdNextMap = 2;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(),playscene->GetFileClearMap());
 		break;
 	case DIK_W:
-		//simon->IdCurrMap = 2;
+		simon->IdSwithMap = 2;
 		simon->IdNextMap = 3;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
 	case DIK_E:
-		//simon->IdCurrMap = 3;
+		simon->IdSwithMap = 3;
 		simon->IdNextMap = 4;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
 	case DIK_R:
-		//simon->IdCurrMap = 4;
+		simon->IdSwithMap = 4;
 		simon->IdNextMap = 5;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
 	case DIK_T:
-		//simon->IdCurrMap = 5;
+		simon->IdSwithMap = 5;
 		simon->IdNextMap = 6;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
