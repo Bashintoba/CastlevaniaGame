@@ -52,8 +52,8 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 				{
 					e->SetHP(0);
 					e->isDone = true;
-					sparkX.push_back(right);
-					sparkY.push_back(bottom);
+					sparkX.push_back(left);
+					sparkY.push_back(top);
 				}
 			}
 		}
@@ -115,6 +115,7 @@ void Whip::RenderSpark()
 		{
 			startTimeRenderSpark = 0;
 			sparkX.clear();
+			sparkY.clear();
 		}
 
 		for (int i = 0; i < sparkX.size(); i++)

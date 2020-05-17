@@ -1,4 +1,6 @@
 ﻿#include "Items.h"
+#include "Knight.h"
+#include "Darkenbat.h"
 
 Items::Items() : CGameObject()
 {
@@ -37,10 +39,19 @@ void Items::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 	// Check collision between item and ground (falling on ground)
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
-
+	vector<LPGAMEOBJECT> ListsColl;
 	coEvents.clear();
+	ListsColl.clear();
 
-	CalcPotentialCollisions(coObject, coEvents);
+	for (UINT i = 0; i < coObject->size(); i++)
+	{
+		if (coObject->at(i) != dynamic_cast<Knight*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Darkenbat*>(coObject->at(i)))
+		{
+			ListsColl.push_back(coObject->at(i));
+		}
+	}
+
+	CalcPotentialCollisions(&ListsColl, coEvents);
 
 	if (coEvents.size() == 0)
 	{

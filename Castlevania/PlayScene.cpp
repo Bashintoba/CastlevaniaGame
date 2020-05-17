@@ -382,8 +382,10 @@ bool CPlayScene::IsInCam(LPGAMEOBJECT object)
 	CGame* game = CGame::GetInstance();
 	float x, y;
 	object->GetPosition(x, y);
-
-	return x >= game->GetCamPosX() && x < (game->GetCamPosX() + SCREEN_WIDTH )&& (y >= game->GetCamPosY() && y < (game->GetCamPosY() + SCREEN_HEIGHT));
+	if (object != simon)
+		return x >= game->GetCamPosX() && x < (game->GetCamPosX() + SCREEN_WIDTH) && (y >= game->GetCamPosY() && y < (game->GetCamPosY() + SCREEN_HEIGHT));
+	else
+		return y >= game->GetCamPosY() && y < (game->GetCamPosY() + SCREEN_HEIGHT);
 }
 
 void CPlayScene::Cross()
@@ -621,6 +623,11 @@ void CPlayScene::Update(DWORD dt)
 		}
 	}
 
+	if (IsInCam(simon) == false)
+	{
+		simon->SetState(SIMON_DEAD);
+	}
+
 	UpdateGrid();
 
 	if (Simonisdead == true && simonDeadTimer->IsTimeUp() == true)
@@ -637,7 +644,6 @@ void CPlayScene::Update(DWORD dt)
 			simon->SetMana(15);
 			SwitchMap(simon->IdCurrMap, FileInfMap, FileInfClearMap);
 			hud->SetisTimeover(false);
-			hud->SetTime(0);
 		}
 		else
 		{
