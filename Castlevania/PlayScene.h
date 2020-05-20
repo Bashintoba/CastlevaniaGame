@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "Ghost.h"
+#include "Monkey.h"
 #include "Knight.h"
 #include "Darkenbat.h"
 #include "Grid.h"

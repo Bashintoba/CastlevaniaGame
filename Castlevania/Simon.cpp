@@ -12,6 +12,8 @@
 #include "MovingPlatform.h"
 #include "Knight.h"
 #include "Darkenbat.h"
+#include "Monkey.h"
+#include "Ghost.h"
 
 Simon::Simon()
 {
@@ -84,6 +86,39 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 	}
 	// turn off collision when die 
 	//if (state != SIMON_DEAD)
+
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		LPGAMEOBJECT obj = coObjects->at(i);
+		if (dynamic_cast<Ghost*>(obj))
+		{
+			Ghost* e = dynamic_cast<Ghost*> (obj);
+			float left, top, right, bottom;
+			float Sleft, Stop, Sright, Sbottom;
+			e->GetBoundingBox(left, top, right, bottom);
+			this->GetBoundingBox(Sleft,Stop,Sright,Sbottom);
+			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
+			{
+				untouchableTimer->Start();
+				this->AddHP(-1);
+				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+				{
+					// đặt trạng thái deflect cho simon
+					if (e->nx != 0)
+					{
+						if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
+						else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
+					}
+
+					SetState(SIMON_DEFLECT);
+				}
+			}
+
+			
+
+		}
+	}
+
 	CalcPotentialCollisions(&ListsColl, coEvents);
 
 
@@ -103,7 +138,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 		if (isAutoWalk == false)//
 		{
 			x += min_tx * dx + nx * 0.1f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
-			y += min_ty * dy + ny * 0.1f;
+			if(untouchableTimer->IsTimeUp() == true)//
+				y += min_ty * dy + ny * 0.1f;
 		}
 				
 		/*if (nx != 0) vx = 0;
@@ -162,7 +198,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 						y += dy;
 				}
 			}
-			else if (dynamic_cast<Knight*>(e->obj)|| dynamic_cast<Darkenbat*>(e->obj))
+			else if (dynamic_cast<Knight*>(e->obj)|| dynamic_cast<Darkenbat*>(e->obj)||dynamic_cast<Monkey*>(e->obj)|| dynamic_cast<Ghost*>(e->obj))
 			{
 				if (state != SIMON_DEAD &&state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 				{
@@ -177,6 +213,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 						Darkenbat* dk = dynamic_cast<Darkenbat*>(e->obj);
 						dk->SetState(DARKBAT_STATE_DIE);
 						this->AddHP(-2);
+					}
+					else if (dynamic_cast<Monkey*>(e->obj))
+					{
+						this->AddHP(-2);
+					}
+					else if (dynamic_cast<Ghost*>(e->obj))
+					{
+						this->AddHP(-1);
 					}
 
 					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại

@@ -1,3 +1,24 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+160	Textures\Hunchman.png	116	116	116
+170	Textures\Ghost.png	116	116	116
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#monkey
+4007	0	0	32	32	160
+4008	32	0	64	32	160
+#Ghost
+4009	0	0	32	32	170
+4010	32	0	64	32	170
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+4003	4007	120
+4004	4007	120	4008	120
+4005	4008	120
+4006	4009	120	4010	120
+[ANIMATION_SETS]
+22	4003	4004	4005	70
+23	4006	70
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle , 3 = Gate
@@ -83,3 +104,6 @@
 4	192	144	7	2
 4	160	112	7	2
 4	128	80	7	2
+#mobs
+9	1400	336	23	-1
+10	864	100	22	0

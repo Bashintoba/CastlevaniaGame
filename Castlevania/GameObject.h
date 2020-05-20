@@ -81,6 +81,7 @@ public:
 	int GetHP() { return this->HP; }
 	void SetHP(int hp) { HP = hp; }
 	float GetDistance(float x1,float y1,float x2,float y2);
+	D3DXVECTOR2 Radia(D3DXVECTOR2 obj1, D3DXVECTOR2 obj2,float speedobj2);
 
 	void RenderBoundingBox();
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }//

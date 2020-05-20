@@ -6,6 +6,8 @@
 #include "Knight.h"
 #include "Darkenbat.h"
 #include "MovingPlatform.h"
+#include "Monkey.h"
+#include "Ghost.h"
 
 SubWeapon::SubWeapon(LPGAMEOBJECT simon) : CGameObject()
 {
@@ -199,6 +201,82 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						SetState(WEAPONS_HOLY_WATER_SHATTERED);
 						this->x = db->x;
 						this->y = db->y;
+					}
+					else if (state != WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
+				}
+				else if (dynamic_cast<Monkey*>(e->obj))
+				{
+					Monkey* monkey = dynamic_cast<Monkey*> (e->obj);
+					monkey->AddHP(-2);
+					if (monkey->GetHP() <= 0)
+					{
+						monkey->SetHP(0);
+						monkey->SetState(MONKEY_STATE_DIE);
+					}
+
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = monkey->x;
+						this->y = monkey->y;
+					}
+					else if (state != WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
+				}
+				else if (dynamic_cast<Ghost*>(e->obj))
+				{
+					Ghost* ghost = dynamic_cast<Ghost*> (e->obj);
+
+					if (state == WEAPONS_BOOMERANG)
+					{
+						x += dx;
+						y += dy;
+						if (DameBoomerang1 == false)
+						{
+							ghost->AddHP(-2);
+							DameBoomerang1 = true;
+							if (ghost->GetHP() <= 0)
+							{
+								ghost->SetHP(0);
+								ghost->SetState(GHOST_STATE_DIE);
+							}
+							return;
+						}
+						if (DameBoomerang2 == false)
+						{
+							ghost->AddHP(-2);
+							DameBoomerang2 = true;
+							if (ghost->GetHP() <= 0)
+							{
+								ghost->SetHP(0);
+								ghost->SetState(GHOST_STATE_DIE);
+							}
+							return;
+						}
+					}
+					else
+					{
+						ghost->AddHP(-2);
+					}
+
+					if (ghost->GetHP() <= 0)
+					{
+						ghost->SetHP(0);
+						ghost->SetState(GHOST_STATE_DIE);
+					}
+
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = ghost->x;
+						this->y = ghost->y;
 					}
 					else if (state != WEAPONS_BOOMERANG)
 					{

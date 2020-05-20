@@ -44,6 +44,11 @@
 #define OBJECT_TYPE_MOVINGPLATFORM 6
 #define OBJECT_TYPE_KNIGHT 7
 #define OBJECT_TYPE_DARKENBAT	8
+#define OBJECT_TYPE_GHOST	9
+#define OBJECT_TYPE_MONKEY	10
+#define OBJECT_TYPE_SKELETON	11
+#define OBJECT_TYPE_RAVEN	12
+#define OBJECT_TYPE_ZOMBIE	13
 //define time
 #define DEFAULT_TIME_PLAY 300
 //define map
@@ -175,7 +180,6 @@
 #define KNIGHT_BBOX_WIDTH				40
 #define KNIGHT_BBOX_HEIGHT				80
 
-#define KNIGHT_STATE_INACTIVE			-1
 #define KNIGHT_STATE_WALKING			0
 #define KNIGHT_STATE_DIE				1
 //define Darken bat
@@ -188,5 +192,24 @@
 #define DARKBAT_STATE_INACTIVE			0
 #define DARKBAT_STATE_FLYING			1
 #define DARKBAT_STATE_DIE				2
+//define Monkey
+#define MONKEY_WALKING_SPEED			0.16f
+#define MONKEY_JUMP_SPEED_Y			0.4f
 
+#define MONKEY_BBOX_WIDTH			32
+#define MONKEY_BBOX_HEIGHT			32
+
+#define MONKEY_STATE_WAIT			0
+#define MONKEY_STATE_CHASE			1
+#define MONKEY_STATE_JUMP			2
+#define MONKEY_STATE_DIE			3
+//define Ghost
+#define GHOST_FLYING_SPEED			1.25f
+
+#define GHOST_BBOX_WIDTH			32
+#define GHOST_BBOX_HEIGHT			32
+
+#define GHOST_STATE_INACTIVE		-1
+#define GHOST_STATE_FLYING			0
+#define GHOST_STATE_DIE				1
 #endif

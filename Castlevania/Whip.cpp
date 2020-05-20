@@ -3,6 +3,8 @@
 #include "BreakBrick.h"
 #include "Knight.h"
 #include "Darkenbat.h"
+#include "Monkey.h"
+#include "Ghost.h"
 
 Whip::Whip() : CGameObject()
 {
@@ -100,6 +102,51 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 					sparkX.push_back(left);
 					sparkY.push_back(top);
 				}
+			}
+		}
+		else if (dynamic_cast<Monkey*>(obj))
+		{
+			Monkey* e = dynamic_cast<Monkey*> (obj);
+
+			float left, top, right, bottom;
+
+			e->GetBoundingBox(left, top, right, bottom);
+
+			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			{
+				e->AddHP(-2);
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->SetState(MONKEY_STATE_DIE);
+					sparkX.push_back(left);
+					sparkY.push_back(top);
+				}
+			}
+		}
+		else if (dynamic_cast<Ghost*>(obj))
+		{
+			Ghost* e = dynamic_cast<Ghost*> (obj);
+
+			float left, top, right, bottom;
+
+			e->GetBoundingBox(left, top, right, bottom);
+
+			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			{
+				if (Dame1turn == false)
+				{
+					e->AddHP(-2);
+					Dame1turn = true;
+				}
+
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->SetState(GHOST_STATE_DIE);
+				}
+				sparkX.push_back(left);
+				sparkY.push_back(top);
 			}
 		}
 	}

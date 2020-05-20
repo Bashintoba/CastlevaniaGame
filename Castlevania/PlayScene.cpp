@@ -337,6 +337,32 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listObjects.push_back(obj);
 		break;
 	}
+	case OBJECT_TYPE_MONKEY:
+	{
+		int st = atof(tokens[4].c_str());
+		obj = new Monkey(simon);
+		int idaniset = atof(tokens[3].c_str());
+		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+		LPANIMATION_SET ani_set = animation_sets->Get(idaniset);
+		obj->SetAnimationSet(ani_set);
+		obj->SetPosition(x, y);
+		obj->SetState(st);
+		listObjects.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_GHOST:
+	{
+		int st = atof(tokens[4].c_str());
+		obj = new Ghost(simon);
+		int idaniset = atof(tokens[3].c_str());
+		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+		LPANIMATION_SET ani_set = animation_sets->Get(idaniset);
+		obj->SetAnimationSet(ani_set);
+		obj->SetPosition(x, y);
+		obj->SetState(st);
+		listObjects.push_back(obj);
+		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -412,6 +438,18 @@ void CPlayScene::Cross()
 				auto db = dynamic_cast<Darkenbat*>(AllObjects[i]);
 				db->SetHP(0);
 				db->SetState(DARKBAT_STATE_DIE);
+			}
+			else if (dynamic_cast<Monkey*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			{
+				auto monkey = dynamic_cast<Monkey*>(AllObjects[i]);
+				monkey->SetHP(0);
+				monkey->SetState(MONKEY_STATE_DIE);
+			}
+			else if (dynamic_cast<Ghost*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			{
+				auto ghost = dynamic_cast<Ghost*>(AllObjects[i]);
+				ghost->SetHP(0);
+				ghost->SetState(GHOST_STATE_DIE);
 			}
 		}
 	}
@@ -586,6 +624,20 @@ void CPlayScene::Update(DWORD dt)
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
 		}
+		if (dynamic_cast<Monkey*>(obj) && obj->GetState() == MONKEY_STATE_DIE && obj->isDone == false && obj->isEnable == false)
+		{
+			obj->isEnable = true;
+			simon->AddScore(300);
+			int IdItems = RandomItems();
+			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()-10));
+		}
+		if (dynamic_cast<Ghost*>(obj) && obj->GetState() == GHOST_STATE_DIE && obj->isDone == false && obj->isEnable == false)
+		{
+			obj->isEnable = true;
+			simon->AddScore(300);
+			int IdItems = RandomItems();
+			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY() - 10));
+		}
 	}
 
 	simon->SimonColliWithItems(&listItems);
@@ -620,6 +672,13 @@ void CPlayScene::Update(DWORD dt)
 			auto db = dynamic_cast<Darkenbat*>(AllObjects[i]);
 			db->SetHP(0);
 			db->SetState(DARKBAT_STATE_DIE);
+		}
+
+		if (dynamic_cast<Ghost*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+		{
+			auto ghost = dynamic_cast<Ghost*>(AllObjects[i]);
+			ghost->SetHP(0);
+			ghost->SetState(GHOST_STATE_DIE);
 		}
 	}
 

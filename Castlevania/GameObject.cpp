@@ -120,6 +120,15 @@ float CGameObject::GetDistance(float x1, float y1, float x2, float y2)
 	return (float)sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
 
+D3DXVECTOR2 CGameObject::Radia(D3DXVECTOR2 obj1, D3DXVECTOR2 obj2, float speedobj2)
+{
+	float distance = GetDistance(obj1.x,obj1.y,obj2.x,obj2.y);
+	if (distance < speedobj2)
+		return obj1 - obj2;
+	else
+		return (obj1 - obj2) * speedobj2 / distance;
+}
+
 void CGameObject::RenderBoundingBox()
 {
 	D3DXVECTOR3 p(x, y, 0);
