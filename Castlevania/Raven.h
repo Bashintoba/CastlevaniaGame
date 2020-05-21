@@ -9,10 +9,13 @@ class Raven : public CGameObject
 	int directionY;
 	float dist;
 	bool findtarget;
+	bool findtargetagain;
 	bool isbuffspeed;
+	bool doyouwanttobuildasnowman;
 	LPGAMEOBJECT target;
 	Timer* raven_change_state = new Timer(RAVEN_TIME_CHANGE_STATE);
 	Timer* raven_find_target = new Timer(RAVEN_TIME_FIND_TARGER);
+	Timer* raven_want_to_play_again = new Timer(RAVEN_TIME_PLAYAGAIN);
 public:
 	Raven(LPGAMEOBJECT target,float distance);
 	~Raven();

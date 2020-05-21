@@ -1,4 +1,4 @@
-#include "Raven.h"
+﻿#include "Raven.h"
 
 Raven::Raven(LPGAMEOBJECT target, float distance)
 {
@@ -6,6 +6,8 @@ Raven::Raven(LPGAMEOBJECT target, float distance)
 	isEnable = false;
 	isbuffspeed = false;
 	findtarget = false;
+	findtargetagain = false;
+	doyouwanttobuildasnowman = false;
 	this->target = target;
 	this->dist = distance;
 }
@@ -66,7 +68,7 @@ void Raven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		}
 	}
 
-	if (raven_change_state->IsTimeUp() == true && findtarget == false && state!=RAVEN_STATE_INACTIVE)
+	if (raven_change_state->IsTimeUp() == true && findtargetagain == false && findtarget == false && state!=RAVEN_STATE_INACTIVE)
 	{
 		findtarget = true;
 		raven_find_target->Start();
@@ -76,12 +78,34 @@ void Raven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 	if (raven_find_target->IsTimeUp() == true && findtarget == true && isbuffspeed == false)
 	{
+		raven_find_target->Stop();
 		isbuffspeed = true;
+		raven_want_to_play_again->Start();
+		doyouwanttobuildasnowman = true;
 		float VX = abs(target->GetPositionX() - this->x);
 		float VY = abs(target->GetPositionY() - this->y);
 		vx = (float)(VX * 0.0009) * nx;
 		vy = (float)(VY * 0.0009) * directionY;
 	}
+	 //dí lần 2
+	/*if (raven_want_to_play_again->IsTimeUp() == true && doyouwanttobuildasnowman == true)
+	{
+		isbuffspeed = false;
+		findtarget = false;
+		doyouwanttobuildasnowman = false;
+		findtargetagain = true;
+		raven_find_target->Start();
+		vx = vy = 0;
+	}
+
+	if (raven_find_target->IsTimeUp() == true && findtargetagain == true && isbuffspeed == false)
+	{
+		isbuffspeed = true;
+		float VX = abs(target->GetPositionX() - this->x);
+		float VY = abs(target->GetPositionY() - this->y);
+		vx = (float)(VX * 0.001) * nx;
+		vy = (float)(VY * 0.001) * directionY;
+	}*/
 
 
 }
