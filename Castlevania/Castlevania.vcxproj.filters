@@ -31,6 +31,12 @@
     <Filter Include="HUD">
       <UniqueIdentifier>{54260b19-ffc7-437a-bf39-770744c0de7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MovingObject">
+      <UniqueIdentifier>{65e61288-8c80-4370-b5c4-7cc9e164b384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Grid">
+      <UniqueIdentifier>{456eaf72-b50c-4ded-a90b-575823f9148e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -43,9 +49,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Simon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Animations.cpp">
@@ -93,38 +96,41 @@
     <ClCompile Include="Stair.cpp">
       <Filter>StaticObject</Filter>
     </ClCompile>
-    <ClCompile Include="MovingPlatform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BreakBrick.cpp">
       <Filter>StaticObject</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Knight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Darkenbat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Monkey.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Ghost.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Raven.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Zombie.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Grid</Filter>
     </ClCompile>
     <ClCompile Include="Bone.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Darkenbat.cpp">
+      <Filter>MovingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>MovingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Knight.cpp">
+      <Filter>MovingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Monkey.cpp">
+      <Filter>MovingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven.cpp">
+      <Filter>MovingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Simon.cpp">
+      <Filter>MovingObject</Filter>
     </ClCompile>
     <ClCompile Include="Skeleton.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>MovingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>MovingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="MovingPlatform.cpp">
+      <Filter>MovingObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,9 +141,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Simon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
@@ -191,41 +194,44 @@
     <ClInclude Include="Stair.h">
       <Filter>StaticObject</Filter>
     </ClInclude>
-    <ClInclude Include="MovingPlatform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BreakBrick.h">
       <Filter>StaticObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Knight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Darkenbat.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Monkey.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Grid.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Darkenbat.h">
+      <Filter>MovingObject</Filter>
     </ClInclude>
     <ClInclude Include="Ghost.h">
-      <Filter>Header Files</Filter>
+      <Filter>MovingObject</Filter>
     </ClInclude>
-    <ClInclude Include="Raven.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Knight.h">
+      <Filter>MovingObject</Filter>
     </ClInclude>
-    <ClInclude Include="Zombie.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bone.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Monkey.h">
+      <Filter>MovingObject</Filter>
     </ClInclude>
     <ClInclude Include="Skeleton.h">
-      <Filter>Header Files</Filter>
+      <Filter>MovingObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven.h">
+      <Filter>MovingObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>MovingObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>MovingObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingPlatform.h">
+      <Filter>MovingObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
