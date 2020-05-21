@@ -337,6 +337,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listObjects.push_back(obj);
 		break;
 	}
+	case OBJECT_TYPE_GHOST:
+	{
+		int st = atof(tokens[4].c_str());
+		obj = new Ghost(simon);
+		int idaniset = atof(tokens[3].c_str());
+		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+		LPANIMATION_SET ani_set = animation_sets->Get(idaniset);
+		obj->SetAnimationSet(ani_set);
+		obj->SetPosition(x, y);
+		obj->SetState(st);
+		listObjects.push_back(obj);
+		break;
+	}
 	case OBJECT_TYPE_MONKEY:
 	{
 		int st = atof(tokens[4].c_str());
@@ -350,10 +363,24 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listObjects.push_back(obj);
 		break;
 	}
-	case OBJECT_TYPE_GHOST:
+	case OBJECT_TYPE_RAVEN:
+	{
+		int st = atof(tokens[5].c_str());
+		float dist = atof(tokens[4].c_str());
+		obj = new Raven(simon,dist);
+		int idaniset = atof(tokens[3].c_str());
+		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+		LPANIMATION_SET ani_set = animation_sets->Get(idaniset);
+		obj->SetAnimationSet(ani_set);
+		obj->SetPosition(x, y);
+		obj->SetState(st);
+		listObjects.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_ZOMBIE:
 	{
 		int st = atof(tokens[4].c_str());
-		obj = new Ghost(simon);
+		obj = new Zombie(simon);
 		int idaniset = atof(tokens[3].c_str());
 		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 		LPANIMATION_SET ani_set = animation_sets->Get(idaniset);
@@ -450,6 +477,18 @@ void CPlayScene::Cross()
 				auto ghost = dynamic_cast<Ghost*>(AllObjects[i]);
 				ghost->SetHP(0);
 				ghost->SetState(GHOST_STATE_DIE);
+			}
+			else if (dynamic_cast<Raven*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			{
+				auto raven = dynamic_cast<Raven*>(AllObjects[i]);
+				raven->SetHP(0);
+				raven->SetState(RAVEN_STATE_DIE);
+			}
+			else if (dynamic_cast<Zombie*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			{
+				auto zombie = dynamic_cast<Zombie*>(AllObjects[i]);
+				zombie->SetHP(0);
+				zombie->SetState(ZOMBIE_STATE_DIE);
 			}
 		}
 	}
@@ -638,6 +677,20 @@ void CPlayScene::Update(DWORD dt)
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY() - 10));
 		}
+		if (dynamic_cast<Raven*>(obj) && obj->GetState() == RAVEN_STATE_DIE && obj->isDone == false && obj->isEnable == false)
+		{
+			obj->isEnable = true;
+			simon->AddScore(200);
+			int IdItems = RandomItems();
+			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
+		}
+		if (dynamic_cast<Zombie*>(obj) && obj->GetState() == ZOMBIE_STATE_DIE && obj->isDone == false && obj->isEnable == false)
+		{
+			obj->isEnable = true;
+			simon->AddScore(200);
+			int IdItems = RandomItems();
+			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
+		}
 	}
 
 	simon->SimonColliWithItems(&listItems);
@@ -679,6 +732,20 @@ void CPlayScene::Update(DWORD dt)
 			auto ghost = dynamic_cast<Ghost*>(AllObjects[i]);
 			ghost->SetHP(0);
 			ghost->SetState(GHOST_STATE_DIE);
+		}
+
+		if (dynamic_cast<Raven*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0 && AllObjects[i]->GetState()!=RAVEN_STATE_INACTIVE)
+		{
+			auto raven = dynamic_cast<Raven*>(AllObjects[i]);
+			raven->SetHP(0);
+			raven->SetState(RAVEN_STATE_DIE);
+		}
+
+		if (dynamic_cast<Zombie*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0 && AllObjects[i]->GetState()!= ZOMBIE_STATE_INACTIVE)
+		{
+			auto zombie = dynamic_cast<Zombie*>(AllObjects[i]);
+			zombie->SetHP(0);
+			zombie->SetState(ZOMBIE_STATE_DIE);
 		}
 	}
 

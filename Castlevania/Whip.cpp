@@ -5,6 +5,9 @@
 #include "Darkenbat.h"
 #include "Monkey.h"
 #include "Ghost.h"
+#include "Raven.h"
+#include "Zombie.h"
+#include "Skeleton.h"
 
 Whip::Whip() : CGameObject()
 {
@@ -147,6 +150,46 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 				}
 				sparkX.push_back(left);
 				sparkY.push_back(top);
+			}
+		}
+		else if (dynamic_cast<Raven*>(obj))
+		{
+			Raven* e = dynamic_cast<Raven*> (obj);
+
+			float left, top, right, bottom;
+
+			e->GetBoundingBox(left, top, right, bottom);
+
+			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			{
+				e->AddHP(-2);
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->SetState(RAVEN_STATE_DIE);
+					sparkX.push_back(left);
+					sparkY.push_back(top);
+				}
+			}
+		}
+		else if (dynamic_cast<Zombie*>(obj))
+		{
+			Zombie* e = dynamic_cast<Zombie*> (obj);
+
+			float left, top, right, bottom;
+
+			e->GetBoundingBox(left, top, right, bottom);
+
+			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			{
+				e->AddHP(-2);
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->SetState(ZOMBIE_STATE_DIE);
+					sparkX.push_back(left);
+					sparkY.push_back(top);
+				}
 			}
 		}
 	}

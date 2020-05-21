@@ -67,10 +67,6 @@ void Ghost::SetState(int state)
 		vy = 0;
 		break;
 	case GHOST_STATE_FLYING:
-		/*if (nx > 0)
-			vx = MONKEY_WALKING_SPEED;
-		else
-			vx = -MONKEY_WALKING_SPEED;*/
 		break;
 	case GHOST_STATE_DIE:
 		this->HP = 0;

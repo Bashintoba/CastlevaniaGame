@@ -8,6 +8,9 @@
 #include "MovingPlatform.h"
 #include "Monkey.h"
 #include "Ghost.h"
+#include "Raven.h"
+#include "Zombie.h"
+#include "Skeleton.h"
 
 SubWeapon::SubWeapon(LPGAMEOBJECT simon) : CGameObject()
 {
@@ -277,6 +280,50 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						SetState(WEAPONS_HOLY_WATER_SHATTERED);
 						this->x = ghost->x;
 						this->y = ghost->y;
+					}
+					else if (state != WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
+				}
+				else if (dynamic_cast<Raven*>(e->obj))
+				{
+					Raven* raven = dynamic_cast<Raven*> (e->obj);
+					raven->AddHP(-2);
+					if (raven->GetHP() <= 0)
+					{
+						raven->SetHP(0);
+						raven->SetState(RAVEN_STATE_DIE);
+					}
+						
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = raven->x;
+						this->y = raven->y;
+					}
+					else if (state != WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
+				}
+				else if (dynamic_cast<Zombie*>(e->obj))
+				{
+					Zombie* zombie = dynamic_cast<Zombie*> (e->obj);
+					zombie->AddHP(-2);
+					if (zombie->GetHP() <= 0)
+					{
+						zombie->SetHP(0);
+						zombie->SetState(ZOMBIE_STATE_DIE);
+					}
+
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = zombie->x;
+						this->y = zombie->y;
 					}
 					else if (state != WEAPONS_BOOMERANG)
 					{

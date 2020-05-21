@@ -130,7 +130,6 @@ void Monkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		}
 	}
 
-	// clean up collision events
 	for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	
 }

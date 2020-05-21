@@ -1,3 +1,24 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+#170	Textures\Ghost.png	116	116	116
+190	Textures\Raven.png	255	0	255
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#Ghost
+#4009	0	0	32	32	170
+#4010	32	0	64	32	170
+4015	0	0	32	32	190
+4016	32	0	64	32	190
+4017	64	0	96	32	190
+4018	96	0	128	32	190
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+#4006	4009	120	4010	120
+4010	4015	100
+4011	4016	120	4017	120	4018	120
+[ANIMATION_SETS]
+#23	4006	70
+26	4010	4011	70
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle , 3 = Gate
@@ -74,3 +95,8 @@
 4	1184	304	7	2
 4	1216	336	7	2
 4	1248	368	7	2
+# mobs
+12	544	145	26	300	0
+12	832	240	26	200	0
+12	960	176	26	150	0
+12	1038	400	26	200	0
