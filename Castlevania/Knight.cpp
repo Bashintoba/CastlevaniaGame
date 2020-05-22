@@ -24,7 +24,8 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		return;
 
 	CGameObject::Update(dt);
-	vy += SIMON_GRAVITY * dt;
+	if (state != KNIGHT_STATE_DIE)
+		vy += SIMON_GRAVITY * dt;
 
 	if (isDone == false)
 	{
@@ -46,8 +47,8 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		}
 	}
 	// turn off collision when die 
-	if (state != KNIGHT_STATE_DIE)
-		CalcPotentialCollisions(&ListsColl, coEvents);
+	//if (state != KNIGHT_STATE_DIE)
+	CalcPotentialCollisions(&ListsColl, coEvents);
 
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0 )
@@ -110,6 +111,7 @@ void Knight::SetState(int state)
 	case KNIGHT_STATE_DIE:
 		vx = 0;
 		vy = 0;
+		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
 	}

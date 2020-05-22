@@ -750,6 +750,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			auto db = dynamic_cast<Darkenbat*>(AllObjects[i]);
 			db->SetHP(0);
+			db->isDone = true;
 			db->SetState(DARKBAT_STATE_DIE);
 		}
 
@@ -757,6 +758,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			auto ghost = dynamic_cast<Ghost*>(AllObjects[i]);
 			ghost->SetHP(0);
+			ghost->isDone = true;
 			ghost->SetState(GHOST_STATE_DIE);
 		}
 
@@ -764,6 +766,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			auto raven = dynamic_cast<Raven*>(AllObjects[i]);
 			raven->SetHP(0);
+			raven->isDone = true;
 			raven->SetState(RAVEN_STATE_DIE);
 		}
 
@@ -771,14 +774,16 @@ void CPlayScene::Update(DWORD dt)
 		{
 			auto zombie = dynamic_cast<Zombie*>(AllObjects[i]);
 			zombie->SetHP(0);
+			zombie->isDone = true;
 			zombie->SetState(ZOMBIE_STATE_DIE);
 		}
 
 		if (dynamic_cast<Skeleton*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0 && AllObjects[i]->GetState() != SKELETON_STATE_INACTIVE)
 		{
-			auto zombie = dynamic_cast<Skeleton*>(AllObjects[i]);
-			zombie->SetHP(0);
-			zombie->SetState(SKELETON_STATE_DIE);
+			auto skeleton = dynamic_cast<Skeleton*>(AllObjects[i]);
+			skeleton->SetHP(0);
+			skeleton->isDone = true;
+			skeleton->SetState(SKELETON_STATE_DIE);
 		}
 	}
 

@@ -84,7 +84,7 @@ void Grid::ResetGrid(vector<LPGAMEOBJECT> lists)
 
 	for (int i = 0; i < lists.size(); i++)
 	{
-		if (lists[i]->GetHP() > 0)
+		if (lists[i]->isDone == false)
 		{
 			int row = (int)(lists[i]->GetPositionY() / cell_height);
 			int col = (int)(lists[i]->GetPositionX() / cell_width);

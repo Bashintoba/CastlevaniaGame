@@ -11,9 +11,9 @@ Candle::Candle() : CGameObject()
 
 void Candle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
-	if (isDone == false)
+	if (this->isDone == false)
 	{
-		if (state == CANDLE_DESTROYED && animation_set->at(state)->IsOver(TIME_DELAY) == true) 	
+		if (state == CANDLE_DESTROYED && animation_set->at(CANDLE_DESTROYED)->IsOver(TIME_DELAY) == true)
 			this->isDone = true;
 	}
 }
@@ -22,7 +22,7 @@ void Candle::Render()
 {
 	if (this->isDone == false)
 	{
-		animation_set->at(state)->Render(1,x, y);	
+		animation_set->at(state)->Render(-1,x, y);	
 	}
 	else
 		return;
@@ -40,7 +40,9 @@ void Candle::SetState(int state)
 	case SMALL_CANDLE:
 		break;
 	case CANDLE_DESTROYED:
+		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
+		//animation_set->at(state)->Startani();
 		break;
 	default:
 		break;

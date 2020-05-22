@@ -22,7 +22,8 @@ void Monkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		return;
 
 	CGameObject::Update(dt);
-	vy += SIMON_GRAVITY * dt;
+	if(state!= MONKEY_STATE_DIE)
+		vy += SIMON_GRAVITY * dt;
 
 	if (isDone == false)
 	{

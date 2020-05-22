@@ -27,8 +27,17 @@ public:
 	int defaultTime;
 	int currentFrame;
 	vector<LPANIMATION_FRAME> frames;
+	void Startani() { aniStartTime = GetTickCount(); }
 	void SetAniStartTime(DWORD t) { aniStartTime = t; }
-	bool IsOver(DWORD dt) { return GetTickCount() - aniStartTime >= dt; }
+	bool IsOver(DWORD dt)
+	{
+		if (GetTickCount() - aniStartTime >= dt)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
 	void Reset() { currentFrame = -1; }
 	CAnimation(int defaultTime = 100) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
 	void Add(int spriteId, DWORD time = 0);

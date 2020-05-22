@@ -236,6 +236,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 					else if (dynamic_cast<Darkenbat*>(e->obj))
 					{
 						Darkenbat* dk = dynamic_cast<Darkenbat*>(e->obj);
+						dk->isDone = true;
 						dk->SetState(DARKBAT_STATE_DIE);
 						this->AddHP(-2);
 					}
@@ -250,6 +251,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 					else if (dynamic_cast<Raven*>(e->obj))
 					{
 						Raven* raven = dynamic_cast<Raven*>(e->obj);
+						raven->isDone = true;
 						raven->SetState(RAVEN_STATE_DIE);
 						this->AddHP(-2);
 					}

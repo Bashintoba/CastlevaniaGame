@@ -115,7 +115,8 @@ void Skeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovemen
 	}
 
 	CGameObject::Update(dt);
-	vy += SIMON_GRAVITY * dt;
+	if (state != SKELETON_STATE_DIE)
+		vy += SIMON_GRAVITY * dt;
 
 	if (isJumping)
 	{
