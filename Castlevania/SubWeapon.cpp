@@ -331,6 +331,28 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->isEnable = false;
 					}
 				}
+				else if (dynamic_cast<Skeleton*>(e->obj))
+				{
+					Skeleton* skeleton = dynamic_cast<Skeleton*> (e->obj);
+					skeleton->AddHP(-2);
+					if (skeleton->GetHP() <= 0)
+					{
+						skeleton->SetHP(0);
+						skeleton->SetState(SKELETON_STATE_DIE);
+					}
+
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = skeleton->x;
+						this->y = skeleton->y;
+					}
+					else if (state != WEAPONS_BOOMERANG)
+					{
+						this->isDone = true;
+						this->isEnable = false;
+					}
+				}
 				else if (dynamic_cast<Ground*>(e->obj)||dynamic_cast<MovingPlatform*>(e->obj))
 				{
 					if (state == WEAPONS_HOLY_WATER && e->ny == -1)
@@ -353,7 +375,6 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->DameBoomerang2 = false;
 					}
 				}
-				//if (this->isDone == true) return;
 			}
 		}
 		for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];

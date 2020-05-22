@@ -363,6 +363,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listObjects.push_back(obj);
 		break;
 	}
+	case OBJECT_TYPE_SKELETON:
+	{
+		int st = atof(tokens[4].c_str());
+		obj = new Skeleton(simon);
+		int idaniset = atof(tokens[3].c_str());
+		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+		LPANIMATION_SET ani_set = animation_sets->Get(idaniset);
+		obj->SetAnimationSet(ani_set);
+		obj->SetPosition(x, y);
+		obj->SetState(st);
+		listObjects.push_back(obj);
+		break;
+	}
 	case OBJECT_TYPE_RAVEN:
 	{
 		int st = atof(tokens[5].c_str());
@@ -489,6 +502,12 @@ void CPlayScene::Cross()
 				auto zombie = dynamic_cast<Zombie*>(AllObjects[i]);
 				zombie->SetHP(0);
 				zombie->SetState(ZOMBIE_STATE_DIE);
+			}
+			else if (dynamic_cast<Skeleton*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			{
+				auto skeleton = dynamic_cast<Skeleton*>(AllObjects[i]);
+				skeleton->SetHP(0);
+				skeleton->SetState(SKELETON_STATE_DIE);
 			}
 		}
 	}
@@ -691,6 +710,13 @@ void CPlayScene::Update(DWORD dt)
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
 		}
+		if (dynamic_cast<Skeleton*>(obj) && obj->GetState() == SKELETON_STATE_DIE && obj->isDone == false && obj->isEnable == false)
+		{
+			obj->isEnable = true;
+			simon->AddScore(400);
+			int IdItems = RandomItems();
+			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
+		}
 	}
 
 	simon->SimonColliWithItems(&listItems);
@@ -746,6 +772,13 @@ void CPlayScene::Update(DWORD dt)
 			auto zombie = dynamic_cast<Zombie*>(AllObjects[i]);
 			zombie->SetHP(0);
 			zombie->SetState(ZOMBIE_STATE_DIE);
+		}
+
+		if (dynamic_cast<Skeleton*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0 && AllObjects[i]->GetState() != SKELETON_STATE_INACTIVE)
+		{
+			auto zombie = dynamic_cast<Skeleton*>(AllObjects[i]);
+			zombie->SetHP(0);
+			zombie->SetState(SKELETON_STATE_DIE);
 		}
 	}
 

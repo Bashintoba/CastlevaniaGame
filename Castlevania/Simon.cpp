@@ -223,7 +223,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 						y += dy;
 				}
 			}
-			else if (dynamic_cast<Knight*>(e->obj)|| dynamic_cast<Darkenbat*>(e->obj)||dynamic_cast<Monkey*>(e->obj)|| dynamic_cast<Ghost*>(e->obj) || dynamic_cast<Raven*>(e->obj) || dynamic_cast<Zombie*>(e->obj))
+			else if (dynamic_cast<Knight*>(e->obj)|| dynamic_cast<Darkenbat*>(e->obj)||dynamic_cast<Monkey*>(e->obj)|| dynamic_cast<Ghost*>(e->obj) || dynamic_cast<Raven*>(e->obj) || dynamic_cast<Zombie*>(e->obj) || dynamic_cast<Skeleton*>(e->obj) || dynamic_cast<Bone*>(e->obj))
 			{
 				if (state != SIMON_DEAD &&state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 				{
@@ -256,6 +256,14 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 					else if (dynamic_cast<Zombie*>(e->obj))
 					{
 						this->AddHP(-2);
+					}
+					else if (dynamic_cast<Skeleton*>(e->obj))
+					{
+						this->AddHP(-2);
+					}
+					else if (dynamic_cast<Bone*>(e->obj))
+					{
+						this->AddHP(-1);
 					}
 
 					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại

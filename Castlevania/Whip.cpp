@@ -50,7 +50,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			e->GetBoundingBox(left, top, right, bottom);
 
-			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			if (CheckCollision(left, top, right, bottom) == true) 
 			{
 				e->AddHP(-2);
 				if (e->GetHP() <= 0)
@@ -70,7 +70,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			e->GetBoundingBox(left, top, right, bottom);
 
-			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			if (CheckCollision(left, top, right, bottom) == true) 
 			{
 				if (Dame1turn == false)
 				{
@@ -95,7 +95,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			e->GetBoundingBox(left, top, right, bottom);
 
-			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			if (CheckCollision(left, top, right, bottom) == true)
 			{
 				e->AddHP(-2);
 				if (e->GetHP() <= 0)
@@ -115,7 +115,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			e->GetBoundingBox(left, top, right, bottom);
 
-			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			if (CheckCollision(left, top, right, bottom) == true)
 			{
 				e->AddHP(-2);
 				if (e->GetHP() <= 0)
@@ -135,7 +135,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			e->GetBoundingBox(left, top, right, bottom);
 
-			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			if (CheckCollision(left, top, right, bottom) == true) 
 			{
 				if (Dame1turn == false)
 				{
@@ -160,7 +160,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			e->GetBoundingBox(left, top, right, bottom);
 
-			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			if (CheckCollision(left, top, right, bottom) == true) 
 			{
 				e->AddHP(-2);
 				if (e->GetHP() <= 0)
@@ -180,13 +180,33 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			e->GetBoundingBox(left, top, right, bottom);
 
-			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
+			if (CheckCollision(left, top, right, bottom) == true) 
 			{
 				e->AddHP(-2);
 				if (e->GetHP() <= 0)
 				{
 					e->SetHP(0);
 					e->SetState(ZOMBIE_STATE_DIE);
+					sparkX.push_back(left);
+					sparkY.push_back(top);
+				}
+			}
+		}
+		else if (dynamic_cast<Skeleton*>(obj))
+		{
+			Skeleton* e = dynamic_cast<Skeleton*> (obj);
+
+			float left, top, right, bottom;
+
+			e->GetBoundingBox(left, top, right, bottom);
+
+			if (CheckCollision(left, top, right, bottom) == true)
+			{
+				e->AddHP(-2);
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->SetState(SKELETON_STATE_DIE);
 					sparkX.push_back(left);
 					sparkY.push_back(top);
 				}

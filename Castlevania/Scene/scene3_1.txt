@@ -2,6 +2,8 @@
 [TEXTURES]
 160	Textures\Hunchman.png	116	116	116
 170	Textures\Ghost.png	116	116	116
+180	Textures\Skeleton.png	116	116	116
+190	Textures\Bone.png	116	116	116
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #monkey
@@ -10,15 +12,27 @@
 #Ghost
 4009	0	0	32	32	170
 4010	32	0	64	32	170
+#Skeleton
+4011	0	0	32	64	180
+4012	32	0	64	64	180
+#bone
+4013	0	0	32	32	190
+4014	32	0	64	32	190
+4015	64	0	96	32	190
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 4003	4007	120
 4004	4007	120	4008	120
 4005	4008	120
 4006	4009	120	4010	120
+4007	4011	120
+4008	4011	120	4012	120
+4009	4013	120	4014	120	4015	120
 [ANIMATION_SETS]
 22	4003	4004	4005	70
 23	4006	70
+24	4007	4008	70
+25	4009
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle , 3 = Gate
@@ -107,5 +121,6 @@
 # breakbrick
 5	576	336	2	5
 #mobs
-9	1400	336	23	-1
-10	864	100	22	0
+#9	1400	336	23	-1
+#10	864	100	22	0
+11	85	270	24	0
