@@ -83,6 +83,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 					e->SetHP(0);
 					e->SetState(KNIGHT_STATE_DIE);
 				}
+
 				sparkX.push_back(left);
 				sparkY.push_back(top);
 			}

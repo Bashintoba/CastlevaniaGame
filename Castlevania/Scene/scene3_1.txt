@@ -35,7 +35,7 @@
 25	4009
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Simon , 1 = Brick, 2 = Candle , 3 = Gate
+# type: 0 = Simon , 1 = Brick, 2 = Candle , 3 = Gate, 4 = Stair, 5 = break brick, 6 = Moving PlatForm  , 7 = knight, 8 = darkenbat, 9 = ghost, 10 = monkey, 11 = skeleton
 # Simon
 0	1470	336	-1	0	128	50	1	6
 # Brick
@@ -81,7 +81,7 @@
 1	448	432	2	2
 1	416	432	2	2
 1	384	432	2	2
-1	353	272	2	2
+1	352	272	2	2
 1	352	432	2	2
 1	320	272	2	2
 1	320	432	2	2
@@ -121,6 +121,8 @@
 # breakbrick
 5	576	336	2	5
 #mobs
-#9	1400	336	23	-1
-#10	864	100	22	0
+9	1400	336	23	-1
+10	864	303	22	0
+10	608	303	22	0
+10	352	239	22	0
 11	85	270	24	0

@@ -17,33 +17,34 @@ void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 	if (stopMovement == true)
 		return;
 
-	if (isDone == false)
-	{
-		if (state == GHOST_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
-			this->isDone = true;
-	}
+	if (state == GHOST_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
+		this->isDone = true;
 
-	if (target != NULL)
+	if (state != GHOST_STATE_DIE)
 	{
-		if (GetDistance(this->x, this->y, target->x, target->y) > 100)
+		if (target != NULL)
 		{
-			SetState(GHOST_STATE_FLYING);
+			if (GetDistance(this->x, this->y, target->x, target->y) > 100)
+			{
+				if (state == GHOST_STATE_INACTIVE)
+					SetState(GHOST_STATE_FLYING);
+			}
 		}
+
+		D3DXVECTOR2 position = D3DXVECTOR2(x, y);
+
+		position += Radia(D3DXVECTOR2(target->GetPositionX(), target->GetPositionY()), position, GHOST_FLYING_SPEED);
+
+
+		x = position.x;
+		y = position.y;
+		if (target->GetPositionX() < x)
+			nx = -1;
+		else
+			nx = 1;
+
+		CGameObject::Update(dt);
 	}
-
-	D3DXVECTOR2 position = D3DXVECTOR2(x, y);
-
-	position += Radia(D3DXVECTOR2(target->GetPositionX(), target->GetPositionY()), position, GHOST_FLYING_SPEED);
-
-
-	x = position.x;
-	y = position.y;
-	if (target->GetPositionX() < x)
-		nx = -1;
-	else
-		nx = 1;
-
-	CGameObject::Update(dt);
 }
 
 void Ghost::Render()
@@ -72,6 +73,7 @@ void Ghost::SetState(int state)
 		this->HP = 0;
 		vx = 0;
 		vy = 0;
+		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
 	}

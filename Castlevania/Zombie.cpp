@@ -25,78 +25,81 @@ void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		vx = vy = 0;
 	}
 
-	CGameObject::Update(dt);
-	vy += SIMON_GRAVITY * dt;
-
 	if (isDone == false)
 	{
 		if (state == ZOMBIE_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
 			this->isDone = true;
 	}
-
-	CGame* game = CGame::GetInstance();
-
-	if ((x > game->GetCamPosX() && x < (game->GetCamPosX() + SCREEN_WIDTH) && (y >= game->GetCamPosY() && y < (game->GetCamPosY() + SCREEN_HEIGHT))) == true)
+	if (state != ZOMBIE_STATE_DIE)
 	{
-		if (state == ZOMBIE_STATE_INACTIVE)
+		CGameObject::Update(dt);
+		vy += SIMON_GRAVITY * dt;
+
+
+
+		CGame* game = CGame::GetInstance();
+
+		if ((x > game->GetCamPosX() && x < (game->GetCamPosX() + SCREEN_WIDTH) && (y >= game->GetCamPosY() && y < (game->GetCamPosY() + SCREEN_HEIGHT))) == true)
 		{
-			if (x >= target->GetPositionX())
-				nx = -1;
-			else
-				nx = 1;
-			SetState(ZOMBIE_STATE_WALKING);
-		}
-
-	}
-
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-	vector<LPGAMEOBJECT> ListsColl;
-	coEvents.clear();
-	ListsColl.clear();
-
-	for (UINT i = 0; i < coObject->size(); i++)
-	{
-		if (coObject->at(i) != dynamic_cast<Candle*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Stair*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Zombie*>(coObject->at(i)))
-		{
-			ListsColl.push_back(coObject->at(i));
-		}
-	}
-
-	CalcPotentialCollisions(&ListsColl, coEvents);
-
-	// No collision occured, proceed normally
-	if (coEvents.size() == 0)
-	{
-		x += dx;
-		y += dy;
-	}
-	else
-	{
-		float min_tx, min_ty, nx = 0, ny;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-
-		x += min_tx * dx + nx * 0.1f;		
-		y += min_ty * dy + ny * 0.1f;
-
-		for (UINT i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<Ground*>(e->obj) || (dynamic_cast<BreakBrick*>(e->obj)))
+			if (state == ZOMBIE_STATE_INACTIVE)
 			{
-				if (e->ny == -1.0f)
-				{
-					vy = 0;
-				}
-				if (nx != 0) x -= nx * 0.1f;
+				if (x >= target->GetPositionX())
+					nx = -1;
+				else
+					nx = 1;
+				SetState(ZOMBIE_STATE_WALKING);
+			}
+
+		}
+
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+		vector<LPGAMEOBJECT> ListsColl;
+		coEvents.clear();
+		ListsColl.clear();
+
+		for (UINT i = 0; i < coObject->size(); i++)
+		{
+			if (coObject->at(i) != dynamic_cast<Candle*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Stair*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Zombie*>(coObject->at(i)))
+			{
+				ListsColl.push_back(coObject->at(i));
 			}
 		}
+
+		CalcPotentialCollisions(&ListsColl, coEvents);
+
+		// No collision occured, proceed normally
+		if (coEvents.size() == 0)
+		{
+			x += dx;
+			y += dy;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
+
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+
+			x += min_tx * dx + nx * 0.1f;
+			y += min_ty * dy + ny * 0.1f;
+
+			for (UINT i = 0; i < coEventsResult.size(); i++)
+			{
+				LPCOLLISIONEVENT e = coEventsResult[i];
+
+				if (dynamic_cast<Ground*>(e->obj) || (dynamic_cast<BreakBrick*>(e->obj)))
+				{
+					if (e->ny == -1.0f)
+					{
+						vy = 0;
+					}
+					if (nx != 0) x -= nx * 0.1f;
+				}
+			}
+		}
+
+		for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	}
-
-	for (int i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
 }
 
 void Zombie::Render()
@@ -128,6 +131,7 @@ void Zombie::SetState(int state)
 		this->HP = 0;
 		vx = 0;
 		vy = 0;
+		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
 	}

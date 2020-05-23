@@ -17,40 +17,41 @@ void Darkenbat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMoveme
 	if (stopMovement == true)
 		return;
 
-	if (state != DARKBAT_STATE_DIE)
-	{
-		CGameObject::Update(dt);
-		x += dx;
-		y += dy;
-	}
-
 	if (isDone == false)
 	{
 		if (state == DARKBAT_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
 			this->isDone = true;
 	}
 
-	if (target != NULL)
+	if (state != DARKBAT_STATE_DIE)
 	{
-		if (GetDistance(this->x, this->y, target->x, target->y)<= 170)
+		CGameObject::Update(dt);
+		x += dx;
+		y += dy;
+		//}
+
+		if (target != NULL)
 		{
-			if (target->GetState() != SIMON_STAIRDOWN && target->GetState() != SIMON_STAIRUP && target->GetState() != SIMON_STAIRDOWN_ATK && target->GetState() != SIMON_STAIRUP_ATK)
+			if (GetDistance(this->x, this->y, target->x, target->y) <= 170)
 			{
-				SetState(DARKBAT_STATE_FLYING);
+				if (target->GetState() != SIMON_STAIRDOWN && target->GetState() != SIMON_STAIRUP && target->GetState() != SIMON_STAIRDOWN_ATK && target->GetState() != SIMON_STAIRUP_ATK)
+				{
+					SetState(DARKBAT_STATE_FLYING);
+				}
 			}
 		}
-	}
 
-	if (vx != 0 && Switch == false)
-	{
-		vy = DARKBAT_FLYING_SPEED_Y * directionY;
-	}
-	else
-		vy = 0;
+		if (vx != 0 && Switch == false)
+		{
+			vy = DARKBAT_FLYING_SPEED_Y * directionY;
+		}
+		else
+			vy = 0;
 
-	if (abs(this->GetPositionY() - target->y) <= 5)
-	{
-		Switch = true;
+		if (abs(this->GetPositionY() - target->y) <= 5)
+		{
+			Switch = true;
+		}
 	}
 }
 
@@ -85,6 +86,7 @@ void Darkenbat::SetState(int state)
 		this->HP = 0;
 		vx = 0;
 		vy = 0;
+		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;	
 	}

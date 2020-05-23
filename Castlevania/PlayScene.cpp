@@ -473,37 +473,37 @@ void CPlayScene::Cross()
 				knight->SetHP(0);
 				knight->SetState(KNIGHT_STATE_DIE);
 			}
-			else if (dynamic_cast<Darkenbat*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			if (dynamic_cast<Darkenbat*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
 			{
 				auto db = dynamic_cast<Darkenbat*>(AllObjects[i]);
 				db->SetHP(0);
 				db->SetState(DARKBAT_STATE_DIE);
 			}
-			else if (dynamic_cast<Monkey*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			if (dynamic_cast<Monkey*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
 			{
 				auto monkey = dynamic_cast<Monkey*>(AllObjects[i]);
 				monkey->SetHP(0);
 				monkey->SetState(MONKEY_STATE_DIE);
 			}
-			else if (dynamic_cast<Ghost*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			if (dynamic_cast<Ghost*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
 			{
 				auto ghost = dynamic_cast<Ghost*>(AllObjects[i]);
 				ghost->SetHP(0);
 				ghost->SetState(GHOST_STATE_DIE);
 			}
-			else if (dynamic_cast<Raven*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			if (dynamic_cast<Raven*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
 			{
 				auto raven = dynamic_cast<Raven*>(AllObjects[i]);
 				raven->SetHP(0);
 				raven->SetState(RAVEN_STATE_DIE);
 			}
-			else if (dynamic_cast<Zombie*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			if (dynamic_cast<Zombie*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
 			{
 				auto zombie = dynamic_cast<Zombie*>(AllObjects[i]);
 				zombie->SetHP(0);
 				zombie->SetState(ZOMBIE_STATE_DIE);
 			}
-			else if (dynamic_cast<Skeleton*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
+			if (dynamic_cast<Skeleton*>(AllObjects[i]) && AllObjects[i]->GetHP() > 0)
 			{
 				auto skeleton = dynamic_cast<Skeleton*>(AllObjects[i]);
 				skeleton->SetHP(0);
