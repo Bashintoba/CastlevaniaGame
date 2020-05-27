@@ -418,7 +418,7 @@ void CPlayScene::GetObjectFromGrid()
 	AllObjects.clear();
 	CGame* game = CGame::GetInstance();
 	grid->GetObjFromGrid(game->GetCamPosX(), game->GetCamPosY(), ListObjects);
-	//DebugOut(L"%d \n", ListObjects.size());// đừng mở lag lắm :(((
+	DebugOut(L"%d \n", ListObjects.size());// đừng mở lag lắm :(((
 
 	for (UINT i = 0; i < ListObjects.size(); i++)
 	{

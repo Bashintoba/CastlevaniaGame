@@ -11,6 +11,7 @@
 #include "Raven.h"
 #include "Zombie.h"
 #include "Skeleton.h"
+#include "Gate.h"
 
 SubWeapon::SubWeapon(LPGAMEOBJECT simon) : CGameObject()
 {
@@ -71,7 +72,10 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 		ListsColl.clear();
 		for (UINT i = 0; i < coObjects->size(); i++)
 		{
-			ListsColl.push_back(coObjects->at(i));
+			if (coObjects->at(i) != dynamic_cast<Gate*>(coObjects->at(i)))
+			{
+				ListsColl.push_back(coObjects->at(i));
+			}
 		}
 		ListsColl.push_back(simon);
 

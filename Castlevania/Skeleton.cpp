@@ -49,18 +49,6 @@ void Skeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovemen
 			}
 		}
 
-		if (abs(target->GetPositionX() - x) > 180 && state != SKELETON_STATE_INACTIVE)
-		{
-			if (isJumping == false)
-				vx = SKELETON_WALKINGSPEED * nx;
-		}
-
-		if (abs(target->GetPositionX() - x) < 60 && state != SKELETON_STATE_INACTIVE)
-		{
-			if (isJumping == false)
-				vx = -SKELETON_WALKINGSPEED * nx;
-		}
-
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 		vector<LPGAMEOBJECT> ListsColl;
@@ -145,6 +133,20 @@ void Skeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovemen
 
 		if (bone->isDone == true)
 			bone->isDone = false;
+
+		if (abs(target->GetPositionX() - x) > 180 && state != SKELETON_STATE_INACTIVE)
+		{
+			//if (isJumping == false)
+			if (coEvents.size() != 0 && state != SKELETON_STATE_DIE)
+				vx = SKELETON_WALKINGSPEED * nx;
+		}
+
+		if (abs(target->GetPositionX() - x) < 60 && state != SKELETON_STATE_INACTIVE)
+		{
+			//if (isJumping == false)
+			if (coEvents.size() != 0 && state != SKELETON_STATE_DIE)
+				vx = -SKELETON_WALKINGSPEED * nx;
+		}
 	}
 }
 
