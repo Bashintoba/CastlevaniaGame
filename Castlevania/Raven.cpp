@@ -18,14 +18,11 @@ Raven::~Raven()
 
 void Raven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
+	if (state == RAVEN_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
+		this->isDone = true;
+
 	if (stopMovement == true)
 		return;
-
-	if (isDone == false)
-	{
-		if (state == RAVEN_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
-			this->isDone = true;
-	}
 
 	if (state != RAVEN_STATE_DIE)
 	{

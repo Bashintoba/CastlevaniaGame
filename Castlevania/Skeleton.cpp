@@ -23,14 +23,11 @@ Skeleton::~Skeleton()
 
 void Skeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
+	if (state == SKELETON_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
+		this->isDone = true;
+
 	if (stopMovement == true)
 		return;
-
-	if (isDone == false)
-	{
-		if (state == SKELETON_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
-			this->isDone = true;
-	}
 
 	if (state != SKELETON_STATE_DIE)
 	{

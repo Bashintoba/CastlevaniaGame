@@ -20,18 +20,15 @@ Knight::~Knight()
 
 void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
+	if (state == KNIGHT_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
+		this->isDone = true;
+
 	if (stopMovement == true)
 		return;
 
 	CGameObject::Update(dt);
 	if (state != KNIGHT_STATE_DIE)
 		vy += SIMON_GRAVITY * dt;
-
-	if (isDone == false)
-	{
-		if (state == KNIGHT_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
-			this->isDone = true;
-	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;

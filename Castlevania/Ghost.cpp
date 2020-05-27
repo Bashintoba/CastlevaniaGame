@@ -14,11 +14,12 @@ Ghost::~Ghost()
 
 void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
-	if (stopMovement == true)
-		return;
 
 	if (state == GHOST_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
 		this->isDone = true;
+
+	if (stopMovement == true)
+		return;
 
 	if (state != GHOST_STATE_DIE)
 	{

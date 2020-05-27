@@ -17,6 +17,9 @@ Zombie::~Zombie()
 
 void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
+	if (state == ZOMBIE_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
+		this->isDone = true;
+
 	if (stopMovement == true)
 		return;
 
@@ -24,12 +27,7 @@ void Zombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 	{
 		vx = vy = 0;
 	}
-
-	if (isDone == false)
-	{
-		if (state == ZOMBIE_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
-			this->isDone = true;
-	}
+	
 	if (state != ZOMBIE_STATE_DIE)
 	{
 		CGameObject::Update(dt);

@@ -14,14 +14,11 @@ Darkenbat::~Darkenbat()
 
 void Darkenbat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 {
+	if (state == DARKBAT_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
+		this->isDone = true;
+
 	if (stopMovement == true)
 		return;
-
-	if (isDone == false)
-	{
-		if (state == DARKBAT_STATE_DIE && animation_set->at(state)->IsOver(TIME_DELAY) == true)
-			this->isDone = true;
-	}
 
 	if (state != DARKBAT_STATE_DIE)
 	{
