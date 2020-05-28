@@ -118,6 +118,30 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 				}
 			}
 		}
+		else if (dynamic_cast<Knight*>(obj))
+		{
+			Knight* e = dynamic_cast<Knight*> (obj);
+			float left, top, right, bottom;
+			float Sleft, Stop, Sright, Sbottom;
+			e->GetBoundingBox(left, top, right, bottom);
+			this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
+			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
+			{
+				untouchableTimer->Start();
+				this->AddHP(-2);
+				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+				{
+					// đặt trạng thái deflect cho simon
+					if (e->nx != 0)
+					{
+						if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
+						else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
+					}
+
+					SetState(SIMON_DEFLECT);
+				}
+			}
+		}
 		else if (dynamic_cast<Zombie*>(obj))
 		{
 			Zombie* e = dynamic_cast<Zombie*> (obj);
