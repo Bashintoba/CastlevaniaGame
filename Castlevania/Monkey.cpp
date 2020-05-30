@@ -31,6 +31,11 @@ void Monkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 		vy += SIMON_GRAVITY * dt;
 
+		if (x >= target->GetPositionX())
+			nx = -1;
+		else
+			nx = 1;
+
 		if (target != NULL)
 		{
 			if (GetDistance(this->x, this->y, target->x, target->y) <= 200)
@@ -102,10 +107,10 @@ void Monkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 			{
 				if (abs(target->GetPositionX() - x) > 100)
 				{
-					//if (isJumping == false)
-					//{
-					nx = 1;
-					//}
+					if (isJumping == false)
+					{
+						nx = 1;
+					}
 					SetState(MONKEY_STATE_CHASE);
 				}
 			}
@@ -113,10 +118,10 @@ void Monkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 			{
 				if ((abs(target->GetPositionX() - x) > 100))
 				{
-					//if (isJumping == false)
-					//{
-					nx = -1;
-					//}
+					if (isJumping == false)
+					{
+						nx = -1;
+					}
 					SetState(MONKEY_STATE_CHASE);
 				}
 			}

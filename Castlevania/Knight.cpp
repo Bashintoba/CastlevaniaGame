@@ -26,60 +26,68 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 	if (stopMovement == true)
 		return;
 
-	CGameObject::Update(dt);
 	if (state != KNIGHT_STATE_DIE)
+	{
+		CGameObject::Update(dt);
 		vy += SIMON_GRAVITY * dt;
 
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-	vector<LPGAMEOBJECT> ListsColl;
-	coEvents.clear();
-	ListsColl.clear();
+		vector<LPCOLLISIONEVENT> coEvents;
+		vector<LPCOLLISIONEVENT> coEventsResult;
+		vector<LPGAMEOBJECT> ListsColl;
+		coEvents.clear();
+		ListsColl.clear();
 
-	for (UINT i = 0; i < coObject->size(); i++)
-	{
-		if (coObject->at(i) != dynamic_cast<Candle*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Stair*>(coObject->at(i))&& coObject->at(i) != dynamic_cast<Darkenbat*>(coObject->at(i)))
+		for (UINT i = 0; i < coObject->size(); i++)
 		{
-			ListsColl.push_back(coObject->at(i));
+			if (coObject->at(i) != dynamic_cast<Candle*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Stair*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Darkenbat*>(coObject->at(i)))
+			{
+				ListsColl.push_back(coObject->at(i));
+			}
 		}
-	}
-	// turn off collision when die 
-	//if (state != KNIGHT_STATE_DIE)
-	CalcPotentialCollisions(&ListsColl, coEvents);
+		// turn off collision when die 
+		//if (state != KNIGHT_STATE_DIE)
+		CalcPotentialCollisions(&ListsColl, coEvents);
 
-	// No collision occured, proceed normally
-	if (coEvents.size() == 0 )
-	{
-		x += dx;
-		y += dy;
-	}
-	else
-	{
-		float min_tx, min_ty, nx = 0, ny;
+		// No collision occured, proceed normally
+		if (coEvents.size() == 0)
+		{
+			x += dx;
+			y += dy;
+		}
+		else
+		{
+			float min_tx, min_ty, nx = 0, ny;
 
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+			FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
 
-		// block 
-		x += min_tx * dx + nx * 0.1f;		
-		y += min_ty * dy + ny * 0.1f;
+			// block 
+			x += min_tx * dx + nx * 0.4f;
+			y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0 && ny == 0)
+			if (nx != 0 && ny == 0)
+			{
+				this->nx *= -1;
+				this->vx *= -1;
+			}
+			else
+				if (ny == -1)
+					this->vy = 0;
+		}
+
+		// clean up collision events
+		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
+		if (this->x <= Xstart || this->x >= Xend)
 		{
 			this->nx *= -1;
 			this->vx *= -1;
 		}
-		else
-			if (ny == -1)
-				this->vy = 0;
-	}
 
-	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
-	if (this->x <= Xstart || this->x >= Xend)
-	{
-		this->nx *= -1;
-		this->vx *= -1;
+		if ((rand() % 10000 < 100))
+		{
+			this->nx *= -1;
+			this->vx *= -1;
+		}
 	}
 }
 

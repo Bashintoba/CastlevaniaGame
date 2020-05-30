@@ -410,6 +410,7 @@ void Simon::SetState(int state)
 		isOnStair = false;
 		isWalking = false;
 		isSitting = false;
+		isJumping = false;
 		if (isOnMF == false)
 		{
 			vx = 0;
@@ -452,18 +453,20 @@ void Simon::SetState(int state)
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
 	case SIMON_STAIRDOWN:
-		if (nx > 0) vx = 0.08;//SIMON_STAIR_SPEED_X;
-		else vx = -0.08;//SIMON_STAIR_SPEED_X;
-		vy = 0.08;//SIMON_STAIR_SPEED_Y;
+		if (nx > 0) vx = SIMON_STAIR_SPEED_X;
+		else vx = -SIMON_STAIR_SPEED_X;
+		vy = SIMON_STAIR_SPEED_Y;
 		isOnStair = true;
+		isJumping = false;
 		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
 	case SIMON_STAIRUP:
-		if (nx > 0) vx = 0.08;//SIMON_STAIR_SPEED_X;
-		else vx = -0.08;//SIMON_STAIR_SPEED_X;
-		vy = -0.08;//SIMON_STAIR_SPEED_Y;
+		if (nx > 0) vx = SIMON_STAIR_SPEED_X;
+		else vx = -SIMON_STAIR_SPEED_X;
+		vy = -SIMON_STAIR_SPEED_Y;
 		isOnStair = true;
+		isJumping = false;
 		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
 		break;
