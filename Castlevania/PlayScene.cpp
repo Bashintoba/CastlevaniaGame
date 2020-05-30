@@ -659,9 +659,9 @@ void CPlayScene::Update(DWORD dt)
 		{
 			obj->isEnable = true;
 			int IdItems = obj->GetIDitems();
-			if (IdItems == 16)
+			if (IdItems == CROWN)
 			{
-				listItems.push_back(DropItems(IdItems,160, 390));
+				listItems.push_back(DropItems(IdItems,192, 390));
 			}
 			else if (IdItems != -1)
 			{
@@ -803,19 +803,19 @@ void CPlayScene::Update(DWORD dt)
 			life -= 1;
 			Simonisdead = false;
 			simon->SetSimonLife(life);
-			simon->SetHP(16);
+			simon->SetHP(SIMON_MAXHP);
 			simon->GetWhip()->SetState(NORMAL_WHIP);
-			simon->SetMana(15);
+			simon->SetMana(SIMON_MANA);
 			SwitchMap(simon->IdCurrMap, FileInfMap, FileInfClearMap);
 			hud->SetisTimeover(false);
 		}
 		else
 		{
 			Simonisdead = false;
-			simon->SetSimonLife(3);
-			simon->SetHP(16);
+			simon->SetSimonLife(SIMON_LIFE);
+			simon->SetHP(SIMON_MAXHP);
 			simon->GetWhip()->SetState(NORMAL_WHIP);
-			simon->SetMana(15);
+			simon->SetMana(SIMON_MANA);
 			simon->Setsubweapon(-1);
 			simon->SetScore(0);
 			simon->SetSimonDoubleTri(-1);
@@ -1167,9 +1167,9 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		return;
 	if (simon->GetState() == SIMON_SIT_ATK && simon->animation_set->at(SIMON_SIT_ATK)->IsOver(TIME_DELAY) == false)
 		return;
-	if (simon->GetState() == SIMON_STAIRDOWN && simon->animation_set->at(SIMON_STAIRDOWN)->IsOver(200) == false)
+	if (simon->GetState() == SIMON_STAIRDOWN && simon->animation_set->at(SIMON_STAIRDOWN)->IsOver(TIME_DELAY2) == false)
 		return;
-	if (simon->GetState() == SIMON_STAIRUP && simon->animation_set->at(SIMON_STAIRUP)->IsOver(200) == false)
+	if (simon->GetState() == SIMON_STAIRUP && simon->animation_set->at(SIMON_STAIRUP)->IsOver(TIME_DELAY2) == false)
 		return;
 	if (simon->GetState() == SIMON_STAIRDOWN_ATK && simon->animation_set->at(SIMON_STAIRDOWN_ATK)->IsOver(TIME_DELAY) == false)
 		return;
@@ -1238,19 +1238,19 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
 	case DIK_1:
-		simon->Subweapon = 0;
+		simon->Subweapon = DAGGER;
 		break;
 	case DIK_2:
-		simon->Subweapon = 1;
+		simon->Subweapon = WEAPONS_AXE;
 		break;
 	case DIK_3:
-		simon->Subweapon = 2;
+		simon->Subweapon = WEAPONS_BOOMERANG;
 		break;
 	case DIK_4:
-		simon->Subweapon = 3;
+		simon->Subweapon = WEAPONS_HOLY_WATER;
 		break;
 	case DIK_5:
-		simon->Subweapon = 4;
+		simon->Subweapon = WEAPONS_STOP_WATCH;
 		break;
 	case DIK_6:
 		simon->isGotCross = true;
@@ -1285,9 +1285,9 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 		return;
 	if (simon->GetState() == SIMON_SIT_ATK && simon->animation_set->at(SIMON_SIT_ATK)->IsOver(TIME_DELAY) == false)
 		return;
-	if (simon->GetState() == SIMON_STAIRDOWN && simon->animation_set->at(SIMON_STAIRDOWN)->IsOver(200) == false)
+	if (simon->GetState() == SIMON_STAIRDOWN && simon->animation_set->at(SIMON_STAIRDOWN)->IsOver(TIME_DELAY2) == false)
 		return;
-	if (simon->GetState() == SIMON_STAIRUP && simon->animation_set->at(SIMON_STAIRUP)->IsOver(200) == false)
+	if (simon->GetState() == SIMON_STAIRUP && simon->animation_set->at(SIMON_STAIRUP)->IsOver(TIME_DELAY2) == false)
 		return;
 	if (simon->GetState() == SIMON_STAIRDOWN_ATK && simon->animation_set->at(SIMON_STAIRDOWN_ATK)->IsOver(TIME_DELAY) == false)
 		return;

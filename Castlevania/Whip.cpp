@@ -32,7 +32,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			if (CheckCollision(left, top, right, bottom) == true) // va chạm giữa roi và nến
 			{
-				e->AddHP(-2);
+				e->AddHP(DAME2);
 				if (e->GetHP() <= 0)
 				{
 					e->SetHP(0);
@@ -52,7 +52,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			if (CheckCollision(left, top, right, bottom) == true) 
 			{
-				e->AddHP(-2);
+				e->AddHP(DAME2);
 				if (e->GetHP() <= 0)
 				{
 					e->SetHP(0);
@@ -74,7 +74,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 			{
 				if (Dame1turn == false)
 				{
-					e->AddHP(-2);
+					e->AddHP(DAME2);
 					Dame1turn = true;
 				}
 
@@ -98,7 +98,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			if (CheckCollision(left, top, right, bottom) == true)
 			{
-				e->AddHP(-2);
+				e->AddHP(DAME2);
 				if (e->GetHP() <= 0)
 				{
 					e->SetHP(0);
@@ -118,7 +118,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			if (CheckCollision(left, top, right, bottom) == true)
 			{
-				e->AddHP(-2);
+				e->AddHP(DAME2);
 				if (e->GetHP() <= 0)
 				{
 					e->SetHP(0);
@@ -140,7 +140,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 			{
 				if (Dame1turn == false)
 				{
-					e->AddHP(-2);
+					e->AddHP(DAME2);
 					Dame1turn = true;
 				}
 
@@ -163,7 +163,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			if (CheckCollision(left, top, right, bottom) == true) 
 			{
-				e->AddHP(-2);
+				e->AddHP(DAME2);
 				if (e->GetHP() <= 0)
 				{
 					e->SetHP(0);
@@ -183,7 +183,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			if (CheckCollision(left, top, right, bottom) == true) 
 			{
-				e->AddHP(-2);
+				e->AddHP(DAME2);
 				if (e->GetHP() <= 0)
 				{
 					e->SetHP(0);
@@ -203,7 +203,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			if (CheckCollision(left, top, right, bottom) == true)
 			{
-				e->AddHP(-2);
+				e->AddHP(DAME2);
 				if (e->GetHP() <= 0)
 				{
 					e->SetHP(0);

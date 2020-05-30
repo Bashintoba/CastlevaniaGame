@@ -21,8 +21,8 @@ public:
 	virtual void Render();
 	void SetState(int state);	
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-	Timer* untouchableTimer = new Timer(1000);
-	Timer* invisibilityTimer = new Timer(5000);
+	Timer* untouchableTimer = new Timer(TIME_UNTOUCH);
+	Timer* invisibilityTimer = new Timer(TIME_INVIS);
 	bool isJumping = false;
 	bool isAtk = false;
 	bool isWalking = false;
@@ -45,9 +45,9 @@ public:
 	int stairnx = 0;//
 	void StandOnStair() { vx = vy = 0; }//
 	int Subweapon = -1;
-	int SimonMana = 15;
+	int SimonMana = SIMON_MANA;
 	int SimonScore = 0;
-	int SimonLife = 3;
+	int SimonLife = SIMON_LIFE;
 	int SimonDoubleTri = -1;
 	int IdSwithMap = 0;
 	int IdCurrMap = 0;

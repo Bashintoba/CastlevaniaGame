@@ -24,7 +24,7 @@ Simon::Simon()
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(SIMON_ANIMATION_SET);
 	SetAnimationSet(ani_set);
-	HP = 16;
+	HP = SIMON_MAXHP;
 	whip = new Whip();
 	for (int i = 0; i <3; i++)
 	{
@@ -104,7 +104,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 			{
 				untouchableTimer->Start();
-				this->AddHP(-1);
+				this->AddHP(DAME1);
 				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
 				{
 					// đặt trạng thái deflect cho simon
@@ -128,7 +128,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 			{
 				untouchableTimer->Start();
-				this->AddHP(-2);
+				this->AddHP(DAME2);
 				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
 				{
 					// đặt trạng thái deflect cho simon
@@ -152,7 +152,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 			{
 				untouchableTimer->Start();
-				this->AddHP(-2);
+				this->AddHP(DAME2);
 				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
 				{
 					// đặt trạng thái deflect cho simon
@@ -176,7 +176,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 			{
 				untouchableTimer->Start();
-				this->AddHP(-2);
+				this->AddHP(DAME2);
 				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
 				{
 					// đặt trạng thái deflect cho simon
@@ -271,7 +271,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 						y += dy;
 				}
 			}
-			else if (dynamic_cast<Knight*>(e->obj)|| dynamic_cast<Darkenbat*>(e->obj)||dynamic_cast<Monkey*>(e->obj)|| dynamic_cast<Ghost*>(e->obj) || dynamic_cast<Raven*>(e->obj) || dynamic_cast<Zombie*>(e->obj) || dynamic_cast<Skeleton*>(e->obj) || dynamic_cast<Bone*>(e->obj))
+			else if (dynamic_cast<Knight*>(e->obj)|| dynamic_cast<Darkenbat*>(e->obj)||dynamic_cast<Monkey*>(e->obj)|| dynamic_cast<Ghost*>(e->obj) || dynamic_cast<Raven*>(e->obj) || dynamic_cast<Zombie*>(e->obj) || dynamic_cast<Skeleton*>(e->obj))
 			{
 				if (state != SIMON_DEAD &&state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 				{
@@ -279,41 +279,37 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 					if (dynamic_cast<Knight*>(e->obj))
 					{
 						//Knight* knight = dynamic_cast<Knight*>(e->obj);
-						this->AddHP(-2);
+						this->AddHP(DAME2);
 					}
 					else if (dynamic_cast<Darkenbat*>(e->obj))
 					{
 						Darkenbat* dk = dynamic_cast<Darkenbat*>(e->obj);
 						dk->isDone = true;
 						dk->SetState(DARKBAT_STATE_DIE);
-						this->AddHP(-2);
+						this->AddHP(DAME2);
 					}
 					else if (dynamic_cast<Monkey*>(e->obj))
 					{
-						this->AddHP(-2);
+						this->AddHP(DAME2);
 					}
 					else if (dynamic_cast<Ghost*>(e->obj))
 					{
-						this->AddHP(-1);
+						this->AddHP(DAME1);
 					}
 					else if (dynamic_cast<Raven*>(e->obj))
 					{
 						Raven* raven = dynamic_cast<Raven*>(e->obj);
 						raven->isDone = true;
 						raven->SetState(RAVEN_STATE_DIE);
-						this->AddHP(-2);
+						this->AddHP(DAME2);
 					}
 					else if (dynamic_cast<Zombie*>(e->obj))
 					{
-						this->AddHP(-2);
+						this->AddHP(DAME2);
 					}
 					else if (dynamic_cast<Skeleton*>(e->obj))
 					{
-						this->AddHP(-2);
-					}
-					else if (dynamic_cast<Bone*>(e->obj))
-					{
-						this->AddHP(-1);
+						this->AddHP(DAME2);
 					}
 
 					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
@@ -395,10 +391,12 @@ void Simon::SetState(int state)
 		break;
 	case SIMON_JUMP:
 		isOnStair = false;
-		/*if (isOnMF == true)
+
+		if (vx != SIMON_WALKING_SPEED && vx != -SIMON_WALKING_SPEED)
 		{
 			vx = 0;
-		}*/
+		}
+
 		if (isJumping == false)
 		{
 			isJumping = true;
@@ -517,44 +515,44 @@ void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
 				switch (IDItems)
 				{
 				case SMALL_HEART:
-					SimonMana += 1;
+					SimonMana += MANA1;
 					break;
 				case LARGE_HEART:
-					SimonMana += 5;
+					SimonMana += MANA5;
 					break;
 				case MONEY_BAG_RED:
-					SimonScore += 300;
+					SimonScore += SCORE300;
 					break;
 				case MONEY_BAG_BLUE:
-					SimonScore += 500;
+					SimonScore += SCORE500;
 					break;
 				case MONEY_BAG_WHITE:
-					SimonScore += 700;
+					SimonScore += SCORE700;
 					break;
 				case PORK_CHOP:
-					this->HP += 4;
-					if (this->HP >= 16)
+					this->HP += ADDHP;
+					if (this->HP >= SIMON_MAXHP)
 					{
-						this->HP = 16;
+						this->HP = SIMON_MAXHP;
 					}
 					break;
 				case CHAIN:
 					SetState(SIMON_HENSHIN); // siêu nhân biến hình			
 					break;
 				case STOP_WATCH:
-					Subweapon = 4;
+					Subweapon = WEAPONS_STOP_WATCH;
 					break;
 				case ITEM_DAGGER:
-					Subweapon = 0;
+					Subweapon = DAGGER;
 					break;
 				case ITEM_AXE:
-					Subweapon = 1;
+					Subweapon = WEAPONS_AXE;
 					break;
 				case ITEM_BOOMERANG:
-					Subweapon = 2;
+					Subweapon = WEAPONS_BOOMERANG;
 					break;
 				case ITEM_HOLY_WATER:
-					Subweapon = 3;
+					Subweapon = WEAPONS_HOLY_WATER;
 					break;
 				case CROSS:
 					isGotCross = true;
@@ -574,7 +572,7 @@ void Simon::SimonColliWithItems(vector<LPGAMEOBJECT>* listitem)
 					SimonDoubleTri = 1;
 					break;
 				case CROWN:
-					SimonScore += 1000;
+					SimonScore += SCORE1000;
 					break;
 				case MAGIC_CRYSTAL:
 					break;
@@ -628,15 +626,15 @@ bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 				float dx = abs(upstair_x - stair_l);
 				float dy = upstair_y - stair_t;
 
-				if (dx == 32 && dy == -32) {// vì bậc nằm trên nên dy = -...
+				if (dx == STAIR_BBOX_WIDTH && dy == -STAIR_BBOX_WIDTH) {// bậc nằm trên
 					CanMoveUp = true;
 				}	
-				if (dx == 32 && dy == 32) { // vì bậc nằm duoi nên dy = +...
+				if (dx == STAIR_BBOX_WIDTH && dy == STAIR_BBOX_WIDTH) { // bậc nằm duoi 
 					CanMoveDown = true;
 				}
 			}
 
-			return true; // collision between Simon and stairs
+			return true;
 		}
 
 	}

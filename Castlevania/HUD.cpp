@@ -1,6 +1,5 @@
 ﻿#include "HUD.h"
 
-
 string HUD::FillNumber(string s, UINT MaxNumber)
 {
 	while (s.size() < MaxNumber)
@@ -12,20 +11,20 @@ HUD::HUD(Simon * simon)
 {
 	this->simon = simon;
 	Time = 0;
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < SIMON_MAXHP; i++)
 	{
-		SimonHP.push_back(CSprites::GetInstance()->Get(2));
-		LoseHP.push_back(CSprites::GetInstance()->Get(3));
-		BossHP.push_back(CSprites::GetInstance()->Get(4));
+		SimonHP.push_back(CSprites::GetInstance()->Get(SHPSPRITE));
+		LoseHP.push_back(CSprites::GetInstance()->Get(BHPSPRITE));
+		BossHP.push_back(CSprites::GetInstance()->Get(LHPSPRITE));
 	}
-	SubWeaponItems.push_back(CSprites::GetInstance()->Get(507));
-	SubWeaponItems.push_back(CSprites::GetInstance()->Get(509));
-	SubWeaponItems.push_back(CSprites::GetInstance()->Get(510));
-	SubWeaponItems.push_back(CSprites::GetInstance()->Get(511));
-	SubWeaponItems.push_back(CSprites::GetInstance()->Get(508));
+	SubWeaponItems.push_back(CSprites::GetInstance()->Get(DAGGERSPRITE));
+	SubWeaponItems.push_back(CSprites::GetInstance()->Get(AXESPRITE));
+	SubWeaponItems.push_back(CSprites::GetInstance()->Get(BOOMERANGSPRITE));
+	SubWeaponItems.push_back(CSprites::GetInstance()->Get(HOLYWATERSPRITE));
+	SubWeaponItems.push_back(CSprites::GetInstance()->Get(WATCHSPRITE));
 
-	DoubleTri.push_back(CSprites::GetInstance()->Get(512));
-	DoubleTri.push_back(CSprites::GetInstance()->Get(513));
+	DoubleTri.push_back(CSprites::GetInstance()->Get(DOUBLESPRITE));
+	DoubleTri.push_back(CSprites::GetInstance()->Get(TRISPRITE));
 }
 
 HUD::~HUD()

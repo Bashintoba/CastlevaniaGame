@@ -7,7 +7,7 @@ class Whip : public CGameObject
 {
 	vector<float> sparkX;
 	vector<float> sparkY;
-	CAnimation * spark = CAnimations::GetInstance()->Get(72);
+	CAnimation * spark = CAnimations::GetInstance()->Get(ANI_SPARK);
 	int startTimeRenderSpark = 0;
 	bool Dame1turn = false;
 public:

@@ -92,67 +92,67 @@ void Items::GetBoundingBox(float & left, float & top, float & right, float & bot
 		switch (state)
 		{
 			case SMALL_HEART:
-				right = left + 16;
-				bottom = top + 16;
+				right = left + SMALL_HEART_BBOX_WIDTH;
+				bottom = top + SMALL_HEART_BBOX_HEIGHT;
 				break;
 			case LARGE_HEART:
-				right = left + 24;
-				bottom = top + 20;
+				right = left + LARGE_HEART_BBOX_WIDTH;
+				bottom = top + LARGE_HEART_BBOX_HEIGHT;
 				break;
 			case MONEY_BAG_RED:
 			case MONEY_BAG_BLUE:
 			case MONEY_BAG_WHITE:
-				right = left + 30;
-				bottom = top + 30;
+				right = left + MONEY_BAG_BBOX_WIDTH;
+				bottom = top + MONEY_BAG_BBOX_HEIGHT;
 				break;
 			case PORK_CHOP:
-				right = left + 32;
-				bottom = top + 26;
+				right = left + PORK_CHOP_BBOX_WIDTH;
+				bottom = top + PORK_CHOP_BBOX_HEIGHT;
 				break;
 			case CHAIN:
-				right = left + 32;
-				bottom = top + 32;
+				right = left + CHAIN_BBOX_WIDTH;
+				bottom = top + CHAIN_BBOX_HEIGHT;
 				break;
 			case STOP_WATCH:
-				right = left + 30;
-				bottom = top + 32;
+				right = left + STOP_WATCH_BBOX_WIDTH;
+				bottom = top + STOP_WATCH_BBOX_HEIGHT;
 				break;
 			case ITEM_DAGGER:
-				right = left + 32;
-				bottom = top + 18;
+				right = left + ITEM_DAGGER_BBOX_WIDTH;
+				bottom = top + ITEM_DAGGER_BBOX_HEIGHT;
 				break;			
 			case ITEM_AXE:
-				right = left + 30;
-				bottom = top + 28;
+				right = left + ITEM_AXE_BBOX_WIDTH;
+				bottom = top + ITEM_AXE_BBOX_HEIGHT;
 				break;
 			case ITEM_BOOMERANG:
-				right = left + 30;
-				bottom = top + 28;
+				right = left + ITEM_BOOMERANG_BBOX_WIDTH;
+				bottom = top + ITEM_BOOMERANG_BBOX_HEIGHT;
 				break;
 			case ITEM_HOLY_WATER:
-				right = left + 32;
-				bottom = top + 28;
+				right = left + ITEM_HOLY_WATER_BBOX_WIDTH;
+				bottom = top + ITEM_HOLY_WATER_BBOX_HEIGHT;
 				break;					
 			case CROSS:
-				right = left + 32;
-				bottom = top + 32;
+				right = left + CROSS_BBOX_WIDTH;
+				bottom = top + CROSS_BBOX_HEIGHT;
 				break;
 			case INVISIBILITY_POTION:
-				right = left + 29;
-				bottom = top + 36;
+				right = left + INVISIBILITY_POTION_BBOX_WIDTH;
+				bottom = top + INVISIBILITY_POTION_BBOX_HEIGHT;
 				break;						
 			case DOUBLE_SHOT:
 			case TRIPLE_SHOT:
-				right = left + 28;
-				bottom = top + 28;
+				right = left + EXTRA_SHOT_BBOX_WIDTH;
+				bottom = top + EXTRA_SHOT_BBOX_HEIGHT;
 				break;													
 			case CROWN:
-				right = left + 32;
-				bottom = top + 32;
+				right = left + CROWN_BBOX_WIDTH;
+				bottom = top + CROWN_BBOX_HEIGHT;
 				break;
 			case MAGIC_CRYSTAL:
-				right = left + 26;
-				bottom = top + 32;
+				right = left + MAGIC_CRYSTAL_BBOX_WIDTH;
+				bottom = top + MAGIC_CRYSTAL_BBOX_HEIGHT;
 				break;
 		default:
 			right = left;

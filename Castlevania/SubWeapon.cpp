@@ -98,7 +98,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 				if (dynamic_cast<Candle*>(e->obj))
 				{
 					Candle * candle = dynamic_cast<Candle*> (e->obj);
-					candle->AddHP(-2);
+					candle->AddHP(DAME2);
 					if (candle->GetHP() <= 0)
 					{
 						candle->SetHP(0);
@@ -120,7 +120,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 				else if (dynamic_cast<BreakBrick*>(e->obj))
 				{
 					BreakBrick * BB = dynamic_cast<BreakBrick*> (e->obj);
-					BB->AddHP(-2);
+					BB->AddHP(DAME2);
 					if (BB->GetHP() <= 0)
 					{
 						BB->SetHP(0);
@@ -149,7 +149,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						y += dy;
 						if (DameBoomerang1 == false)
 						{
-							knight->AddHP(-2);
+							knight->AddHP(DAME2);
 							DameBoomerang1 = true;
 							if (knight->GetHP() <= 0)
 							{
@@ -160,7 +160,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						}
 						if (DameBoomerang2 == false)
 						{
-							knight->AddHP(-2);
+							knight->AddHP(DAME2);
 							DameBoomerang2 = true;
 							if (knight->GetHP() <= 0)
 							{
@@ -172,7 +172,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 					}
 					else
 					{
-						knight->AddHP(-2);
+						knight->AddHP(DAME2);
 					}
 						
 					if (knight->GetHP() <= 0)
@@ -196,7 +196,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 				else if (dynamic_cast<Darkenbat*>(e->obj))
 				{
 					Darkenbat* db = dynamic_cast<Darkenbat*> (e->obj);
-					db->AddHP(-2);
+					db->AddHP(DAME2);
 					if (db->GetHP() <= 0)
 					{
 						db->SetHP(0);
@@ -218,7 +218,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 				else if (dynamic_cast<Monkey*>(e->obj))
 				{
 					Monkey* monkey = dynamic_cast<Monkey*> (e->obj);
-					monkey->AddHP(-2);
+					monkey->AddHP(DAME2);
 					if (monkey->GetHP() <= 0)
 					{
 						monkey->SetHP(0);
@@ -247,7 +247,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						y += dy;
 						if (DameBoomerang1 == false)
 						{
-							ghost->AddHP(-2);
+							ghost->AddHP(DAME2);
 							DameBoomerang1 = true;
 							if (ghost->GetHP() <= 0)
 							{
@@ -258,7 +258,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						}
 						if (DameBoomerang2 == false)
 						{
-							ghost->AddHP(-2);
+							ghost->AddHP(DAME2);
 							DameBoomerang2 = true;
 							if (ghost->GetHP() <= 0)
 							{
@@ -270,7 +270,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 					}
 					else
 					{
-						ghost->AddHP(-2);
+						ghost->AddHP(DAME2);
 					}
 
 					if (ghost->GetHP() <= 0)
@@ -294,7 +294,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 				else if (dynamic_cast<Raven*>(e->obj))
 				{
 					Raven* raven = dynamic_cast<Raven*> (e->obj);
-					raven->AddHP(-2);
+					raven->AddHP(DAME2);
 					if (raven->GetHP() <= 0)
 					{
 						raven->SetHP(0);
@@ -316,7 +316,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 				else if (dynamic_cast<Zombie*>(e->obj))
 				{
 					Zombie* zombie = dynamic_cast<Zombie*> (e->obj);
-					zombie->AddHP(-2);
+					zombie->AddHP(DAME2);
 					if (zombie->GetHP() <= 0)
 					{
 						zombie->SetHP(0);
@@ -338,7 +338,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 				else if (dynamic_cast<Skeleton*>(e->obj))
 				{
 					Skeleton* skeleton = dynamic_cast<Skeleton*> (e->obj);
-					skeleton->AddHP(-2);
+					skeleton->AddHP(DAME2);
 					if (skeleton->GetHP() <= 0)
 					{
 						skeleton->SetHP(0);
@@ -392,7 +392,7 @@ void SubWeapon::Render(int currentID)
 		if (state == -1) return;
 		if (state == WEAPONS_HOLY_WATER_SHATTERED)
 		{
-			animation_set->at(4)->Render(nx, x, y);
+			animation_set->at((WEAPONS_HOLY_WATER_SHATTERED-1))->Render(nx, x, y);
 		}
 		else
 		{
@@ -479,20 +479,20 @@ void SubWeapon::GetBoundingBox(float & left, float & top, float & right, float &
 	switch (state)
 	{
 	case DAGGER:
-		right = left + 34;
-		bottom = top + 18;
+		right = left + DAGGER_BBOX_WIDTH;
+		bottom = top + DAGGER_BBOX_HEIGHT;
 		break;
 	case WEAPONS_AXE:
-		right = left + 30;
-		bottom = top + 28;
-		break;
-	case WEAPONS_HOLY_WATER:
-		right = left + 32;
-		bottom = top + 28;
+		right = left + WEAPONS_AXE_BBOX_WIDTH;
+		bottom = top + WEAPONS_AXE_BBOX_HEIGHT;
 		break;
 	case WEAPONS_BOOMERANG:
-		right = left + 28;
-		bottom = top + 28;
+		right = left + WEAPONS_BOOMERANG_BBOX_WIDTH;
+		bottom = top + WEAPONS_BOOMERANG_BBOX_HEIGHT;
+		break;
+	case WEAPONS_HOLY_WATER:
+		right = left + WEAPONS_HOLY_WATER_BBOX_WIDTH;
+		bottom = top + WEAPONS_HOLY_WATER_BBOX_HEIGHT;
 		break;
 	case WEAPONS_STOP_WATCH:
 		right = left;

@@ -27,7 +27,7 @@ class HUD
 	int subWeapon;
 	int doubletri;
 	int simonHP;
-	int bossHP = 16;
+	int bossHP = SIMON_MAXHP;
 	bool isTimeover = false;
 public:
 	HUD(Simon * simon);
