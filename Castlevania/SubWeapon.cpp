@@ -111,7 +111,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->x = candle->x;
 						this->y = candle->y;
 					}
-					else if (state != WEAPONS_BOOMERANG)
+					else if (state != WEAPONS_BOOMERANG && state!= WEAPONS_HOLY_WATER_SHATTERED)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -133,7 +133,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->x = BB->x;
 						this->y = BB->y;
 					}
-					else if (state != WEAPONS_BOOMERANG)
+					else if (state != WEAPONS_BOOMERANG && state != WEAPONS_HOLY_WATER_SHATTERED)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -187,7 +187,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->x = knight->x;
 						this->y = knight->y;
 					}
-					else if (state != WEAPONS_BOOMERANG)
+					else if (state != WEAPONS_BOOMERANG && state != WEAPONS_HOLY_WATER_SHATTERED)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -209,7 +209,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->x = db->x;
 						this->y = db->y;
 					}
-					else if (state != WEAPONS_BOOMERANG)
+					else if (state != WEAPONS_BOOMERANG && state != WEAPONS_HOLY_WATER_SHATTERED)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -227,7 +227,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 
 					if (state == WEAPONS_HOLY_WATER)
 					{
-						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						SetState(WEAPONS_HOLY_WATER_SHATTERED&& state != WEAPONS_HOLY_WATER_SHATTERED);
 						this->x = monkey->x;
 						this->y = monkey->y;
 					}
@@ -285,7 +285,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->x = ghost->x;
 						this->y = ghost->y;
 					}
-					else if (state != WEAPONS_BOOMERANG)
+					else if (state != WEAPONS_BOOMERANG && state != WEAPONS_HOLY_WATER_SHATTERED)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -307,7 +307,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->x = raven->x;
 						this->y = raven->y;
 					}
-					else if (state != WEAPONS_BOOMERANG)
+					else if (state != WEAPONS_BOOMERANG && state != WEAPONS_HOLY_WATER_SHATTERED)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -329,7 +329,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->x = zombie->x;
 						this->y = zombie->y;
 					}
-					else if (state != WEAPONS_BOOMERANG)
+					else if (state != WEAPONS_BOOMERANG && state != WEAPONS_HOLY_WATER_SHATTERED)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -351,7 +351,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 						this->x = skeleton->x;
 						this->y = skeleton->y;
 					}
-					else if (state != WEAPONS_BOOMERANG)
+					else if (state != WEAPONS_BOOMERANG && state != WEAPONS_HOLY_WATER_SHATTERED)
 					{
 						this->isDone = true;
 						this->isEnable = false;
@@ -398,7 +398,7 @@ void SubWeapon::Render(int currentID)
 		{
 			animation_set->at(state)->Render(nx, x, y);
 		}
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 }
 
@@ -497,6 +497,10 @@ void SubWeapon::GetBoundingBox(float & left, float & top, float & right, float &
 	case WEAPONS_STOP_WATCH:
 		right = left;
 		bottom = top;
+		break;
+	case WEAPONS_HOLY_WATER_SHATTERED:
+		right = left + WEAPONS_HOLY_WATER_BBOX_WIDTH;
+		bottom = top + WEAPONS_HOLY_WATER_BBOX_HEIGHT;
 		break;
 	default:
 		right = left;

@@ -808,6 +808,7 @@ void CPlayScene::Update(DWORD dt)
 			simon->SetMana(SIMON_MANA);
 			SwitchMap(simon->IdCurrMap, FileInfMap, FileInfClearMap);
 			hud->SetisTimeover(false);
+			hud->SetTime(0);
 		}
 		else
 		{
@@ -1263,6 +1264,9 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_9:
 		simon->SimonDoubleTri = 1;
+		break;
+	case DIK_0:
+		simon->SetHP(SIMON_MAXHP);
 		break;
 	}
 }

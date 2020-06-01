@@ -83,11 +83,11 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 			this->vx *= -1;
 		}
 
-		if ((rand() % 10000 < 100))
+		/*if ((rand() % 10000 < 100))
 		{
 			this->nx *= -1;
 			this->vx *= -1;
-		}
+		}*/
 	}
 }
 

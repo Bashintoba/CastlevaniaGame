@@ -83,7 +83,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		if (coObjects->at(i) != dynamic_cast<Candle*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Stair*>(coObjects->at(i)))
+		if (coObjects->at(i) != dynamic_cast<Candle*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Stair*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Ghost*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Monkey*>(coObjects->at(i)))
 		{
 			ListsColl.push_back(coObjects->at(i));
 		}
@@ -93,100 +93,107 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		LPGAMEOBJECT obj = coObjects->at(i);
-		if (dynamic_cast<Ghost*>(obj))
+		if (state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 		{
-			Ghost* e = dynamic_cast<Ghost*> (obj);
-			float left, top, right, bottom;
-			float Sleft, Stop, Sright, Sbottom;
-			e->GetBoundingBox(left, top, right, bottom);
-			this->GetBoundingBox(Sleft,Stop,Sright,Sbottom);
-			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
-			{
-				untouchableTimer->Start();
-				this->AddHP(DAME1);
-				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
-				{
-					// đặt trạng thái deflect cho simon
-					if (e->nx != 0)
-					{
-						if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
-						else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
-					}
+			LPGAMEOBJECT obj = coObjects->at(i);
 
-					SetState(SIMON_DEFLECT);
+			if (dynamic_cast<Ghost*>(obj))
+			{
+				Ghost* e = dynamic_cast<Ghost*> (obj);
+				float left, top, right, bottom;
+				float Sleft, Stop, Sright, Sbottom;
+				e->GetBoundingBox(left, top, right, bottom);
+				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true /*&& state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true*/)
+				{
+					untouchableTimer->Start();
+					//this->AddHP(DAME1);
+					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+					{
+						// đặt trạng thái deflect cho simon
+						if (e->nx != 0)
+						{
+							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
+							else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
+						}
+
+						SetState(SIMON_DEFLECT);
+					}
 				}
 			}
-		}
-		else if (dynamic_cast<Knight*>(obj))
-		{
-			Knight* e = dynamic_cast<Knight*> (obj);
-			float left, top, right, bottom;
-			float Sleft, Stop, Sright, Sbottom;
-			e->GetBoundingBox(left, top, right, bottom);
-			this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
-			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
-			{
-				untouchableTimer->Start();
-				this->AddHP(DAME2);
-				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
-				{
-					// đặt trạng thái deflect cho simon
-					if (e->nx != 0)
-					{
-						if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
-						else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
-					}
 
-					SetState(SIMON_DEFLECT);
+			if (dynamic_cast<Knight*>(obj))
+			{
+				Knight* e = dynamic_cast<Knight*> (obj);
+				float left, top, right, bottom;
+				float Sleft, Stop, Sright, Sbottom;
+				e->GetBoundingBox(left, top, right, bottom);
+				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true /*&& state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true*/)
+				{
+					untouchableTimer->Start();
+					this->AddHP(DAME2);
+					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+					{
+						// đặt trạng thái deflect cho simon
+						if (e->nx != 0)
+						{
+							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
+							else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
+						}
+
+						SetState(SIMON_DEFLECT);
+					}
 				}
 			}
-		}
-		else if (dynamic_cast<Zombie*>(obj))
-		{
-			Zombie* e = dynamic_cast<Zombie*> (obj);
-			float left, top, right, bottom;
-			float Sleft, Stop, Sright, Sbottom;
-			e->GetBoundingBox(left, top, right, bottom);
-			this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
-			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
-			{
-				untouchableTimer->Start();
-				this->AddHP(DAME2);
-				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
-				{
-					// đặt trạng thái deflect cho simon
-					if (e->nx != 0)
-					{
-						if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
-						else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
-					}
 
-					SetState(SIMON_DEFLECT);
+			if (dynamic_cast<Zombie*>(obj))
+			{
+				Zombie* e = dynamic_cast<Zombie*> (obj);
+				float left, top, right, bottom;
+				float Sleft, Stop, Sright, Sbottom;
+				e->GetBoundingBox(left, top, right, bottom);
+				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true /*&& state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true*/)
+				{
+					untouchableTimer->Start();
+					this->AddHP(DAME2);
+					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+					{
+						// đặt trạng thái deflect cho simon
+						if (e->nx != 0)
+						{
+							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
+							else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
+						}
+
+						SetState(SIMON_DEFLECT);
+					}
 				}
 			}
-		}
-		else if (dynamic_cast<Monkey*>(obj))
-		{
-			Monkey* e = dynamic_cast<Monkey*> (obj);
-			float left, top, right, bottom;
-			float Sleft, Stop, Sright, Sbottom;
-			e->GetBoundingBox(left, top, right, bottom);
-			this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
-			if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true && state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
-			{
-				untouchableTimer->Start();
-				this->AddHP(DAME2);
-				if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
-				{
-					// đặt trạng thái deflect cho simon
-					if (e->nx != 0)
-					{
-						if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
-						else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
-					}
 
-					SetState(SIMON_DEFLECT);
+			if (dynamic_cast<Monkey*>(obj))
+			{
+				Monkey* e = dynamic_cast<Monkey*> (obj);
+				float left, top, right, bottom;
+				float Sleft, Stop, Sright, Sbottom;
+				e->GetBoundingBox(left, top, right, bottom);
+				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true /*&& state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true*/)
+				{
+					untouchableTimer->Start();
+					//this->AddHP(DAME2);
+					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+					{
+						// đặt trạng thái deflect cho simon
+						if (e->nx != 0)
+						{
+							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
+							else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
+						}
+
+						SetState(SIMON_DEFLECT);
+					}
 				}
 			}
 		}
@@ -211,12 +218,8 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 		if (isAutoWalk == false)//
 		{
 			x += min_tx * dx + nx * 0.1f;		// nx*0.4f : need to push out a bit to avoid overlapping next frame
-			if(untouchableTimer->IsTimeUp() == true)//
-				y += min_ty * dy + ny * 0.1f;
+			y += min_ty * dy + ny * 0.1f;
 		}
-				
-		/*if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;*/
 
 		// Collision logic with Goombas
 		for (UINT i = 0; i < coEventsResult.size(); i++)
@@ -271,31 +274,32 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 						y += dy;
 				}
 			}
-			else if (dynamic_cast<Knight*>(e->obj)|| dynamic_cast<Darkenbat*>(e->obj)||dynamic_cast<Monkey*>(e->obj)|| dynamic_cast<Ghost*>(e->obj) || dynamic_cast<Raven*>(e->obj) || dynamic_cast<Zombie*>(e->obj) || dynamic_cast<Skeleton*>(e->obj))
+			else if (/*dynamic_cast<Knight*>(e->obj)||*/ dynamic_cast<Darkenbat*>(e->obj)/*||dynamic_cast<Monkey*>(e->obj)|| dynamic_cast<Ghost*>(e->obj) */|| dynamic_cast<Raven*>(e->obj) /*|| dynamic_cast<Zombie*>(e->obj) */|| dynamic_cast<Skeleton*>(e->obj))
 			{
 				if (state != SIMON_DEAD &&state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 				{
 					untouchableTimer->Start();
-					if (dynamic_cast<Knight*>(e->obj))
-					{
-						//Knight* knight = dynamic_cast<Knight*>(e->obj);
-						this->AddHP(DAME2);
-					}
-					else if (dynamic_cast<Darkenbat*>(e->obj))
+					//if (dynamic_cast<Knight*>(e->obj))
+					//{
+					//	//Knight* knight = dynamic_cast<Knight*>(e->obj);
+					//	this->AddHP(DAME2);
+					//}
+					//else 
+					if (dynamic_cast<Darkenbat*>(e->obj))
 					{
 						Darkenbat* dk = dynamic_cast<Darkenbat*>(e->obj);
 						dk->isDone = true;
 						dk->SetState(DARKBAT_STATE_DIE);
 						this->AddHP(DAME2);
 					}
-					else if (dynamic_cast<Monkey*>(e->obj))
+					/*else if (dynamic_cast<Monkey*>(e->obj))
 					{
 						this->AddHP(DAME2);
 					}
 					else if (dynamic_cast<Ghost*>(e->obj))
 					{
 						this->AddHP(DAME1);
-					}
+					}*/
 					else if (dynamic_cast<Raven*>(e->obj))
 					{
 						Raven* raven = dynamic_cast<Raven*>(e->obj);
@@ -303,10 +307,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 						raven->SetState(RAVEN_STATE_DIE);
 						this->AddHP(DAME2);
 					}
-					else if (dynamic_cast<Zombie*>(e->obj))
+					/*else if (dynamic_cast<Zombie*>(e->obj))
 					{
 						this->AddHP(DAME2);
-					}
+					}*/
 					else if (dynamic_cast<Skeleton*>(e->obj))
 					{
 						this->AddHP(DAME2);
@@ -487,7 +491,6 @@ void Simon::SetState(int state)
 		invisibilityTimer->Stop();
 		vx = 0;
 		vy = 0;
-		//SimonLife -= 1;
 		break;
 	}
 }
