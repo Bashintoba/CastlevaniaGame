@@ -33,6 +33,11 @@ Simon::Simon()
 		SubWeaponList.push_back(subweapon);
 	}
 	nx = 1;
+	Subweapon = -1;
+	SimonMana = SIMON_MANA;
+	SimonScore = 0;
+	SimonLife = SIMON_LIFE;
+	SimonDoubleTri = -1;
 	IdSwithMap = 1;
 	IdCurrMap = 1;
 	IdNextMap = 1;
@@ -57,11 +62,9 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 	if (isAutoWalk == true)//
 		SimonAutoWalk();
 
-	// Reset untouchable timer if untouchable time has passed
 	if (untouchableTimer->IsTimeUp() == true)
 		untouchableTimer->Stop();
 
-	// Reset invisibility timer if invisibility time has passed
 	if (invisibilityTimer->IsTimeUp() == true)
 		invisibilityTimer->Stop();
 
@@ -104,13 +107,13 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 				float Sleft, Stop, Sright, Sbottom;
 				e->GetBoundingBox(left, top, right, bottom);
 				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
-				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true /*&& state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true*/)
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true)
 				{
 					untouchableTimer->Start();
-					//this->AddHP(DAME1);
+					this->AddHP(DAME1);
 					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
 					{
-						// đặt trạng thái deflect cho simon
+						// cài trạng thái deflect cho simon
 						if (e->nx != 0)
 						{
 							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
@@ -129,13 +132,12 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 				float Sleft, Stop, Sright, Sbottom;
 				e->GetBoundingBox(left, top, right, bottom);
 				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
-				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true /*&& state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true*/)
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true)
 				{
 					untouchableTimer->Start();
 					this->AddHP(DAME2);
-					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+					if (isOnStair == false || HP == 0)
 					{
-						// đặt trạng thái deflect cho simon
 						if (e->nx != 0)
 						{
 							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
@@ -154,13 +156,12 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 				float Sleft, Stop, Sright, Sbottom;
 				e->GetBoundingBox(left, top, right, bottom);
 				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
-				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true /*&& state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true*/)
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true)
 				{
 					untouchableTimer->Start();
 					this->AddHP(DAME2);
-					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+					if (isOnStair == false || HP == 0)
 					{
-						// đặt trạng thái deflect cho simon
 						if (e->nx != 0)
 						{
 							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
@@ -179,13 +180,12 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 				float Sleft, Stop, Sright, Sbottom;
 				e->GetBoundingBox(left, top, right, bottom);
 				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
-				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true /*&& state != SIMON_DEAD && state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true*/)
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true )
 				{
 					untouchableTimer->Start();
-					//this->AddHP(DAME2);
-					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
+					this->AddHP(DAME2);
+					if (isOnStair == false || HP == 0)
 					{
-						// đặt trạng thái deflect cho simon
 						if (e->nx != 0)
 						{
 							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
@@ -353,7 +353,7 @@ void Simon::Render()
 {	
 	int alpha = 255;
 	int tempState = state;
-	if (untouchableTimer->IsTimeUp() == false)  // Để render Simon nhấp nháy trong trạng thái isUntouchable
+	if (untouchableTimer->IsTimeUp() == false)  // Để render Simon nhấp nháy trong trạng thái sau khi bị thương
 		alpha = rand() % 255;
 	else if (invisibilityTimer->IsTimeUp() == false) // invisible
 	{
@@ -387,7 +387,6 @@ void Simon::SetState(int state)
 	case SIMON_WALKING:
 		CantMoveDown = true;
 		isOnStair = false;
-		isWalking = true;
 		if (nx > 0)
 			vx = SIMON_WALKING_SPEED;
 		else
@@ -410,7 +409,6 @@ void Simon::SetState(int state)
 	case SIMON_IDLE:
 		CantMoveDown = true;
 		isOnStair = false;
-		isWalking = false;
 		isSitting = false;
 		isJumping = false;
 		if (isOnMF == false)
@@ -423,12 +421,10 @@ void Simon::SetState(int state)
 		isOnStair = false;
 		vx = 0;		
 		isSitting = true;
-		isWalking = false;
 		break;
 	case SIMON_ATK:
 		isOnStair = false;
 		isAtk = true;
-		isWalking = false;
 		if (isJumping == false)
 		{
 			vx = 0;
@@ -449,7 +445,6 @@ void Simon::SetState(int state)
 		isGotChainItem = true;
 		isJumping = false;
 		isAtk = false;
-		isWalking = false;
 		isSitting = false;
 		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
@@ -612,7 +607,7 @@ bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 			StairIsCollided = liststair->at(i);
 
 			if (simon_b < stair_b) CanMoveDown = true;// có bật thang ở dưới simon
-			if (y >= stair_t - 32) CanMoveUp = true;// có bật thang ở trên simon
+			if (y >= stair_t - STAIR_BBOX_WIDTH) CanMoveUp = true;// có bật thang ở trên simon
 
 			// kiểm tra xem simon có thể di chuyển lên/xuống hay ko
 			// (dựa vào toạ độ của 2 bậc liền kề hơn/kém nhau 32)

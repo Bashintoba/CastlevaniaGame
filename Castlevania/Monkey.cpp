@@ -38,7 +38,7 @@ void Monkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 		if (target != NULL)
 		{
-			if (GetDistance(this->x, this->y, target->x, target->y) <= 200)
+			if (GetDistance(this->x, this->y, target->x, target->y) <= DIST_ACTIVEMK)
 			{
 				if (isChase == false)
 				{

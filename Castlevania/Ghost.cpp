@@ -2,7 +2,7 @@
 
 Ghost::Ghost(LPGAMEOBJECT target)
 {
-	this->HP = 6;
+	this->HP = GHOST_HP;
 	isDone = false;
 	isEnable = false;
 	this->target = target;
@@ -25,7 +25,7 @@ void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 	{
 		if (target != NULL)
 		{
-			if (GetDistance(this->x, this->y, target->x, target->y) > 100)
+			if (GetDistance(this->x, this->y, target->x, target->y) > DIST_ACTIVEG)
 			{
 				if (state == GHOST_STATE_INACTIVE)
 					SetState(GHOST_STATE_FLYING);

@@ -9,7 +9,7 @@ Knight::Knight(float Xstart, float Xend)
 {
 	this->Xstart = Xstart;
 	this->Xend = Xend;
-	HP = 6;
+	HP = KNIGHT_HP;
 	isDone = false;
 	isEnable = false;
 }

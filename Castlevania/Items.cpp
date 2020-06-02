@@ -1,4 +1,5 @@
 ﻿#include "Items.h"
+#include "Candle.h"
 #include "Knight.h"
 #include "Darkenbat.h"
 #include "Monkey.h"
@@ -51,7 +52,7 @@ void Items::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 	for (UINT i = 0; i < coObject->size(); i++)
 	{
-		if (coObject->at(i) != dynamic_cast<Knight*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Darkenbat*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Ghost*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Monkey*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Skeleton*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Raven*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Zombie*>(coObject->at(i)))
+		if (coObject->at(i) != dynamic_cast<Candle*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Knight*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Darkenbat*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Ghost*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Monkey*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Skeleton*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Raven*>(coObject->at(i)) && coObject->at(i) != dynamic_cast<Zombie*>(coObject->at(i)))
 		{
 			ListsColl.push_back(coObject->at(i));
 		}

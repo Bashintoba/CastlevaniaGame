@@ -21,42 +21,48 @@ public:
 	virtual void Render();
 	void SetState(int state);	
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
+	//thời gian
 	Timer* untouchableTimer = new Timer(TIME_UNTOUCH);
 	Timer* invisibilityTimer = new Timer(TIME_INVIS);
+	//cờ
 	bool isJumping = false;
 	bool isAtk = false;
-	bool isWalking = false;
 	bool isSitting = false;
-	bool IsAtk();
 	bool IsWait = false;
 	bool isGotChainItem = false;
 	bool isGotCross = false;
 	bool isAtkWithWhip = false;
 	bool isAtkWithSW = false;
 	bool isChangeScene = false;
-	bool isOnStair = false;//
-	bool CanMoveDown = false;//
-	bool CanMoveUp = false;//
 	bool isAutoWalk = false;
 	bool CantMoveDown = true;
 	bool isOnMF = false;
+	//cầu thang
 	LPGAMEOBJECT StairIsCollided = nullptr;//
 	LPGAMEOBJECT StairIsCollidedTemp = nullptr;//
-	int stairnx = 0;//
+	bool SimonColliWithStair(vector<LPGAMEOBJECT>* liststair);
 	void StandOnStair() { vx = vy = 0; }//
-	int Subweapon = -1;
-	int SimonMana = SIMON_MANA;
-	int SimonScore = 0;
-	int SimonLife = SIMON_LIFE;
-	int SimonDoubleTri = -1;
-	int IdSwithMap = 0;
-	int IdCurrMap = 0;
-	int IdNextMap = 0;
+	int stairnx = 0;//
+	bool isOnStair = false;//
+	bool CanMoveDown = false;//
+	bool CanMoveUp = false;//
+	//thuộc tính cơ bản
+	int Subweapon;
+	int SimonMana;
+	int SimonScore;
+	int SimonLife;
+	int SimonDoubleTri;
+	int IdSwithMap;
+	int IdCurrMap;
+	int IdNextMa;
+	//vũ khí
 	Whip * GetWhip() { return whip; }
 	SubWeapon * GetSubWeapon() { return subweapon; }
 	vector<SubWeapon*> GetListSubWeapon() { return SubWeaponList; }
-	void SimonColliWithItems(vector<LPGAMEOBJECT> *listitem);
-	bool SimonColliWithStair(vector<LPGAMEOBJECT> *liststair);
+	bool IsAtk();
+	//va chạm với item
+	void SimonColliWithItems(vector<LPGAMEOBJECT>* listitem);
+	//getset
 	int GetMana() { return SimonMana; }
 	void SetMana(int Mana) { SimonMana = Mana; }
 	int GetScore() { return SimonScore; }
@@ -68,6 +74,7 @@ public:
 	int GetSimonDoubleTri() { return SimonDoubleTri; }
 	void SetSimonDoubleTri(int dbt) { SimonDoubleTri = dbt; }
 	void AddScore(int score) { SimonScore += score; }	
+	//auto walk
 	void AutoWalk(float new_x, int new_state, int new_nx);
 	void SimonAutoWalk();
 	float newposition = 0;		// Khoảng cách 

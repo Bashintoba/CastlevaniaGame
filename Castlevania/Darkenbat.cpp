@@ -29,7 +29,7 @@ void Darkenbat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMoveme
 
 		if (target != NULL)
 		{
-			if (GetDistance(this->x, this->y, target->x, target->y) <= 170)
+			if (GetDistance(this->x, this->y, target->x, target->y) <= DIST_ACTIVEDB)
 			{
 				if (target->GetState() != SIMON_STAIRDOWN && target->GetState() != SIMON_STAIRUP && target->GetState() != SIMON_STAIRDOWN_ATK && target->GetState() != SIMON_STAIRUP_ATK)
 				{
