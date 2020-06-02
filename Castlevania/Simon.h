@@ -41,11 +41,15 @@ public:
 	LPGAMEOBJECT StairIsCollided = nullptr;//
 	LPGAMEOBJECT StairIsCollidedTemp = nullptr;//
 	bool SimonColliWithStair(vector<LPGAMEOBJECT>* liststair);
+	bool SimonColliWithStair12(vector<LPGAMEOBJECT>* liststair);
 	void StandOnStair() { vx = vy = 0; }//
 	int stairnx = 0;//
 	bool isOnStair = false;//
 	bool CanMoveDown = false;//
 	bool CanMoveUp = false;//
+	bool CanMoveDOut = false;
+	bool CanMoveUOut = false;
+	bool Tam1 = false;
 	//thuộc tính cơ bản
 	int Subweapon;
 	int SimonMana;

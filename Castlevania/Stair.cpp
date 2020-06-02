@@ -1,10 +1,11 @@
 #include "Stair.h"
 
-Stair::Stair()
+Stair::Stair(int type)
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	LPANIMATION_SET ani_set = animation_sets->Get(STAIR_ANIMATION_SET);
 	SetAnimationSet(ani_set);
+	this->type = type;
 }
 
 Stair::~Stair()

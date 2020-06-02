@@ -20,7 +20,7 @@ TileMap::TileMap(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data, int Map_wi
 void TileMap::Load()
 {
 	tilemap.clear();
-	DebugOut(L"[INFO] Start loading map resources from : %s \n", MapFilePath);
+	//DebugOut(L"[INFO] Start loading map resources from : %s \n", MapFilePath);
 	ifstream f;
 	f.open(MapFilePath);
 	if (f.fail())
@@ -47,7 +47,7 @@ void TileMap::Load()
 
 	f.close();
 
-	DebugOut(L"[INFO] Done loading map resources %s\n", MapFilePath);
+	//DebugOut(L"[INFO] Done loading map resources %s\n", MapFilePath);
 }
 
 void TileMap::LoadMap()

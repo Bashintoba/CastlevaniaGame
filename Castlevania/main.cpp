@@ -166,7 +166,7 @@ void _ParseSection_ClearMap(string line)
 
 void LoadResources()
 {
-	DebugOut(L"[INFO] Start loading scene resources from : %s \n", ResourcesFilePath);
+	//DebugOut(L"[INFO] Start loading scene resources from : %s \n", ResourcesFilePath);
 
 	ifstream f;
 	f.open(ResourcesFilePath);
@@ -224,7 +224,7 @@ void LoadResources()
 	f.close();
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"Textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
-	DebugOut(L"[INFO] Done loading scene resources %s\n", ResourcesFilePath);
+	//DebugOut(L"[INFO] Done loading scene resources %s\n", ResourcesFilePath);
 }
 
 void Update(DWORD dt)
