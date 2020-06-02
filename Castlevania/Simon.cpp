@@ -595,62 +595,6 @@ bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 {
 	float simon_l, simon_t, simon_r, simon_b;
 	GetBoundingBox(simon_l, simon_t, simon_r, simon_b);
-	
-	simon_t += 50;	// thu nhỏ vùng xét va chạm, chỉ xét va chạm với chân của Simon
-	simon_b += 5;  // bottom +5 để xét cho va chạm với bậc thang đầu tiên khi bước xuống
-	
-	CanMoveUp = false;
-	CanMoveDown = false;
-
-	for (UINT i = 0; i < liststair->size(); i++)
-	{
-		float stair_l, stair_t, stair_r, stair_b;
-		liststair->at(i)->GetBoundingBox(stair_l, stair_t, stair_r, stair_b);
-
-		if (CGameObject::AABB(simon_l, simon_t, simon_r, simon_b, stair_l, stair_t, stair_r, stair_b) == true)
-		{
-			if (liststair->at(i)->ani == 2 || liststair->at(i)->ani == 3 || liststair->at(i)->ani == 4 || liststair->at(i)->ani == 7) stairnx = -1;//trái trên phải dưới
-			else stairnx = 1;//trái dưới phải trên
-
-			StairIsCollided = liststair->at(i);
-
-			if (simon_b < stair_b) CanMoveDown = true;// có bật thang ở dưới simon
-			if (y >= stair_t - STAIR_BBOX_WIDTH) CanMoveUp = true;// có bật thang ở trên simon
-
-			// kiểm tra xem simon có thể di chuyển lên/xuống hay ko
-			// (dựa vào toạ độ của 2 bậc liền kề hơn/kém nhau 32)
-
-			float upstair_x = -99999999999, upstair_y = -99999999999; // toạ độ của bậc thang liền kề
-
-			for (UINT j = 0; j < liststair->size(); j++)
-			{
-				if (i == j)//trùng bật thang đg đứng
-					continue;
-
-				liststair->at(j)->GetPosition(upstair_x, upstair_y);
-
-				float dx = abs(upstair_x - stair_l);
-				float dy = upstair_y - stair_t;
-
-				if (dx == STAIR_BBOX_WIDTH && dy == -STAIR_BBOX_WIDTH) {// bậc nằm trên
-					CanMoveUp = true;
-				}	
-				if (dx == STAIR_BBOX_WIDTH && dy == STAIR_BBOX_WIDTH) { // bậc nằm duoi 
-					CanMoveDown = true;
-				}
-			}
-
-			return true;
-		}
-
-	}
-	return false;
-}
-
-bool Simon::SimonColliWithStair12(vector<LPGAMEOBJECT>* liststair)
-{
-	float simon_l, simon_t, simon_r, simon_b;
-	GetBoundingBox(simon_l, simon_t, simon_r, simon_b);
 
 	simon_t += 50;	// thu nhỏ vùng xét va chạm, chỉ xét va chạm với chân của Simon
 	simon_b += 5;  // bottom +5 để xét cho va chạm với bậc thang đầu tiên khi bước xuống

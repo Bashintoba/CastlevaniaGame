@@ -1167,14 +1167,14 @@ bool CPlaySceneKeyHandler::StairCollisionsDetectionUp()
 	Simon *simon = ((CPlayScene*)scene)->simon;
 	CPlayScene * playscene = ((CPlayScene*)scene);
 	//simon->CantMoveDown = false;
-	return simon->SimonColliWithStair12(&playscene->GetListStairUp());
+	return simon->SimonColliWithStair(&playscene->GetListStairUp());
 }
 
 bool CPlaySceneKeyHandler::StairCollisionsDetectionDown()
 {
 	Simon *simon = ((CPlayScene*)scene)->simon;
 	CPlayScene * playscene = ((CPlayScene*)scene);
-	return simon->SimonColliWithStair12(&playscene->GetListStairDown());
+	return simon->SimonColliWithStair(&playscene->GetListStairDown());
 }
 
 void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
