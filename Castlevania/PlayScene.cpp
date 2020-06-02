@@ -848,7 +848,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {	
-	//tilemaps->Get((idMap*10000))->Draw();//
+	tilemaps->Get((idMap*10000))->Draw();//
 	int nx = 0;
 
 	for (int i = 0; i < listStairsUp.size(); i++)
