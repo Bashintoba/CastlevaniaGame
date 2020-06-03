@@ -662,7 +662,7 @@ void CPlayScene::Update(DWORD dt)
 			int IdItems = obj->GetIDitems();
 			if (IdItems == CROWN)
 			{
-				listItems.push_back(DropItems(IdItems,192, 390));
+				listItems.push_back(DropItems(IdItems,256, 390));
 			}
 			else if (IdItems != -1)
 			{
@@ -672,49 +672,49 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<Knight*>(obj) && obj->GetState() == KNIGHT_STATE_DIE && obj->isDone == false && obj->isEnable == false)
 		{
 			obj->isEnable = true;
-			simon->AddScore(200);
+			simon->AddScore(SCORE200);
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
 		}
 		if (dynamic_cast<Darkenbat*>(obj) && obj->GetState() == DARKBAT_STATE_DIE && obj->isDone == false && obj->isEnable == false)
 		{
 			obj->isEnable = true;
-			simon->AddScore(100);
+			simon->AddScore(SCORE100);
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
 		}
 		if (dynamic_cast<Monkey*>(obj) && obj->GetState() == MONKEY_STATE_DIE && obj->isDone == false && obj->isEnable == false)
 		{
 			obj->isEnable = true;
-			simon->AddScore(300);
+			simon->AddScore(SCORE300);
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()-10));
 		}
 		if (dynamic_cast<Ghost*>(obj) && obj->GetState() == GHOST_STATE_DIE && obj->isDone == false && obj->isEnable == false)
 		{
 			obj->isEnable = true;
-			simon->AddScore(300);
+			simon->AddScore(SCORE300);
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY() - 10));
 		}
 		if (dynamic_cast<Raven*>(obj) && obj->GetState() == RAVEN_STATE_DIE && obj->isDone == false && obj->isEnable == false)
 		{
 			obj->isEnable = true;
-			simon->AddScore(200);
+			simon->AddScore(SCORE200);
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
 		}
 		if (dynamic_cast<Zombie*>(obj) && obj->GetState() == ZOMBIE_STATE_DIE && obj->isDone == false && obj->isEnable == false)
 		{
 			obj->isEnable = true;
-			simon->AddScore(200);
+			simon->AddScore(SCORE200);
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
 		}
 		if (dynamic_cast<Skeleton*>(obj) && obj->GetState() == SKELETON_STATE_DIE && obj->isDone == false && obj->isEnable == false)
 		{
 			obj->isEnable = true;
-			simon->AddScore(400);
+			simon->AddScore(SCORE400);
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
 		}
@@ -1025,9 +1025,9 @@ void CPlaySceneKeyHandler::Simon_StairDown()
 			simon->StairIsCollided->GetPosition(stairx, stairy);
 			if (Stairnx == 1)
 			{
-				stairx -= 32.0f;
+				stairx -= STAIR1;
 			}
-			else stairx += 5.0f;
+			//else stairx += STAIR0;
 			simon->nx = -simon->stairnx;
 			simon->SetState(SIMON_STAIRDOWN);
 			simon->AutoWalk(stairx, SIMON_IDLE, simon->nx);
@@ -1049,9 +1049,9 @@ void CPlaySceneKeyHandler::Simon_StairDown()
 		simon->StairIsCollided->GetPosition(stairx, stairy);
 		if (Stairnx == 1)
 		{
-			stairx += 5.0f;
+			stairx += STAIR0;
 		}
-		else stairx -= 32.0f;
+		else stairx -= STAIR1;
 
 		if (stairx < simonx) simon->nx = -1;
 		else if (stairx > simonx) simon->nx = 1;
@@ -1086,9 +1086,9 @@ void CPlaySceneKeyHandler::Simon_StairUp()
 			simon->StairIsCollided->GetPosition(stairx, stairy);
 			if (Stairnx == 1)
 			{
-				stairx += 5.0f;
+				stairx += STAIR0;
 			}
-			else stairx -= 32.0f;
+			else stairx -= STAIR1;
 			simon->nx = simon->stairnx;
 			simon->SetState(SIMON_STAIRUP);
 			simon->AutoWalk(stairx, SIMON_IDLE, simon->nx);//tránh trường hợp ra khỏi cầu thang mà ko dụng vào mặt đất
@@ -1110,9 +1110,9 @@ void CPlaySceneKeyHandler::Simon_StairUp()
 
 		if (Stairnx == 1)
 		{
-			stairx -= 32.0f;//simon đứng giữa cầu thang thì mới đúng animation 
+			stairx -= STAIR1;//simon đứng giữa cầu thang thì mới đúng animation 
 		}
-		else stairx += 5.0f;
+		else stairx += STAIR0;
 
 		if (stairx < simonx) simon->nx = -1;
 		else if (stairx > simonx)  simon->nx = 1;

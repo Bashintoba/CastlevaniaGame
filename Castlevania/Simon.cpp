@@ -19,6 +19,9 @@
 #include "Skeleton.h"
 #include "Bone.h"
 
+#define DIST1	40
+#define DIST2	55
+
 Simon::Simon()
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
@@ -196,6 +199,30 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 					}
 				}
 			}
+
+			if (dynamic_cast<Skeleton*>(obj))
+			{
+				Skeleton* e = dynamic_cast<Skeleton*> (obj);
+				float left, top, right, bottom;
+				float Sleft, Stop, Sright, Sbottom;
+				e->GetBoundingBox(left, top, right, bottom);
+				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true)
+				{
+					untouchableTimer->Start();
+					this->AddHP(DAME2);
+					if (isOnStair == false || HP == 0)
+					{
+						if (e->nx != 0)
+						{
+							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
+							else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
+						}
+
+						SetState(SIMON_DEFLECT);
+					}
+				}
+			}
 		}
 	}
 
@@ -274,7 +301,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 						y += dy;
 				}
 			}
-			else if (/*dynamic_cast<Knight*>(e->obj)||*/ dynamic_cast<Darkenbat*>(e->obj)/*||dynamic_cast<Monkey*>(e->obj)|| dynamic_cast<Ghost*>(e->obj) */|| dynamic_cast<Raven*>(e->obj) /*|| dynamic_cast<Zombie*>(e->obj) */|| dynamic_cast<Skeleton*>(e->obj))
+			else if (/*dynamic_cast<Knight*>(e->obj)||*/ dynamic_cast<Darkenbat*>(e->obj)/*||dynamic_cast<Monkey*>(e->obj)|| dynamic_cast<Ghost*>(e->obj) */|| dynamic_cast<Raven*>(e->obj) /*|| dynamic_cast<Zombie*>(e->obj) || dynamic_cast<Skeleton*>(e->obj)*/)
 			{
 				if (state != SIMON_DEAD &&state != SIMON_HENSHIN && untouchableTimer->IsTimeUp() == true && invisibilityTimer->IsTimeUp() == true)
 				{
@@ -311,10 +338,10 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 					{
 						this->AddHP(DAME2);
 					}*/
-					else if (dynamic_cast<Skeleton*>(e->obj))
+					/*else if (dynamic_cast<Skeleton*>(e->obj))
 					{
 						this->AddHP(DAME2);
-					}
+					}*/
 
 					if (isOnStair == false || HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
 					{
@@ -614,15 +641,13 @@ bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 			if (e->ani == 2 || e->ani == 3 || e->ani == 4 || e->ani == 7) stairnx = -1;//trái trên phải dưới
 			else stairnx = 1;//trái dưới phải trên
 
-			StairIsCollided = liststair->at(i);
-
 			if (e->type == 0)
 			{
 				CanMoveUOut = true;
 				if (isOnStair == true)
 				{
 					int SimonY = int(this->y);
-					if (stair_t - SimonY >= 45 && stair_t - SimonY <= 51)
+					if (stair_t - SimonY >= DIST1 && stair_t - SimonY <= DIST2)
 					{
 						CanMoveDown = true;
 					}
@@ -636,7 +661,7 @@ bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 				if (isOnStair == true)
 				{
 					int SimonY = int(this->y);
-					if (stair_t - SimonY >= 45 && stair_t - SimonY <= 51)
+					if (stair_t - SimonY >= DIST1 && stair_t - SimonY <= DIST2)
 					{
 						CanMoveUp = true;
 					}
@@ -644,6 +669,8 @@ bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 						CanMoveUp = false;
 				}
 			}
+
+			StairIsCollided = liststair->at(i);
 
 			return true;
 		}

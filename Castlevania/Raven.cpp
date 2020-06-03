@@ -32,7 +32,7 @@ void Raven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 		if (isbuffspeed == false)
 		{
-			if (x >= target->GetPositionX())
+			if (x > target->GetPositionX())
 				nx = -1;
 			else
 				nx = 1;
@@ -40,7 +40,7 @@ void Raven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 		if (isbuffspeed == false)
 		{
-			if (y >= target->GetPositionY())
+			if (y > target->GetPositionY())
 				directionY = -1;
 			else
 				directionY = 1;
@@ -57,8 +57,10 @@ void Raven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 					SetState(RAVEN_STATE_FLYING);
 					float VX = abs(target->GetPositionX() - this->x);
 					float VY = abs(target->GetPositionY() - this->y);
-					vx = (float)(VX * 0.0003) * nx;
-					vy = (float)(VY * 0.0003) * directionY;
+					//vx = (float)(VX * 0.0003) * nx;
+					//vy = (float)(VY * 0.0003) * directionY;
+					vx = (float)(RAVEN_SPEED_1) * nx;
+					vy = (float)(RAVEN_SPEED_1) * directionY;
 				}
 
 			}
@@ -80,11 +82,13 @@ void Raven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 			doyouwanttobuildasnowman = true;
 			float VX = abs(target->GetPositionX() - this->x);
 			float VY = abs(target->GetPositionY() - this->y);
-			vx = (float)(VX * 0.0009) * nx;
-			vy = (float)(VY * 0.0009) * directionY;
+			vx = (float)(VX * RAVEN_SPEED_2) * nx;
+			vy = (float)(VY * RAVEN_SPEED_2) * directionY;
+			//vx = (float)(0.17) * nx;
+			//vy = (float)(0.17) * directionY;
 		}
 		//dí lần 2
-	   /*if (raven_want_to_play_again->IsTimeUp() == true && doyouwanttobuildasnowman == true)
+	   if (raven_want_to_play_again->IsTimeUp() == true && doyouwanttobuildasnowman == true)
 	   {
 		   isbuffspeed = false;
 		   findtarget = false;
@@ -99,9 +103,11 @@ void Raven::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		   isbuffspeed = true;
 		   float VX = abs(target->GetPositionX() - this->x);
 		   float VY = abs(target->GetPositionY() - this->y);
-		   vx = (float)(VX * 0.001) * nx;
-		   vy = (float)(VY * 0.001) * directionY;
-	   }*/
+		   vx = (float)(VX * RAVEN_SPEED_2) * nx;
+		   vy = (float)(VY * RAVEN_SPEED_2) * directionY;
+		   //vx = (float)(0.2) * nx;
+		   //vy = (float)(0.2) * directionY;
+	   }
 	}
 
 }

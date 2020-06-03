@@ -181,6 +181,9 @@
 #define MONEY_BAG_BBOX_WIDTH  30
 #define MONEY_BAG_BBOX_HEIGHT 30
 #define SCORE300	300
+#define SCORE100	100
+#define SCORE200	200
+#define SCORE400	400
 #define MONEY_BAG_BLUE	3
 #define SCORE500	500
 #define MONEY_BAG_WHITE	4
@@ -244,6 +247,9 @@
 //define stair
 #define STAIR_BBOX_WIDTH  32
 #define STAIR_BBOX_HEIGHT 32
+
+#define STAIR1	30.0f
+#define STAIR0	4.0f
 //define gate
 #define GATE_BBOX_WIDTH		48
 #define GATE_BBOX_HEIGHT	96
@@ -292,6 +298,9 @@
 #define GHOST_STATE_FLYING			0
 #define GHOST_STATE_DIE				1
 //define Raven
+#define RAVEN_SPEED_1	0.05
+#define RAVEN_SPEED_2	0.0015
+
 #define RAVEN_BBOX_WIDTH			32
 #define RAVEN_BBOX_HEIGHT			32
 
