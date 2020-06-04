@@ -53,7 +53,7 @@ void TileMap::Load()
 void TileMap::LoadMap()
 {
 	CTextures * texture = CTextures::GetInstance();
-	texture->Add(Id, MapPNG, D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(Id, MapPNG, D3DCOLOR_XRGB(0, 0, 0));
 
 	LPDIRECT3DTEXTURE9 texTileMap = texture->Get(Id);
 

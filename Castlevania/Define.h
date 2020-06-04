@@ -335,4 +335,6 @@
 
 #define BONE_BBOX_WIDTH 32
 #define BONE_BBOX_HEIGHT 32
+
+#define WEAPON_BONE_SPEED_X	0.15
 #endif

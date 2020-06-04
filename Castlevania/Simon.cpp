@@ -89,7 +89,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		if (coObjects->at(i) != dynamic_cast<Candle*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Stair*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Ghost*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Monkey*>(coObjects->at(i)))
+		if (coObjects->at(i) != dynamic_cast<Candle*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Stair*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Ghost*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Monkey*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Knight*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Skeleton*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Zombie*>(coObjects->at(i)))
 		{
 			ListsColl.push_back(coObjects->at(i));
 		}
@@ -638,8 +638,9 @@ bool Simon::SimonColliWithStair(vector<LPGAMEOBJECT>* liststair)
 		if (CGameObject::AABB(simon_l, simon_t, simon_r, simon_b, stair_l, stair_t, stair_r, stair_b) == true)
 		{
 			Stair* e = dynamic_cast<Stair*>(liststair->at(i));
-			if (e->ani == 2 || e->ani == 3 || e->ani == 4 || e->ani == 7) stairnx = -1;//trái trên phải dưới
-			else stairnx = 1;//trái dưới phải trên
+			//if (e->ani == 2 || e->ani == 3 || e->ani == 4 || e->ani == 7) stairnx = -1;//trái trên phải dưới
+			//else stairnx = 1;//trái dưới phải trên
+			stairnx = e->nx;
 
 			if (e->type == 0)
 			{

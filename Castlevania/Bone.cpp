@@ -58,7 +58,7 @@ void Bone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 				if (s->state != SIMON_DEAD && s->state != SIMON_HENSHIN && s->untouchableTimer->IsTimeUp() == true && s->invisibilityTimer->IsTimeUp() == true)
 				{
 					s->untouchableTimer->Start();
-					s->AddHP(-1);
+					s->AddHP(DAME1);
 					if (s->isOnStair == false || s->HP == 0)  // Simon đứng trên cầu thang sẽ không bị bật ngược lại
 					{
 						// đặt trạng thái deflect cho simon
@@ -115,8 +115,8 @@ void Bone::SetState(int state)
 	switch (state)
 	{
 	case BONE:
-		if (nx > 0) vx = 0.15;
-		else vx = -0.15;
+		if (nx > 0) vx = WEAPON_BONE_SPEED_X;
+		else vx = -WEAPON_BONE_SPEED_X;
 		vy = -WEAPONS_AXE_SPEED_Y;
 		break;
 	default:

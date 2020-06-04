@@ -21,21 +21,21 @@ int CPlayScene::RandomItems()
 {
 	int random = rand() % 100;
 	if (random <= 20)
-		return 0;
+		return SMALL_HEART;
 	else if (20 < random && random <= 40)
-		return 1;
+		return LARGE_HEART;
 	else if (40 < random && random <= 50)
-		return 2;
+		return MONEY_BAG_RED;
 	else if (50 < random && random <= 60)
-		return 3;
+		return MONEY_BAG_BLUE;
 	else if (60 < random && random <= 70)
-		return 4;
+		return MONEY_BAG_WHITE;
 	else if (70 < random && random <= 80)
-		return 5;
+		return PORK_CHOP;
 	else if (80 < random && random <= 90)
-		return 6;
+		return CHAIN;
 	else if (90 < random && random <= 100)
-		return 13;
+		return INVISIBILITY_POTION;
 }
 
 Items * CPlayScene::DropItems(int iditems, float x, float y)
@@ -283,9 +283,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int st = atof(tokens[4].c_str());
 		int type = atof(tokens[5].c_str());
+		int nx = atof(tokens[3].c_str());
 		obj = new Stair(type);
 		obj->SetPosition(x, y);
 		obj->ani = st;
+		obj->nx = nx;
 		listObjects.push_back(obj);
 		break;
 	}
@@ -866,7 +868,7 @@ void CPlayScene::Render()
 	{
 		if (simon->isAtkWithWhip == true)
 		{
-			int tempState = simon->GetState();
+			/*int tempState = simon->GetState();
 			if (simon->invisibilityTimer->IsTimeUp() == false)
 			{
 				switch (tempState)
@@ -878,8 +880,9 @@ void CPlayScene::Render()
 				default:
 					break;
 				}
-			}
-			simon->GetWhip()->Render(simon->nx, simon->animation_set->at(tempState)->GetCurrentFrame());
+			}*/
+			//simon->GetWhip()->Render(simon->nx, simon->animation_set->at(tempState)->GetCurrentFrame());
+			simon->GetWhip()->Render(simon->nx, simon->animation_set->at(simon->state)->GetCurrentFrame());
 		}
 	}
 	else
@@ -1341,7 +1344,7 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	if (game->IsKeyDown(DIK_DOWN))
 	{
 
-		if (StairCollisionsDetectionDown() == true /*&& simon->CantMoveDown == true*/)
+		if (StairCollisionsDetectionDown() == true)
 		{
 			Simon_StairDown();
 			return;
@@ -1376,14 +1379,12 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	{
 		if (StairCollisionsDetectionUp() == true )
 		{
-			//simon->CantMoveDown = false;
 			Simon_StairUp();
 			return;
 		}
 
 		if (StairCollisionsDetectionDown() == true)
 		{
-			//simon->CantMoveDown = false;
 			Simon_StairUp();
 			return;
 		}
@@ -1401,10 +1402,46 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	{
 		if (simon->isOnStair == true)
 		{
-			if (simon->stairnx == 1) // cầu thang trái dưới - phải trên
-				Simon_StairUp();
+			if (simon->stairnx == 1)// cầu thang trái dưới - phải trên
+			{
+				if (StairCollisionsDetectionUp() == true)
+				{
+					Simon_StairUp();
+					return;
+				}
+
+				if (StairCollisionsDetectionDown() == true)
+				{
+					Simon_StairUp();
+					return;
+				}
+
+				if (simon->isOnStair == true)
+				{
+					Simon_StairUp();
+					return;
+				}
+			}
 			else
-				Simon_StairDown();
+			{
+				if (StairCollisionsDetectionDown() == true)
+				{
+					Simon_StairDown();
+					return;
+				}
+
+				if (StairCollisionsDetectionUp() == true)
+				{
+					Simon_StairDown();
+					return;
+				}
+
+				if (simon->isOnStair == true)
+				{
+					Simon_StairDown();
+					return;
+				}
+			}
 
 			return;
 		}
@@ -1417,10 +1454,46 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	{
 		if (simon->isOnStair == true)
 		{
-			if (simon->stairnx == 1) // cầu thang trái dưới - phải trên
-				Simon_StairDown();
+			if (simon->stairnx == 1)// cầu thang trái dưới - phải trên
+			{
+				if (StairCollisionsDetectionDown() == true)
+				{
+					Simon_StairDown();
+					return;
+				}
+
+				if (StairCollisionsDetectionUp() == true)
+				{
+					Simon_StairDown();
+					return;
+				}
+
+				if (simon->isOnStair == true)
+				{
+					Simon_StairDown();
+					return;
+				}
+			}
 			else
-				Simon_StairUp();
+			{
+				if (StairCollisionsDetectionUp() == true)
+				{
+					Simon_StairUp();
+					return;
+				}
+
+				if (StairCollisionsDetectionDown() == true)
+				{
+					Simon_StairUp();
+					return;
+				}
+
+				if (simon->isOnStair == true)
+				{
+					Simon_StairUp();
+					return;
+				}
+			}
 
 			return;
 		}
