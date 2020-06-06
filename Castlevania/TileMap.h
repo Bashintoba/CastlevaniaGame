@@ -19,11 +19,12 @@ class TileMap
 	int num_row_read, num_col_read;
 	int Tile_Width, Tile_Height;
 	int Id;
+	int R, G, B;
 
 	vector<vector<LPSPRITE>> tilemap;
 
 public:
-	TileMap(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data, int Map_width,int  Map_height, int Num_row_read,int Num_col_read,int Tile_width = 32, int Tile_height = 32);
+	TileMap(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data, int Map_width,int  Map_height, int Num_row_read,int Num_col_read,int R,int G,int B, int Tile_width = 32, int Tile_height = 32);
 	~TileMap();
 
 	void Load();
@@ -40,7 +41,7 @@ class TileMaps
 	unordered_map<int, LPTILEMAP> tilemaps;
 
 public:
-	void Add(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data, int Map_width, int  Map_height, int Num_row_read, int Num_col_read, int Tile_width = 32, int Tile_height = 32);
+	void Add(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data, int Map_width, int  Map_height, int Num_row_read, int Num_col_read,int R,int G,int B, int Tile_width = 32, int Tile_height = 32);
 	LPTILEMAP Get(int ID) { return tilemaps[ID]; }
 
 	static TileMaps * GetInstance();

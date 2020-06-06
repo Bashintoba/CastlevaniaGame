@@ -5,7 +5,7 @@
 Bone::Bone(LPGAMEOBJECT simon)
 {
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-	LPANIMATION_SET ani_set = animation_sets->Get(25);
+	LPANIMATION_SET ani_set = animation_sets->Get(BONE_ANIMATION);
 	SetAnimationSet(ani_set);
 	isDone = false;
 	isEnable = true;
@@ -21,7 +21,6 @@ void Bone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 		this->isEnable = true;
 		this->isDone = true;
 		return;
-
 	}
 
 	CGameObject::Update(dt);
@@ -84,7 +83,7 @@ void Bone::Render()
 {
 	if (isDone == false && CheckOutCam(X) == false)
 	{
-		animation_set->at(0)->Render(nx, x, y);
+		animation_set->at(state)->Render(nx, x, y);
 		//RenderBoundingBox();
 	}
 	else

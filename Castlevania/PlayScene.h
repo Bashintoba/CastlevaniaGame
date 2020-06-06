@@ -53,9 +53,7 @@ protected:
 	vector<vector<string>> FileInfMap;
 	vector<vector<string>> FileInfClearMap;
 
-	Timer* stopWatchTimer = new Timer(2000);
-	Timer* simonDeadTimer = new Timer(3000);
-	Timer* crossTimer = new Timer(500);
+	
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
@@ -71,6 +69,9 @@ public:
 	int RandomItems();
 	Items* DropItems(int iditems ,float x, float y);
 	void LoadPlayer();
+	Timer* stopWatchTimer = new Timer(2000);
+	Timer* simonDeadTimer = new Timer(3000);
+	Timer* crossTimer = new Timer(500);
 	void SwitchMap(int map, vector<vector<string>> FileInFMap, vector<vector<string>> FileInFClearMap);
 	vector<vector<string>>  GetFileInFMap() {return FileInfMap;}
 	vector<vector<string>> GetFileClearMap() { return FileInfClearMap; }

@@ -227,7 +227,7 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 
 					if (state == WEAPONS_HOLY_WATER)
 					{
-						SetState(WEAPONS_HOLY_WATER_SHATTERED&& state != WEAPONS_HOLY_WATER_SHATTERED);
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
 						this->x = monkey->x;
 						this->y = monkey->y;
 					}
@@ -406,10 +406,10 @@ void SubWeapon::SetWeaponPosition(float simonX, float simonY, bool isStand)
 {
 	if (nx > 0)
 	{
-		simonX += 45;
+		simonX += 25;
 	}
 	else
-		simonX -= 35;
+		simonX -= 15;
 	if (isStand == false)
 		simonY += 25;
 	else
@@ -426,18 +426,15 @@ void SubWeapon::SetState(int state)
 	switch (state)
 	{
 	case DAGGER:
-		if (nx > 0) vx = WEAPONS_DAGGER_SPEED;
-		else vx = -WEAPONS_DAGGER_SPEED;
+		vx = nx*WEAPONS_DAGGER_SPEED;
 		vy = 0;
 		break;
 	case WEAPONS_AXE:
-		if (nx > 0) vx = WEAPONS_AXE_SPEED_X;
-		else vx = -WEAPONS_AXE_SPEED_X;
+		vx = nx*WEAPONS_AXE_SPEED_X;
 		vy = -WEAPONS_AXE_SPEED_Y;
 		break;
 	case WEAPONS_BOOMERANG:
-		if (nx > 0) vx = WEAPONS_BOOMERANG_SPEED;
-		else vx = -WEAPONS_BOOMERANG_SPEED;
+		vx = nx*WEAPONS_BOOMERANG_SPEED;
 		vy = 0;
 		break;
 	case WEAPONS_HOLY_WATER:

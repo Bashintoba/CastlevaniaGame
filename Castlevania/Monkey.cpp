@@ -185,7 +185,7 @@ void Monkey::GetBoundingBox(float& left, float& top, float& right, float& bottom
 {
 	if (state != MONKEY_STATE_DIE)
 	{
-		left = x+20;//cho de giet
+		left = x;//cho de giet
 		top = y;
 		right = left + MONKEY_BBOX_WIDTH;
 		bottom = top + MONKEY_BBOX_HEIGHT;

@@ -116,7 +116,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 
 			e->GetBoundingBox(left, top, right, bottom);
 
-			if (CheckCollision(left, top, right, bottom) == true)
+			if (CheckCollision(left, top*2, right, bottom) == true)
 			{
 				e->AddHP(DAME2);
 				if (e->GetHP() <= 0)

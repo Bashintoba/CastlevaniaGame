@@ -65,6 +65,8 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap ,vector<ve
 {
 	Unload();
 	Clear(simon->IdCurrMap,FileInFClearMap);
+	//simon->vx = 0;
+	//simon->vy = 0;
 	simon->IdCurrMap = simon->IdSwithMap;
 	int camx, camy, camx1, camy1,widthgrid,heightgrid;
 	for (int i = (map-1); i <= (map - 1); i++)

@@ -38,7 +38,7 @@ void Skeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovemen
 
 		CGame* game = CGame::GetInstance();
 
-		if (GetDistance(this->x, this->y, target->x, target->y) < 200 && (x > game->GetCamPosX() && x < (game->GetCamPosX() + SCREEN_WIDTH) && (y >= game->GetCamPosY() && y < (game->GetCamPosY() + SCREEN_HEIGHT))) == true)
+		if (GetDistance(this->x, this->y, target->x, target->y) < 250 && (x > game->GetCamPosX() && x < (game->GetCamPosX() + SCREEN_WIDTH) && (y >= game->GetCamPosY() && y < (game->GetCamPosY() + SCREEN_HEIGHT))) == true)
 		{
 			if (state == SKELETON_STATE_INACTIVE)
 			{

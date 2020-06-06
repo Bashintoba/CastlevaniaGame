@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Define.h"
 
+
 class Bone : public CGameObject
 {
 	LPGAMEOBJECT simon;

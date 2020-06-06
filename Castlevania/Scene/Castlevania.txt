@@ -354,12 +354,12 @@
 #stair
 7	120	121	122	123	124	125	126	127
 [TILEMAP]
-10000	Map\Scene1.png	Map\Scene1_map.txt	1536	320	4	17
-20000	Map\Scene2.png	Map\Scene2_1_map.txt	512	384	4	7
-30000	Map\Scene2.png	Map\Scene2_2_map.txt	1040	384	4	7
-40000	Map\Scene3.png	Map\Scene3_1_map.txt	1552	384	5	12
-50000	Map\Scene3.png	Map\Scene3_2_map.txt	1552	384	5	12
-60000	Map\Scene4.png	Map\Scene4_map.txt	1552	352	6	17
+10000	Map\Scene1.png	Map\Scene1_map.txt	1536	320	4	17	5	5	5
+20000	Map\Scene2.png	Map\Scene2_1_map.txt	512	384	4	7	0	0	0
+30000	Map\Scene2.png	Map\Scene2_2_map.txt	1040	384	4	7	0	0	0
+40000	Map\Scene3.png	Map\Scene3_1_map.txt	1552	384	5	12	0	0	0
+50000	Map\Scene3.png	Map\Scene3_2_map.txt	1552	384	5	12	0	0	0
+60000	Map\Scene4.png	Map\Scene4_map.txt	1552	352	6	17	5	5	5
 [START]
 1
 [MAP]

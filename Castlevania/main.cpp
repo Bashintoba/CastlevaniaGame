@@ -127,8 +127,11 @@ void _ParseSection_TILE_MAP(string line)
 	int Map_width = atoi(tokens[4].c_str());
 	int Num_row_read = atoi(tokens[5].c_str());
 	int Num_col_read = atoi(tokens[6].c_str());
+	int R = atoi(tokens[7].c_str());
+	int G = atoi(tokens[8].c_str());
+	int B = atoi(tokens[9].c_str());
 
-	TileMaps::GetInstance()->Add(Id,FileTex.c_str(),FileData.c_str(),Map_height,Map_width,Num_row_read,Num_col_read);
+	TileMaps::GetInstance()->Add(Id,FileTex.c_str(),FileData.c_str(),Map_height,Map_width,Num_row_read,Num_col_read,R,G,B);
 }
 
 void _ParseSection_Start(string line)
@@ -244,7 +247,12 @@ void Render()
 	if (d3ddv->BeginScene())
 	{
 		// Clear back buffer with a color
-		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
+		if (playscene->crossTimer->IsTimeUp() == false && rand()%2==1)
+		{
+			d3ddv->ColorFill(bb, NULL, CROSS_COLOR);
+		}
+		else
+			d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 		//CGame::GetInstance()->GetCurrentScene()->Render();//

@@ -1,6 +1,6 @@
 ﻿#include "TileMap.h"
 
-TileMap::TileMap(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data, int Map_width, int  Map_height, int Num_row_read, int Num_col_read, int Tile_width , int Tile_height )
+TileMap::TileMap(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data, int Map_width, int  Map_height, int Num_row_read, int Num_col_read,int r,int g,int b, int Tile_width , int Tile_height )
 {
 	this->Id = ID;
 
@@ -10,6 +10,9 @@ TileMap::TileMap(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data, int Map_wi
 	this->Map_Height = Map_height;
 	this->num_row_read = Num_row_read;
 	this->num_col_read = Num_col_read;
+	this->R = r;
+	this->G = g;
+	this->B = b;
 	this->Tile_Width = Tile_width;
 	this->Tile_Height = Tile_height;
 	this->Num_Cols = Map_Width / Tile_Width;
@@ -53,7 +56,7 @@ void TileMap::Load()
 void TileMap::LoadMap()
 {
 	CTextures * texture = CTextures::GetInstance();
-	texture->Add(Id, MapPNG, D3DCOLOR_XRGB(0, 0, 0));
+	texture->Add(Id, MapPNG, D3DCOLOR_XRGB(R, G, B));
 
 	LPDIRECT3DTEXTURE9 texTileMap = texture->Get(Id);
 
@@ -96,9 +99,9 @@ TileMap::~TileMap()
 
 TileMaps * TileMaps::_instance = NULL;
 
-void TileMaps::Add(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data,int Map_width,int Map_height, int Num_row_read, int Num_col_read, int Tile_width, int Tile_height)
+void TileMaps::Add(int ID, LPCWSTR FilePath_tex, LPCWSTR FilePath_data,int Map_width,int Map_height, int Num_row_read, int Num_col_read,int r,int g,int b, int Tile_width, int Tile_height)
 {
-	LPTILEMAP tilemap = new TileMap(ID, FilePath_tex, FilePath_data, Map_width, Map_height,Num_row_read, Num_col_read, Tile_width, Tile_height);
+	LPTILEMAP tilemap = new TileMap(ID, FilePath_tex, FilePath_data, Map_width, Map_height,Num_row_read, Num_col_read,r,g,b, Tile_width, Tile_height);
 	tilemaps[ID] = tilemap;
 }
 
