@@ -7,6 +7,7 @@
 #include "Monkey.h"
 #include "Ghost.h"
 
+
 Skeleton::Skeleton(LPGAMEOBJECT target)
 {
 	this->target = target;

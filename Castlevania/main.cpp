@@ -1,4 +1,7 @@
-﻿#include <windows.h>
+﻿#ifndef main_h
+#define main_h
+
+#include <windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
 #include <string>
@@ -368,3 +371,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	return 0;
 }
+
+#endif

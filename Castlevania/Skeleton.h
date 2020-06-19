@@ -1,9 +1,13 @@
 #pragma once
+#ifndef skeleton_h
+#define skeleton_h
+
 #include"GameObject.h"
 #include"Game.h"
 #include"Define.h"
 #include"Bone.h"
 #include"debug.h"
+#include "PlayScene.h"
 
 class Skeleton : public CGameObject
 {
@@ -20,3 +24,4 @@ public:
 	Bone* GetBone() { return bone; }
 };
 
+#endif

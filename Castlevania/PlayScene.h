@@ -1,4 +1,7 @@
 ﻿#pragma once
+#ifndef playscene_h
+#define playscene_h
+
 #include <Windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -38,14 +41,13 @@ protected:
 	Simon *simon;		// A play scene has to have player, right? 
 	HUD *hud;
 	Grid* grid;
-	//Unit* unit;
 	CPlayScene *playscene;
 	int idMap;
 	int Switchmap = 0;
 	bool Simonisdead = false;
 	TileMaps *tilemaps = TileMaps::GetInstance();
 	vector<LPGAMEOBJECT> ListObjects;//dung de lay khoi grid
-	vector<LPGAMEOBJECT> AllObjects;
+	
 	vector<LPGAMEOBJECT> listObjects;//dung de push vao grid
 	vector<LPGAMEOBJECT> listItems;//ds item
 	vector<LPGAMEOBJECT> listStairsUp;//ds cau thang
@@ -77,6 +79,7 @@ public:
 	vector<vector<string>> GetFileClearMap() { return FileInfClearMap; }
 	vector<LPGAMEOBJECT> GetListStairUp() { return listStairsUp; }
 	vector<LPGAMEOBJECT> GetListStairDown() { return listStairsDown; }
+	vector<LPGAMEOBJECT> AllObjects;
 	void GetObjectFromGrid();//
 	void UpdateGrid();
 	bool IsInCam(LPGAMEOBJECT object);
@@ -105,3 +108,4 @@ public:
 	CPlaySceneKeyHandler(CScene *s) :CSceneKeyHandler(s) {};
 };
 
+#endif

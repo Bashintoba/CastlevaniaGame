@@ -438,6 +438,11 @@ void CPlayScene::GetObjectFromGrid()
 			else
 				listStairsDown.push_back(obj);
 		}
+		else if (Skeleton* e = dynamic_cast<Skeleton*>(obj))
+		{
+			AllObjects.push_back(obj);
+			AllObjects.push_back(e->GetBone());
+		}
 		else
 			AllObjects.push_back(obj);
 	}
@@ -617,7 +622,13 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < AllObjects.size(); i++)
 	{
-		AllObjects[i]->Update(dt, &AllObjects, stopWatchTimer->IsTimeUp() == false);
+		LPGAMEOBJECT obj = AllObjects[i];
+		if (Bone* e = dynamic_cast<Bone*>(obj))
+		{
+			continue;
+		}
+		else
+			AllObjects[i]->Update(dt, &AllObjects, stopWatchTimer->IsTimeUp() == false);
 	}
 	simon->Update(dt, &AllObjects);
 	
@@ -862,7 +873,15 @@ void CPlayScene::Render()
 	for (int i = 0; i < listItems.size(); i++)
 		listItems[i]->Render();
 	for (int i = 0; i < AllObjects.size(); i++)
-		AllObjects[i]->Render();
+	{
+		LPGAMEOBJECT obj = AllObjects[i];
+		if (Bone* e = dynamic_cast<Bone*>(obj))
+		{
+			continue;
+		}
+		else
+			AllObjects[i]->Render();
+	}
 	
 
 	simon->Render();
@@ -870,20 +889,6 @@ void CPlayScene::Render()
 	{
 		if (simon->isAtkWithWhip == true)
 		{
-			/*int tempState = simon->GetState();
-			if (simon->invisibilityTimer->IsTimeUp() == false)
-			{
-				switch (tempState)
-				{
-				case SIMON_ATK:	tempState = SIMON_INV_ATK; break;
-				case SIMON_SIT_ATK:	tempState = SIMON_INV_SIT_ATK; break;
-				case SIMON_STAIRDOWN_ATK: tempState = SIMON_INV_STAIRDOWN_ATK; break;
-				case SIMON_STAIRUP_ATK:	tempState = SIMON_INV_STAIRUP_ATK; break;
-				default:
-					break;
-				}
-			}*/
-			//simon->GetWhip()->Render(simon->nx, simon->animation_set->at(tempState)->GetCurrentFrame());
 			simon->GetWhip()->Render(simon->nx, simon->animation_set->at(simon->state)->GetCurrentFrame());
 		}
 	}

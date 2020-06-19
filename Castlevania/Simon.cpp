@@ -89,7 +89,7 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 
 	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		if (coObjects->at(i) != dynamic_cast<Candle*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Stair*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Ghost*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Monkey*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Knight*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Skeleton*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Zombie*>(coObjects->at(i)))
+		if (coObjects->at(i) != dynamic_cast<Candle*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Stair*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Ghost*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Monkey*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Knight*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Skeleton*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Zombie*>(coObjects->at(i)) && coObjects->at(i) != dynamic_cast<Bone*>(coObjects->at(i)))
 		{
 			ListsColl.push_back(coObjects->at(i));
 		}
@@ -211,6 +211,32 @@ void Simon::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects, bool stopMovement)
 				{
 					untouchableTimer->Start();
 					this->AddHP(DAME2);
+					if (isOnStair == false || HP == 0)
+					{
+						if (e->nx != 0)
+						{
+							if (e->nx == 1.0f && this->nx == 1) this->nx = -1;
+							else if (e->nx == -1.0f && this->nx == -1) this->nx = 1;
+						}
+
+						SetState(SIMON_DEFLECT);
+					}
+				}
+			}
+
+			if (dynamic_cast<Bone*>(obj))
+			{
+				Bone* e = dynamic_cast<Bone*> (obj);
+				float left, top, right, bottom;
+				float Sleft, Stop, Sright, Sbottom;
+				e->GetBoundingBox(left, top, right, bottom);
+				this->GetBoundingBox(Sleft, Stop, Sright, Sbottom);
+				if (AABB(Sleft, Stop, Sright, Sbottom, left, top, right, bottom) == true)
+				{
+					untouchableTimer->Start();
+					this->AddHP(DAME1);
+					e->isDone = true;
+					e->isEnable = true;
 					if (isOnStair == false || HP == 0)
 					{
 						if (e->nx != 0)
