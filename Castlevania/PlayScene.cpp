@@ -5,7 +5,7 @@
 #include "debug.h"
 #include "Textures.h"
 #include "Sprites.h"
-
+#define OBJECT_TYPE_BOSS 14
 using namespace std;
 
 CPlayScene::CPlayScene(int map,vector<vector<string>> FileInFMap, vector<vector<string>> FileInFClearMap) :CScene()
@@ -53,6 +53,11 @@ void CPlayScene::LoadPlayer()
 		simon = new Simon();		
 		//DebugOut(L"[INFO] Simon created! \n");
 	}
+	//if (boss == NULL)
+	//{
+	//	boss = new Boss(simon);
+	//	//DebugOut(L"[INFO] Simon created! \n");
+	//}
 	if (hud == NULL)
 	{
 		hud = new HUD(simon);
@@ -409,6 +414,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listObjects.push_back(obj);
 		break;
 	}
+	case OBJECT_TYPE_BOSS:
+	{
+		int st = atof(tokens[4].c_str());
+		boss = new Boss(simon);
+		hud->SetBoss(boss);
+		int idaniset = atof(tokens[3].c_str());
+		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+		LPANIMATION_SET ani_set = animation_sets->Get(idaniset);
+		boss->SetAnimationSet(ani_set);
+		boss->SetPosition(x, y);
+		boss->SetState(st);
+		listObjects.push_back(boss);
+		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -751,7 +770,21 @@ void CPlayScene::Update(DWORD dt)
 	simon->GetPosition(cx, cy);
 
 	CGame *game = CGame::GetInstance();
-	if (simon->x > SCREEN_WIDTH / 2 && simon->x + (SCREEN_WIDTH /2) < tilemaps->Get((idMap*10000))->GetMapWidth())//
+	if (boss != NULL)
+	{
+		if (boss->GetState() == BOSS_STATE_ATK)
+		{
+			if (simon->x <= (game->GetCamPosX() - 15))
+			{
+				simon->x = (game->GetCamPosX() - 15);
+			}
+		}
+		else if (simon->x > SCREEN_WIDTH / 2 && simon->x + (SCREEN_WIDTH / 2) < tilemaps->Get((idMap * 10000))->GetMapWidth())//
+		{
+			CGame::GetInstance()->SetCamPos(simon->x - (SCREEN_WIDTH / 2),/*cy*/ 0.0f);
+		}
+	}
+	else if(simon->x > SCREEN_WIDTH / 2 && simon->x + (SCREEN_WIDTH /2) < tilemaps->Get((idMap*10000))->GetMapWidth())//
 	{
 		CGame::GetInstance()->SetCamPos(simon->x - (SCREEN_WIDTH / 2),/*cy*/ 0.0f);
 	}

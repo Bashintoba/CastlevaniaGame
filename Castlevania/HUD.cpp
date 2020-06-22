@@ -10,6 +10,7 @@ string HUD::FillNumber(string s, UINT MaxNumber)
 HUD::HUD(Simon * simon)
 {
 	this->simon = simon;
+	this->boss = boss;
 	Time = 0;
 	for (int i = 0; i < SIMON_MAXHP; i++)
 	{
@@ -34,6 +35,12 @@ HUD::~HUD()
 void HUD::Update(DWORD dt)
 {
 	simonHP = simon->GetHP();
+	if (boss == NULL)
+	{
+		bossHP = SIMON_MAXHP;
+	}
+	else
+		bossHP = boss->GetHP();
 	Score = simon->GetScore();
 	Mana = simon->GetMana();
 	Life = simon->GetSimonLife();
@@ -83,4 +90,9 @@ void HUD::Render(int map, int CamX, int CamY)
 
 	for (int i = bossHP; i < 16; i++)
 		LoseHP[i]->Draw(-1, 109 + i * 9 + CamX, 47);
+}
+
+void HUD::SetBoss(Boss* boss)
+{
+	this->boss = boss;
 }

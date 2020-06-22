@@ -17,14 +17,6 @@ Grid::Grid(int map_width, int map_height, int cell_width, int cell_height)
 	{
 		cells[i].resize(nums_col);
 	}
-
-	for (int i = 0; i < nums_row; i++)
-	{
-		for (int j = 0; j < nums_col; j++)
-		{
-			cells[i][j].clear();
-		}
-	}
 }
 
 Grid::~Grid()

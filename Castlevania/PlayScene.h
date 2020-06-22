@@ -33,12 +33,14 @@
 #include "Define.h"
 #include "Gate.h"
 #include "HUD.h"
+#include "Boss.h"
 
 
 class CPlayScene : public CScene
 {
 protected:
 	Simon *simon;		// A play scene has to have player, right? 
+	Boss* boss;
 	HUD *hud;
 	Grid* grid;
 	CPlayScene *playscene;

@@ -343,12 +343,17 @@ int Run()
 			frameStart = now;
 
 			game->ProcessKeyboard();
-
 			Update(dt);
 			Render();
+			
 		}
 		else
+		{
+			//dt = tickPerFrame;//
 			Sleep(tickPerFrame - dt);
+			
+		}
+		//DebugOut(L"%d \n",dt);
 	}
 
 	return 1;

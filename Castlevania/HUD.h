@@ -1,6 +1,7 @@
 #pragma once
 #include "Define.h"
 #include "Simon.h"
+#include "Boss.h"
 #include "Animations.h"
 #include "Sprites.h"
 #include "Textures.h"
@@ -11,6 +12,7 @@
 class HUD
 {
 	Simon * simon;
+	Boss* boss;
 	Number number;
 	CAnimation * board = CAnimations::GetInstance()->Get(100);
 	vector<LPSPRITE> SubWeaponItems;
@@ -39,5 +41,6 @@ public:
 	void SetisTimeover(bool timeover) { isTimeover = timeover; }
 	void SetRemainTime(int time) { RemainingTime = time; }
 	void SetTime(int time) { Time = time; }
+	void SetBoss(Boss* boss);
 };
 

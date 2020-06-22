@@ -132,6 +132,9 @@
     <ClCompile Include="MovingPlatform.cpp">
       <Filter>MovingObject</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="MovingPlatform.h">
       <Filter>MovingObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

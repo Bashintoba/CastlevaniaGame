@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Bone.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BreakBrick.cpp" />
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="Darkenbat.cpp" />
@@ -54,6 +55,7 @@
   <ItemGroup>
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Bone.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="BreakBrick.h" />
     <ClInclude Include="Candle.h" />
     <ClInclude Include="Darkenbat.h" />

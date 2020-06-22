@@ -1,16 +1,24 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 210	Textures\Zombie.png	255	0	255
+220	Textures\Boss.png	255	0	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #zombie
 4020	0	0	32	64	210
 4021	32	0	64	64	210
+#boss
+4022	0	0	96	46	220
+4023	96	0	192	46	220
+4024	192	0	288	46	220
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 4013	4020	120	4021	120
+4014	4022	100
+4015	4023	300	4024	300
 [ANIMATION_SETS]
 27	4013	70
+28	4014	4015	71
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Simon , 1 = Brick, 2 = Candle , 3 = Gate , 4 = Stair
@@ -132,3 +140,4 @@
 13	400	334	27	-1
 13	450	334	27	-1
 13	1040	334	27	-1
+14	1200	95	28	0
