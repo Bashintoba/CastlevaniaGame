@@ -340,4 +340,20 @@
 #define BONE_BBOX_HEIGHT 32
 
 #define WEAPON_BONE_SPEED_X	0.15
+//define boss
+
+#define BOSS_STATE_INACTIVE 0
+#define BOSS_STATE_ATK 1
+#define BOSS_STATE_DIE 2
+
+#define BOSS_BBOX_WIDTH 70
+#define BOSS_BBOX_HEIGHT 46
+
+#define BOSS_SPEED 0.1
+#define BOSS_SPEED2 0.05 
+#define BOSS_TIMER 1500
+
+#define DIST_ACTICE 200
+#define LIMIT 40
+
 #endif

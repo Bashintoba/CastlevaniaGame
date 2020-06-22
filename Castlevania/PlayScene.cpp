@@ -98,6 +98,7 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap ,vector<ve
 		CGame::GetInstance()->SetCamPos(camx1,/*cy*/ camy1);
 	}
 	grid = new Grid(widthgrid, heightgrid);
+	hud->SetBoss(NULL);
 	Load();
 	grid->PushObjIntoGrid(listObjects);
 	simon->IdCurrMap = simon->IdSwithMap = map;
@@ -417,6 +418,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BOSS:
 	{
 		int st = atof(tokens[4].c_str());
+		int id = atof(tokens[5].c_str());
 		boss = new Boss(simon);
 		hud->SetBoss(boss);
 		int idaniset = atof(tokens[3].c_str());
@@ -425,6 +427,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		boss->SetAnimationSet(ani_set);
 		boss->SetPosition(x, y);
 		boss->SetState(st);
+		boss->IDitems = id;
 		listObjects.push_back(boss);
 		break;
 	}
@@ -751,6 +754,14 @@ void CPlayScene::Update(DWORD dt)
 			simon->AddScore(SCORE400);
 			int IdItems = RandomItems();
 			listItems.push_back(DropItems(IdItems, obj->GetPositionX(), obj->GetPositionY()));
+		}
+		if (dynamic_cast<Boss*>(obj) && obj->GetState() == BOSS_STATE_DIE && obj->isDone == false && obj->isEnable == false)
+		{
+			obj->isEnable = true;
+			simon->AddScore(3000);
+			int IdItems = obj->GetIDitems();
+			CGame* game = CGame::GetInstance();
+			listItems.push_back(DropItems(IdItems,(game->GetCamPosX()+(SCREEN_WIDTH/2)) , (SCREEN_HEIGHT/2)));
 		}
 	}
 

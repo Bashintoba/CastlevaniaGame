@@ -36,9 +36,12 @@ void Items::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 		if (now - timeAppear > ITEM_TIME_DESTROYED)
 		{
-			isEnable = false;
-			isDone = true;
-			return;
+			if (state != MAGIC_CRYSTAL)
+			{
+				isEnable = false;
+				isDone = true;
+				return;
+			}
 		}
 	}
 

@@ -1,10 +1,5 @@
 #include "Boss.h"
 
-
-
-#define BOSS_BBOX_WIDTH 70
-#define BOSS_BBOX_HEIGHT 46
-
 Boss::Boss(LPGAMEOBJECT target)
 {
 	isDone = false;
@@ -12,6 +7,9 @@ Boss::Boss(LPGAMEOBJECT target)
 	isStart = false;
 	isAtk = false;
 	isFindtarget = false;
+	infinity = false;
+	wait = false;
+	relax = false;
 	this->target = target;
 	this->HP = SIMON_MAXHP;
 }
@@ -27,20 +25,37 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 	if (stopMovement == true)
 		return;
+	if (state != BOSS_STATE_INACTIVE)
+	{
+		if (x < game->GetCamPosX())
+		{
+			x = game->GetCamPosX();
+		}
 
+		if ((x+BOSS_BBOX_WIDTH+ LIMIT) > (game->GetCamPosX() + SCREEN_WIDTH))
+		{
+			x = (game->GetCamPosX() + SCREEN_WIDTH -BOSS_BBOX_WIDTH- LIMIT);
+		}
+
+		if (y < (game->GetCamPosY() + LIMIT*2))
+		{
+			y = (game->GetCamPosY() + LIMIT*2);
+		}
+	}
 	if (state != BOSS_STATE_DIE)
 	{
 		CGameObject::Update(dt);
+		
 		x += dx;
 		y += dy;
 
-		if (isFindtarget == true)
+		if (isAtk == false)
 		{
 			if (x < target->GetPositionX()) Nx = 1;
 			else Nx = -1;
 		}
 
-		if (isFindtarget == true)
+		if (isAtk == false)
 		{
 			if (y < target->GetPositionY()) Ny = 1;
 			else Ny = -1;
@@ -48,15 +63,14 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 		if (target != NULL)
 		{
-			CGame* game = CGame::GetInstance();
 			if (x<target->GetPositionX() && (abs(y-target->GetPositionY())<=150))
 			{
 				if (state == BOSS_STATE_INACTIVE)
 				{
 					Boss_move_to_postion->Start();
 					SetState(BOSS_STATE_ATK);
-					vx = (float)(0.1)*-1;
-					vy = (float)(0.1)*1;
+					vx = (float)(BOSS_SPEED)*-1;
+					vy = (float)(BOSS_SPEED)*1;
 					isStart = true;
 				}
 			}
@@ -66,28 +80,49 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		{
 			Boss_find_target->Start();
 			isStart = false;
-			isAtk = true;
+			isAtk = false;
+			infinity = false;
+			wait = true;
 			vx = 0;
 			vy = 0;
 		}
 
-		if (Boss_find_target->IsTimeUp() == true && state!= BOSS_STATE_INACTIVE && isAtk == true)
+		if (Boss_find_target->IsTimeUp() == true && wait == true && isAtk == false)
 		{
-			isFindtarget = true;
-			float dx = abs(x - target->GetPositionX());
-			float dy = abs(y - target->GetPositionY());
-
-			vx = Nx * dx *0.0015;
-			vy = Ny * dy *0.0015;
-			isAtk = false;
-			//BossAtk();
+			isAtk = true;
+			Boss_relax->Start();
+			infinity = true;
+			wait = false;
+			float VX = abs(target->GetPositionX() - this->x);
+			float VY = abs(target->GetPositionY() - this->y);
+			vx = (float)(VX/ BOSS_TIMER) * Nx;
+			vy = (float)(VY/ BOSS_TIMER) * Ny;
 		}
 
-		/*if (abs(x - target->GetPositionX()) <= 1.0f)
+		if (Boss_relax->IsTimeUp() == true && infinity == true)
 		{
-
-		}*/
-
+			Boss_move_to_postion->Start();
+			isAtk = false;
+			isStart = true;
+			if (relax == false)
+			{
+				relax = true;
+				location = (rand() % 3) * BOSS_SPEED;
+				if((game->GetCamPosX()+SCREEN_WIDTH)-this->x<= DIST_ACTICE)
+				{ 
+					Nxtemp = -1;
+				}
+				else
+					Nxtemp = 1;
+				relax = true;
+			}
+			if (relax == true)
+			{
+				vx = (float)((BOSS_SPEED2 + location)) * Nxtemp;
+				vy = (float)(BOSS_SPEED) * -1;
+			}
+			infinity = false;
+		}
 	}
 }
 
@@ -96,7 +131,7 @@ void Boss::Render()
 	if (this->isDone == false)
 	{
 		animation_set->at(state)->Render(nx, x, y);
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	else
 		return;
@@ -127,18 +162,10 @@ void Boss::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (state != BOSS_STATE_DIE)
 	{
-		left = x + 13; // 70, 96
+		left = x + 13;
 		top = y;
 		right = left + BOSS_BBOX_WIDTH;
 		bottom = top + BOSS_BBOX_HEIGHT;
 	}
 }
 
-void Boss::BossAtk()
-{
-	float dx = abs(x - target->GetPositionX());
-	float dy = abs(y - target->GetPositionY());
-
-	vx = Nx * dx / 750;
-	vy = Ny * dy / 750;
-}

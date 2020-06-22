@@ -8,6 +8,7 @@
 #include "Raven.h"
 #include "Zombie.h"
 #include "Skeleton.h"
+#include "Boss.h"
 
 Whip::Whip() : CGameObject()
 {
@@ -211,6 +212,32 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 					sparkX.push_back(left);
 					sparkY.push_back(top);
 				}
+			}
+		}
+		else if (dynamic_cast<Boss*>(obj))
+		{
+			Boss* e = dynamic_cast<Boss*> (obj);
+
+			float left, top, right, bottom;
+
+			e->GetBoundingBox(left, top, right, bottom);
+
+			if (CheckCollision(left, top, right, bottom) == true)
+			{
+				if (Dame1turn == false)
+				{
+					e->AddHP(DAME2);
+					Dame1turn = true;
+				}
+
+				if (e->GetHP() <= 0)
+				{
+					e->SetHP(0);
+					e->SetState(KNIGHT_STATE_DIE);
+				}
+
+				sparkX.push_back(left);
+				sparkY.push_back(top);
 			}
 		}
 	}

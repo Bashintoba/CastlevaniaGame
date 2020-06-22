@@ -2,10 +2,6 @@
 #ifndef boss_h
 #define boss_h
 
-#define BOSS_STATE_INACTIVE 0
-#define BOSS_STATE_ATK 1
-#define BOSS_STATE_DIE 2
-
 #include"GameObject.h"
 #include"Game.h"
 #include"Define.h"
@@ -14,11 +10,15 @@
 
 class Boss : public CGameObject
 {
-	int Nx, Ny;
-	bool isStart,isAtk,isFindtarget;
+	int Nxtemp;
+	int Nx, Ny , location;
+	bool isStart,isAtk,isFindtarget,infinity,wait,relax;
 	LPGAMEOBJECT target;
-	Timer* Boss_move_to_postion = new Timer(1500);
-	Timer* Boss_find_target = new Timer(1500);
+	Timer* Boss_move_to_postion = new Timer(BOSS_TIMER);
+	Timer* Boss_find_target = new Timer(BOSS_TIMER);
+	Timer* Boss_relax = new Timer(BOSS_TIMER);
+	Timer* Boss_goaway = new Timer(BOSS_TIMER);
+	CGame* game = CGame::GetInstance();
 public: 
 	Boss(LPGAMEOBJECT target);
 	~Boss();
@@ -26,7 +26,6 @@ public:
 	virtual void Render();
 	void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void BossAtk();
 };
 
 #endif

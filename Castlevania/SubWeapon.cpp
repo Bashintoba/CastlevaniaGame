@@ -12,6 +12,7 @@
 #include "Zombie.h"
 #include "Skeleton.h"
 #include "Gate.h"
+#include "Boss.h"
 
 SubWeapon::SubWeapon(LPGAMEOBJECT simon) : CGameObject()
 {
@@ -367,6 +368,60 @@ void SubWeapon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovem
 					{
 						x += dx;
 						y += dy;
+					}
+				}
+				else if (dynamic_cast<Boss*>(e->obj))
+				{
+					Boss* boss = dynamic_cast<Boss*> (e->obj);
+
+					if (state == WEAPONS_BOOMERANG)
+					{
+						x += dx;
+						y += dy;
+						if (DameBoomerang1 == false)
+						{
+							boss->AddHP(DAME2);
+							DameBoomerang1 = true;
+							if (boss->GetHP() <= 0)
+							{
+								boss->SetHP(0);
+								boss->SetState(BOSS_STATE_DIE);
+							}
+							return;
+						}
+						if (DameBoomerang2 == false)
+						{
+							boss->AddHP(DAME2);
+							DameBoomerang2 = true;
+							if (boss->GetHP() <= 0)
+							{
+								boss->SetHP(0);
+								boss->SetState(BOSS_STATE_DIE);
+							}
+							return;
+						}
+					}
+					else
+					{
+						boss->AddHP(DAME2);
+					}
+
+					if (boss->GetHP() <= 0)
+					{
+						boss->SetHP(0);
+						boss->SetState(BOSS_STATE_DIE);
+					}
+
+					if (state == WEAPONS_HOLY_WATER)
+					{
+						SetState(WEAPONS_HOLY_WATER_SHATTERED);
+						this->x = boss->x;
+						this->y = boss->y;
+					}
+					else if (state != WEAPONS_BOOMERANG && state != WEAPONS_HOLY_WATER_SHATTERED)
+					{
+						this->isDone = true;
+						this->isEnable = false;
 					}
 				}
 				else if (dynamic_cast<Simon*>(e->obj))

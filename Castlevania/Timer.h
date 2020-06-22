@@ -15,4 +15,5 @@ public:
 
 	int GetStartTime() { return start; }
 	int GetLimitedTime() { return limitedTime; }
+	void SetLimitedTime(int temp) { limitedTime = temp; }
 };
