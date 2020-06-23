@@ -95,8 +95,8 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 			wait = false;
 			float VX = abs(target->GetPositionX() - this->x);
 			float VY = abs(target->GetPositionY() - this->y);
-			vx = (float)(VX/ BOSS_TIMER) * Nx;
-			vy = (float)(VY/ BOSS_TIMER) * Ny;
+			vx = (float)(VX/ BOSS_TIME_ATK) * Nx;
+			vy = (float)(VY/ BOSS_TIME_ATK) * Ny;
 		}
 
 		if (Boss_relax->IsTimeUp() == true && infinity == true)
@@ -108,12 +108,12 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 			{
 				relax = true;
 				location = (rand() % 3) * BOSS_SPEED;
-				if((game->GetCamPosX()+SCREEN_WIDTH)-this->x<= DIST_ACTICE)
+				if((game->GetCamPosX()+SCREEN_WIDTH)-this->x< DIST_ACTICE)
 				{ 
-					Nxtemp = -1;
+					Nxtemp = 1;
 				}
 				else
-					Nxtemp = 1;
+					Nxtemp = -1;
 				relax = true;
 			}
 			if (relax == true)

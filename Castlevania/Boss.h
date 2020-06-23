@@ -16,7 +16,7 @@ class Boss : public CGameObject
 	LPGAMEOBJECT target;
 	Timer* Boss_move_to_postion = new Timer(BOSS_TIMER);
 	Timer* Boss_find_target = new Timer(BOSS_TIMER);
-	Timer* Boss_relax = new Timer(BOSS_TIMER);
+	Timer* Boss_relax = new Timer(BOSS_TIME_ATK);
 	Timer* Boss_goaway = new Timer(BOSS_TIMER);
 	CGame* game = CGame::GetInstance();
 public: 

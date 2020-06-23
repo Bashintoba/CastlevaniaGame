@@ -361,7 +361,7 @@
 #define BOSS_SPEED 0.1
 #define BOSS_SPEED2 0.05 
 #define BOSS_TIMER 1500
-
+#define BOSS_TIME_ATK 1000
 #define DIST_ACTICE 200
 #define LIMIT 40
 
