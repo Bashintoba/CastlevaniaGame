@@ -5,7 +5,7 @@
 #include "debug.h"
 #include "Textures.h"
 #include "Sprites.h"
-#define OBJECT_TYPE_BOSS 14
+
 using namespace std;
 
 CPlayScene::CPlayScene(int map,vector<vector<string>> FileInFMap, vector<vector<string>> FileInFClearMap) :CScene()
@@ -53,11 +53,6 @@ void CPlayScene::LoadPlayer()
 		simon = new Simon();		
 		//DebugOut(L"[INFO] Simon created! \n");
 	}
-	//if (boss == NULL)
-	//{
-	//	boss = new Boss(simon);
-	//	//DebugOut(L"[INFO] Simon created! \n");
-	//}
 	if (hud == NULL)
 	{
 		hud = new HUD(simon);
@@ -97,10 +92,12 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap ,vector<ve
 	{
 		CGame::GetInstance()->SetCamPos(camx1,/*cy*/ camy1);
 	}
-	grid = new Grid(widthgrid, heightgrid);
+	gridstatic = new Grid(widthgrid, heightgrid);
+	gridmoving = new Grid(widthgrid, heightgrid);
 	hud->SetBoss(NULL);
 	Load();
-	grid->PushObjIntoGrid(listObjects);
+	gridstatic->PushObjIntoGrid(listObjectsstatic);
+	gridmoving->PushObjIntoGrid(listObjectsmoving);
 	simon->IdCurrMap = simon->IdSwithMap = map;
 }
 
@@ -264,7 +261,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Ground();
 		obj->SetPosition(x, y);
 		obj->ani = st;
-		listObjects.push_back(obj);
+		listObjectsstatic.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_CANDLE: 
@@ -275,7 +272,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		listobj->SetPosition(x, y);
 		listobj->SetState(st);
 		listobj->IDitems = id;
-		listObjects.push_back(listobj);
+		listObjectsmoving.push_back(listobj);
 		break;
 	}
 	case OBJECT_TYPE_GATE:
@@ -284,7 +281,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new Gate();
 		obj->SetPosition(x, y);
 		obj->IdNextMap = switchmap;
-		listObjects.push_back(obj);
+		listObjectsstatic.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_STAIR:
@@ -296,7 +293,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->ani = st;
 		obj->nx = nx;
-		listObjects.push_back(obj);
+		listObjectsstatic.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_BREAKBRICK:
@@ -307,7 +304,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->ani = st;
 		obj->IDitems = id;
-		listObjects.push_back(obj);
+		listObjectsmoving.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_MOVINGPLATFORM:
@@ -316,7 +313,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new MovingPlatform();
 		obj->SetPosition(x, y);
 		obj->ani = st;
-		listObjects.push_back(obj);
+		listObjectsmoving.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_KNIGHT:
@@ -333,7 +330,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int nX = atof(tokens[5].c_str());
 		obj->nx = nX;	
 		obj->SetPosition(x, y);
-		listObjects.push_back(obj);
+		listObjectsmoving.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_DARKENBAT:
@@ -346,7 +343,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetAnimationSet(ani_set);
 		obj->SetPosition(x, y);
 		obj->SetState(st);
-		listObjects.push_back(obj);
+		listObjectsmoving.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_GHOST:
@@ -359,7 +356,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetAnimationSet(ani_set);
 		obj->SetPosition(x, y);
 		obj->SetState(st);
-		listObjects.push_back(obj);
+		listObjectsmoving.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_MONKEY:
@@ -372,7 +369,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetAnimationSet(ani_set);
 		obj->SetPosition(x, y);
 		obj->SetState(st);
-		listObjects.push_back(obj);
+		listObjectsmoving.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_SKELETON:
@@ -385,7 +382,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetAnimationSet(ani_set);
 		obj->SetPosition(x, y);
 		obj->SetState(st);
-		listObjects.push_back(obj);
+		listObjectsmoving.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_RAVEN:
@@ -399,7 +396,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetAnimationSet(ani_set);
 		obj->SetPosition(x, y);
 		obj->SetState(st);
-		listObjects.push_back(obj);
+		listObjectsmoving.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_ZOMBIE:
@@ -412,7 +409,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetAnimationSet(ani_set);
 		obj->SetPosition(x, y);
 		obj->SetState(st);
-		listObjects.push_back(obj);
+		listObjectsmoving.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_BOSS:
@@ -428,7 +425,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		boss->SetPosition(x, y);
 		boss->SetState(st);
 		boss->IDitems = id;
-		listObjects.push_back(boss);
+		listObjectsmoving.push_back(boss);
 		break;
 	}
 	default:
@@ -445,7 +442,8 @@ void CPlayScene::GetObjectFromGrid()
 	listStairsDown.clear();
 	AllObjects.clear();
 	CGame* game = CGame::GetInstance();
-	grid->GetObjFromGrid(game->GetCamPosX(), game->GetCamPosY(), ListObjects);
+	gridstatic->GetObjFromGrid(game->GetCamPosX(), game->GetCamPosY(), ListObjects);
+	gridmoving->GetObjFromGrid(game->GetCamPosX(), game->GetCamPosY(), ListObjects);
 	//DebugOut(L"%d \n", ListObjects.size());// đừng mở lag lắm :(((
 
 	for (UINT i = 0; i < ListObjects.size(); i++)
@@ -472,7 +470,7 @@ void CPlayScene::GetObjectFromGrid()
 
 void CPlayScene::UpdateGrid()
 {
-	grid->ResetGrid(listObjects);
+	gridmoving->ResetGrid(listObjectsmoving);
 }
 
 bool CPlayScene::IsInCam(LPGAMEOBJECT object)
@@ -679,7 +677,7 @@ void CPlayScene::Update(DWORD dt)
 		simon->isGotChainItem = false;
 		simon->GetWhip()->PowerUp();
 	}
-	if (simon->animation_set->at(SIMON_HENSHIN)->IsOver(450)== true)
+	if (simon->animation_set->at(SIMON_HENSHIN)->IsOver(TIME_HENSHIN)== true)
 	{
 		simon->IsWait = false;
 	}
@@ -699,7 +697,7 @@ void CPlayScene::Update(DWORD dt)
 			int IdItems = obj->GetIDitems();
 			if (IdItems == CROWN)
 			{
-				listItems.push_back(DropItems(IdItems,256, 390));
+				listItems.push_back(DropItems(IdItems,HIDEN_OBJ_X, HIDEN_OBJ_Y));
 			}
 			else if (IdItems != -1)
 			{
@@ -962,7 +960,8 @@ void CPlayScene::Unload()
 	listStairsUp.clear();
 	listStairsDown.clear();
 	AllObjects.clear();
-	listObjects.clear();
+	listObjectsstatic.clear();
+	listObjectsmoving.clear();
 	listItems.clear();
 }
 
@@ -1288,26 +1287,31 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		Simon_SubAtk();
 		break;
 	case DIK_Q:
-		simon->IdSwithMap = 1;
-		simon->IdNextMap = 2;
+		simon->IdSwithMap = 0;
+		simon->IdNextMap = 1;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(),playscene->GetFileClearMap());
 		break;
 	case DIK_W:
+		simon->IdSwithMap = 1;
+		simon->IdNextMap = 2;
+		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
+		break;
+	case DIK_E:
 		simon->IdSwithMap = 2;
 		simon->IdNextMap = 3;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
-	case DIK_E:
+	case DIK_R:
 		simon->IdSwithMap = 3;
 		simon->IdNextMap = 4;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
-	case DIK_R:
+	case DIK_T:
 		simon->IdSwithMap = 4;
 		simon->IdNextMap = 5;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());
 		break;
-	case DIK_T:
+	case DIK_Y:
 		simon->IdSwithMap = 5;
 		simon->IdNextMap = 6;
 		playscene->SwitchMap(simon->IdNextMap, playscene->GetFileInFMap(), playscene->GetFileClearMap());

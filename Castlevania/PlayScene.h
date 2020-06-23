@@ -42,7 +42,8 @@ protected:
 	Simon *simon;		// A play scene has to have player, right? 
 	Boss* boss;
 	HUD *hud;
-	Grid* grid;
+	Grid* gridstatic;
+	Grid* gridmoving;
 	CPlayScene *playscene;
 	int idMap;
 	int Switchmap = 0;
@@ -50,7 +51,8 @@ protected:
 	TileMaps *tilemaps = TileMaps::GetInstance();
 	vector<LPGAMEOBJECT> ListObjects;//dung de lay khoi grid
 	
-	vector<LPGAMEOBJECT> listObjects;//dung de push vao grid
+	vector<LPGAMEOBJECT> listObjectsstatic;//dung de push vao grid
+	vector<LPGAMEOBJECT> listObjectsmoving;//dung de push vao grid
 	vector<LPGAMEOBJECT> listItems;//ds item
 	vector<LPGAMEOBJECT> listStairsUp;//ds cau thang
 	vector<LPGAMEOBJECT> listStairsDown;//ds cau thang

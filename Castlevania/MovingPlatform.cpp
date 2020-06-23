@@ -62,11 +62,6 @@ void MovingPlatform::Render()
 	//RenderBoundingBox();
 }
 
-//void MovingPlatform::SetState(int state)
-//{
-//	CGameObject::SetState(state);
-//}
-
 void MovingPlatform::GetBoundingBox(float & left, float & top, float & right, float & bottom)
 {
 	left = x;

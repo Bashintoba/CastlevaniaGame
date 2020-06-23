@@ -42,7 +42,6 @@ void Candle::SetState(int state)
 	case CANDLE_DESTROYED:
 		animation_set->at(state)->Reset();
 		animation_set->at(state)->SetAniStartTime(GetTickCount());
-		//animation_set->at(state)->Startani();
 		break;
 	default:
 		break;

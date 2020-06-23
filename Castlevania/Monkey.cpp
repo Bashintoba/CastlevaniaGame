@@ -105,7 +105,7 @@ void Monkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		{
 			if (x < target->GetPositionX())
 			{
-				if (abs(target->GetPositionX() - x) > 100)
+				if (abs(target->GetPositionX() - x) > DIST_CHAGE)
 				{
 					if (isJumping == false)
 					{
@@ -116,7 +116,7 @@ void Monkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 			}
 			else if (x > target->GetPositionX())
 			{
-				if ((abs(target->GetPositionX() - x) > 100))
+				if ((abs(target->GetPositionX() - x) > DIST_CHAGE))
 				{
 					if (isJumping == false)
 					{
@@ -128,7 +128,7 @@ void Monkey::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 
 			if ((rand() % 10000 < 300))
 			{
-				if (isJumping == false && (abs(target->GetPositionX() - x) < 100))
+				if (isJumping == false && (abs(target->GetPositionX() - x) < DIST_CHAGE))
 				{
 					SetState(MONKEY_STATE_JUMP);
 				}
@@ -185,7 +185,7 @@ void Monkey::GetBoundingBox(float& left, float& top, float& right, float& bottom
 {
 	if (state != MONKEY_STATE_DIE)
 	{
-		left = x;//cho de giet
+		left = x;
 		top = y;
 		right = left + MONKEY_BBOX_WIDTH;
 		bottom = top + MONKEY_BBOX_HEIGHT;

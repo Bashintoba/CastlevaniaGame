@@ -50,6 +50,7 @@
 #define OBJECT_TYPE_SKELETON	11
 #define OBJECT_TYPE_RAVEN	12
 #define OBJECT_TYPE_ZOMBIE	13
+#define OBJECT_TYPE_BOSS 14
 //define time
 #define DEFAULT_TIME_PLAY 300
 //define animation_set
@@ -106,6 +107,9 @@
 #define TIME_HENSHIN 450
 #define TIME_DELAY 300
 #define TIME_DELAY2	200
+
+#define DIST1	40
+#define DIST2	55
 
 #define SIMON_IDLE				0
 #define SIMON_WALKING			1
@@ -224,6 +228,8 @@
 #define CROWN 16
 #define CROWN_BBOX_WIDTH  32
 #define CROWN_BBOX_HEIGHT 32
+#define HIDEN_OBJ_X 256
+#define HIDEN_OBJ_Y	390
 #define SCORE1000	1000
 #define MAGIC_CRYSTAL	17
 #define MAGIC_CRYSTAL_BBOX_WIDTH  26
@@ -277,6 +283,7 @@
 #define DARKBAT_STATE_DIE				2
 //define Monkey
 #define DIST_ACTIVEMK	200
+#define DIST_CHAGE	100
 #define MONKEY_WALKING_SPEED			0.16f
 #define MONKEY_JUMP_SPEED_Y			0.4f
 
@@ -322,6 +329,8 @@
 #define ZOMBIE_STATE_WALKING	0
 #define ZOMBIE_STATE_DIE	1
 //define Skeleton
+#define DIST_ACTIVE_SKELETON	250
+
 #define SKELETON_BBOX_WIDTH			32
 #define SKELETON_BBOX_HEIGHT		63
 
@@ -355,5 +364,7 @@
 
 #define DIST_ACTICE 200
 #define LIMIT 40
+
+#define SCOREBOSS	3000
 
 #endif

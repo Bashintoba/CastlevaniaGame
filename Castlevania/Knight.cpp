@@ -44,8 +44,6 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 				ListsColl.push_back(coObject->at(i));
 			}
 		}
-		// turn off collision when die 
-		//if (state != KNIGHT_STATE_DIE)
 		CalcPotentialCollisions(&ListsColl, coEvents);
 
 		// No collision occured, proceed normally

@@ -270,7 +270,7 @@ void Whip::Render( int nx,int currentID)
 	if (currentID >= 0) {
 		animation_set->at(state)->RenderByID(currentID, nx, x, y);
 	}
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	
 }
 

@@ -10,8 +10,7 @@ Gate::~Gate() {}
 
 void Gate::Render()
 {
-	RenderBoundingBox();
-	//animation_set->at(0)->Render(-1, x, y);
+	//RenderBoundingBox();
 }
 
 void Gate::GetBoundingBox(float & left, float & top, float & right, float & bottom)
