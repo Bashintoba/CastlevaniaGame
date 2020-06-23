@@ -60,36 +60,36 @@ void HUD::Render(int map, int CamX, int CamY)
 {
 	board->Render(-1,CamX, CamY);
 
-	number.Draw(CamX + 100, CamY + 15, FillNumber(std::to_string(Score), 6));
-	number.Draw(CamX + 295, CamY + 15, FillNumber(std::to_string(RemainingTime), 4));
-	number.Draw(CamX + 465, CamY + 15, FillNumber(std::to_string(map), 2));
-	number.Draw(CamX + 393, CamY + 33, FillNumber(std::to_string(Mana), 2)); 
-	number.Draw(CamX + 393, CamY + 51, FillNumber(std::to_string(Life), 2)); 
+	number.Draw(CamX + SCORE_X, CamY + SCORE_Y, FillNumber(std::to_string(Score), MAX_NUM_SCORE));
+	number.Draw(CamX + TIME_X, CamY + TIME_Y, FillNumber(std::to_string(RemainingTime), MAX_NUM_TIME));
+	number.Draw(CamX + MAP_X, CamY + MAP_Y, FillNumber(std::to_string(map), MAX_NUM_MAP));
+	number.Draw(CamX + MANA_X, CamY + MANA_Y, FillNumber(std::to_string(Mana), MAX_NUM_MANA));
+	number.Draw(CamX + LIFE_X, CamY + LIFE_Y, FillNumber(std::to_string(Life), MAX_NUM_LIFE));
 	if (subWeapon != -1)
 	{
 		if (subWeapon == 0)
 		{
-			SubWeaponItems[subWeapon]->Draw(-1, CamX + 310, CamY + 38);
+			SubWeaponItems[subWeapon]->Draw(-1, CamX + WEAPON_X, CamY + WEAPON_Y1);
 		}
 		else
-			SubWeaponItems[subWeapon]->Draw(-1,CamX + 310,CamY + 34);
+			SubWeaponItems[subWeapon]->Draw(-1,CamX + WEAPON_X,CamY + WEAPON_Y2);
 	}
 	if (doubletri != -1)
 	{
-		DoubleTri[doubletri]->Draw(-1, CamX + 430, CamY + 31);
+		DoubleTri[doubletri]->Draw(-1, CamX + DOUBLE_X, CamY + DOUBLE_Y);
 	}
 
 	for (int i = 0; i < simonHP; i++)
-		SimonHP[i]->Draw(-1,108 + i * 9 + CamX ,31);
+		SimonHP[i]->Draw(-1,SIMON_HP_X + i * 9 + CamX ,SIMON_HP_Y);
 
-	for (int i = simonHP; i < 16; i++)
-		LoseHP[i]->Draw(-1, 108 + i * 9 + CamX, 31);
+	for (int i = simonHP; i < SIMON_MAXHP; i++)
+		LoseHP[i]->Draw(-1, SIMON_HP_X + i * 9 + CamX, SIMON_HP_Y);
 	// Boss HP
 	for (int i = 0; i < bossHP; i++)
-		BossHP[i]->Draw(-1, 109 + i * 9 + CamX, 47);
+		BossHP[i]->Draw(-1, BOSS_HP_X + i * 9 + CamX, BOSS_HP_Y);
 
-	for (int i = bossHP; i < 16; i++)
-		LoseHP[i]->Draw(-1, 109 + i * 9 + CamX, 47);
+	for (int i = bossHP; i < SIMON_MAXHP; i++)
+		LoseHP[i]->Draw(-1, BOSS_HP_X + i * 9 + CamX, BOSS_HP_Y);
 }
 
 void HUD::SetBoss(Boss* boss)

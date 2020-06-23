@@ -82,7 +82,30 @@
 #define WATCHSPRITE	508
 #define DOUBLESPRITE	512
 #define TRISPRITE	513
-
+#define SCORE_X	100
+#define TIME_X	295
+#define MAP_X	465
+#define MANA_X	393
+#define LIFE_X	393
+#define WEAPON_X	310
+#define DOUBLE_X	430
+#define SIMON_HP_X	108
+#define BOSS_HP_X	109
+#define SCORE_Y	15
+#define TIME_Y	15
+#define MAP_Y	15
+#define MANA_Y	33
+#define LIFE_Y	51
+#define WEAPON_Y1	38
+#define	WEAPON_Y2	34
+#define DOUBLE_Y	31
+#define SIMON_HP_Y	31
+#define BOSS_HP_Y	47
+#define MAX_NUM_SCORE	6
+#define MAX_NUM_TIME	4
+#define MAX_NUM_MAP	2
+#define MAX_NUM_MANA	2
+#define MAX_NUM_LIFE	2
 //define simon
 #define SIMON_MAXHP		16
 #define SIMON_MANA		15
