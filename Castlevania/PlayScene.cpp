@@ -20,21 +20,21 @@ CPlayScene::CPlayScene(int map,vector<vector<string>> FileInFMap, vector<vector<
 int CPlayScene::RandomItems()
 {
 	int random = rand() % 100;
-	if (random <= 20)
+	if (random <= 25)
 		return SMALL_HEART;
-	else if (20 < random && random <= 40)
+	else if (25 < random && random <= 45)
 		return LARGE_HEART;
-	else if (40 < random && random <= 50)
+	else if (45 < random && random <= 70)
 		return MONEY_BAG_RED;
-	else if (50 < random && random <= 60)
-		return MONEY_BAG_BLUE;
-	else if (60 < random && random <= 70)
-		return MONEY_BAG_WHITE;
 	else if (70 < random && random <= 80)
-		return PORK_CHOP;
+		return MONEY_BAG_BLUE;
 	else if (80 < random && random <= 90)
-		return CHAIN;
-	else if (90 < random && random <= 100)
+		return MONEY_BAG_WHITE;
+	else if (90 < random && random <= 93)
+		return PORK_CHOP;
+	else if (93 < random && random <= 96)
+		return CROSS;
+	else if (96 < random && random <= 100)
 		return INVISIBILITY_POTION;
 }
 
@@ -65,8 +65,9 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap ,vector<ve
 {
 	Unload();
 	Clear(simon->IdCurrMap,FileInFClearMap);
-	//simon->vx = 0;
-	//simon->vy = 0;
+	stopWatchTimer->Stop();
+	simon->vx = 0;
+	simon->vy = 0;
 	simon->IdCurrMap = simon->IdSwithMap;
 	int camx, camy, camx1, camy1,widthgrid,heightgrid;
 	for (int i = (map-1); i <= (map - 1); i++)
@@ -1345,6 +1346,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_0:
 		simon->SetHP(SIMON_MAXHP);
+		simon->SetMana(99);
 		break;
 	}
 }
