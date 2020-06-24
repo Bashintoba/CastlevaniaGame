@@ -6,6 +6,7 @@ class Darkenbat : public CGameObject
 {
 	int directionY;
 	bool Switch = false;
+	bool stop = false;
 	LPGAMEOBJECT target;
 public:
 	Darkenbat(LPGAMEOBJECT target);

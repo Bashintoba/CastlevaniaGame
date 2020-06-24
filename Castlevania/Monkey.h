@@ -6,6 +6,7 @@ class Monkey : public CGameObject
 {
 	bool isJumping = false;
 	bool isChase = false;
+	bool stop = false;
 	LPGAMEOBJECT target;
 public:
 	Monkey(LPGAMEOBJECT target);

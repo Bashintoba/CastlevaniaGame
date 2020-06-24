@@ -24,7 +24,15 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		this->isDone = true;
 
 	if (stopMovement == true)
+	{
+		stop = true;
 		return;
+	}
+	else
+	{
+		stop = false;
+	}
+
 	if (state != BOSS_STATE_INACTIVE)
 	{
 		if (x < game->GetCamPosX())
@@ -130,7 +138,14 @@ void Boss::Render()
 {
 	if (this->isDone == false)
 	{
-		animation_set->at(state)->Render(nx, x, y);
+		if (stop == true && state != BOSS_STATE_DIE)
+		{
+			int temp = animation_set->at(state)->GetCurrentFrame();
+			animation_set->at(state)->SetFrame(temp);
+			animation_set->at(state)->RenderByID(temp, nx, x, y);
+		}
+		else
+			animation_set->at(state)->Render(nx, x, y);
 		//RenderBoundingBox();
 	}
 	else

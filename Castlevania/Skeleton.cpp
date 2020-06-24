@@ -27,7 +27,15 @@ void Skeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovemen
 		this->isDone = true;
 
 	if (stopMovement == true)
+	{
+		stop = true;
+		bone->Update(dt, coObject, stop);
 		return;
+	}
+	else
+	{
+		stop = false;
+	}
 
 	if (state != SKELETON_STATE_DIE)
 	{
@@ -125,7 +133,7 @@ void Skeleton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovemen
 				bone->SetEnable(false);
 			}
 
-			bone->Update(dt, coObject);
+			bone->Update(dt, coObject,stop);
 		}
 
 		if (bone->isDone == true)
@@ -154,7 +162,14 @@ void Skeleton::Render()
 
 	if (this->isDone == false)
 	{
-		animation_set->at(state)->Render(nx, x, y);
+		if (stop == true && state != SKELETON_STATE_DIE)
+		{
+			int temp = animation_set->at(state)->GetCurrentFrame();
+			animation_set->at(state)->SetFrame(temp);
+			animation_set->at(state)->RenderByID(temp, nx, x, y);
+		}
+		else
+			animation_set->at(state)->Render(nx, x, y);
 		//RenderBoundingBox();
 	}
 	else

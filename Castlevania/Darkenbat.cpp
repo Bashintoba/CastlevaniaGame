@@ -18,7 +18,14 @@ void Darkenbat::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMoveme
 		this->isDone = true;
 
 	if (stopMovement == true)
+	{
+		stop = true;
 		return;
+	}
+	else
+	{
+		stop = false;
+	}
 
 	if (state != DARKBAT_STATE_DIE)
 	{
@@ -56,7 +63,14 @@ void Darkenbat::Render()
 {
 	if (this->isDone == false)
 	{
-		animation_set->at(state)->Render(nx, x, y);
+		if (stop == true && state!= DARKBAT_STATE_DIE)
+		{
+			int temp = animation_set->at(state)->GetCurrentFrame();
+			animation_set->at(state)->SetFrame(temp);
+			animation_set->at(state)->RenderByID(temp, nx, x, y);
+		}
+		else
+			animation_set->at(state)->Render(nx, x, y);
 		//RenderBoundingBox();
 	}
 	else

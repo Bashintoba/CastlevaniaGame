@@ -5,6 +5,7 @@
 
 class Bone : public CGameObject
 {
+	bool stop = false;
 	LPGAMEOBJECT simon;
 	float X;
 public:

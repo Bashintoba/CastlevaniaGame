@@ -5,6 +5,7 @@
 
 class Zombie : public CGameObject
 {
+	bool stop = false;
 	LPGAMEOBJECT target;
 public:
 	Zombie(LPGAMEOBJECT target);

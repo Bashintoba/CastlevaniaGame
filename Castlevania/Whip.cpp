@@ -233,7 +233,7 @@ void Whip::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 				if (e->GetHP() <= 0)
 				{
 					e->SetHP(0);
-					e->SetState(KNIGHT_STATE_DIE);
+					e->SetState(BOSS_STATE_DIE);
 				}
 
 				sparkX.push_back(left);

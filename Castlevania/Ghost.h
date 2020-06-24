@@ -4,6 +4,7 @@
 
 class Ghost : public CGameObject
 {
+	bool stop = false;
 	LPGAMEOBJECT target;
 public:
 	Ghost(LPGAMEOBJECT target);

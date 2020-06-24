@@ -12,6 +12,7 @@
 class Skeleton : public CGameObject
 {
 	bool isJumping,canjump;
+	bool stop = false;
 	Bone* bone;
 	LPGAMEOBJECT target;
 public:

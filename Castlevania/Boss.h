@@ -13,6 +13,7 @@ class Boss : public CGameObject
 	int Nxtemp;
 	int Nx, Ny , location;
 	bool isStart,isAtk,isFindtarget,infinity,wait,relax;
+	bool stop = false;
 	LPGAMEOBJECT target;
 	Timer* Boss_move_to_postion = new Timer(BOSS_TIMER);
 	Timer* Boss_find_target = new Timer(BOSS_TIMER);

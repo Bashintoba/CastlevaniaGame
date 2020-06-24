@@ -12,6 +12,7 @@ class Raven : public CGameObject
 	bool findtargetagain;
 	bool isbuffspeed;
 	bool doyouwanttobuildasnowman;
+	bool stop = false;
 	LPGAMEOBJECT target;
 	Timer* raven_change_state = new Timer(RAVEN_TIME_CHANGE_STATE);
 	Timer* raven_find_target = new Timer(RAVEN_TIME_FIND_TARGER);

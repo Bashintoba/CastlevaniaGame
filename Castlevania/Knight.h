@@ -6,6 +6,7 @@ class Knight : public CGameObject
 {
 	float Xstart;
 	float Xend;
+	bool stop;
 public:
 	Knight(float Xstart,float Xend);
 	~Knight();

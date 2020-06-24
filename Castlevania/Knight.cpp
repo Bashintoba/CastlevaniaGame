@@ -12,6 +12,7 @@ Knight::Knight(float Xstart, float Xend)
 	HP = KNIGHT_HP;
 	isDone = false;
 	isEnable = false;
+	stop = false;
 }
 
 Knight::~Knight()
@@ -24,7 +25,14 @@ void Knight::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 		this->isDone = true;
 
 	if (stopMovement == true)
+	{
+		stop = true;
 		return;
+	}
+	else
+	{
+		stop = false;
+	}
 
 	if (state != KNIGHT_STATE_DIE)
 	{
@@ -93,7 +101,14 @@ void Knight::Render()
 {
 	if (this->isDone == false)
 	{
-		animation_set->at(state)->Render(nx, x, y);
+		if (stop == true && state!=KNIGHT_STATE_DIE)
+		{
+			int temp = animation_set->at(state)->GetCurrentFrame();
+			animation_set->at(state)->SetFrame(temp);
+			animation_set->at(state)->RenderByID(temp, nx, x, y);
+		}
+		else
+			animation_set->at(state)->Render(nx, x, y);
 		//RenderBoundingBox();
 	}
 	else

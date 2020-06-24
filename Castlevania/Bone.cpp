@@ -14,6 +14,16 @@ Bone::Bone(LPGAMEOBJECT simon)
 
 void Bone::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects, bool stopMovement)
 {
+	if (stopMovement == true)
+	{
+		stop = true;
+		return;
+	}
+	else
+	{
+		stop = false;
+	}
+
 	CGame* game = CGame::GetInstance();
 
 	if((x >= game->GetCamPosX() && x < (game->GetCamPosX() + SCREEN_WIDTH) && (y >= game->GetCamPosY() && y < (game->GetCamPosY() + SCREEN_HEIGHT)))== false)
@@ -35,7 +45,14 @@ void Bone::Render()
 {
 	if (isDone == false && CheckOutCam(X) == false)
 	{
-		animation_set->at(state)->Render(nx, x, y);
+		if (stop == true)
+		{
+			int temp = animation_set->at(state)->GetCurrentFrame();
+			animation_set->at(state)->SetFrame(temp);
+			animation_set->at(state)->RenderByID(temp, nx, x, y);
+		}
+		else
+			animation_set->at(state)->Render(nx, x, y);
 		//RenderBoundingBox();
 	}
 	else
