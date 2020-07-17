@@ -53,6 +53,9 @@
 #define OBJECT_TYPE_BOSS 14
 //define time
 #define DEFAULT_TIME_PLAY 300
+#define TIME_SIMON_DIE	3000
+#define TIME_STOPTIME	2000
+#define TIME_CROSS	500
 //define animation_set
 #define	SIMON_ANIMATION_SET 1
 #define GROUND_ANIMATION_SET 2
@@ -106,6 +109,7 @@
 #define MAX_NUM_MAP	2
 #define MAX_NUM_MANA	2
 #define MAX_NUM_LIFE	2
+#define TILEMAP	10000
 //define simon
 #define SIMON_MAXHP		16
 #define SIMON_MANA		15

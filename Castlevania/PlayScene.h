@@ -75,9 +75,9 @@ public:
 	int RandomItems();
 	Items* DropItems(int iditems ,float x, float y);
 	void LoadPlayer();
-	Timer* stopWatchTimer = new Timer(2000);
-	Timer* simonDeadTimer = new Timer(3000);
-	Timer* crossTimer = new Timer(500);
+	Timer* stopWatchTimer = new Timer(TIME_STOPTIME);
+	Timer* simonDeadTimer = new Timer(TIME_SIMON_DIE);
+	Timer* crossTimer = new Timer(TIME_CROSS);
 	void SwitchMap(int map, vector<vector<string>> FileInFMap, vector<vector<string>> FileInFClearMap);
 	vector<vector<string>>  GetFileInFMap() {return FileInfMap;}
 	vector<vector<string>> GetFileClearMap() { return FileInfClearMap; }

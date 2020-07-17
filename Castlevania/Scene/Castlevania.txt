@@ -2,7 +2,7 @@
 [TEXTURES]
 0	Textures\Simon.png	255	0	255
 10	Textures\Whip.png	255	0	255
-20	Textures\Ground.png	255	0	255
+20	Textures\Ground.png	0	0	0
 30	Textures\Candle.png	255	0	255
 40	Textures\Items.png	255	0	255
 50	Textures\SubWeapons.png	255	0	255
@@ -13,7 +13,7 @@
 100	Textures\Board.png	255	0	255
 110	Textures\HP.png	255	0	255
 120	Textures\Texts.png	255	0	255
-130	Textures\Stair.png	255	0	255
+130	Textures\Stair.png	0	0	0
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #0

@@ -96,6 +96,7 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap ,vector<ve
 	gridstatic = new Grid(widthgrid, heightgrid);
 	gridmoving = new Grid(widthgrid, heightgrid);
 	hud->SetBoss(NULL);
+	boss = NULL;
 	Load();
 	gridstatic->PushObjIntoGrid(listObjectsstatic);
 	gridmoving->PushObjIntoGrid(listObjectsmoving);
@@ -782,7 +783,7 @@ void CPlayScene::Update(DWORD dt)
 	CGame *game = CGame::GetInstance();
 	if (boss != NULL)
 	{
-		if (boss->GetState() == BOSS_STATE_ATK)
+		if (boss->GetState() == BOSS_STATE_ATK || boss->GetState() == BOSS_STATE_DIE)
 		{
 			if (simon->x <= (game->GetCamPosX() - 15))
 			{
@@ -852,7 +853,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	UpdateGrid();
-
+	//simon die
 	if (Simonisdead == true && simonDeadTimer->IsTimeUp() == true)
 	{
 		simonDeadTimer->Stop();
@@ -906,7 +907,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {	
-	tilemaps->Get((idMap*10000))->Draw();//
+	tilemaps->Get((idMap*TILEMAP))->Draw();//
 	int nx = 0;
 
 	for (int i = 0; i < listStairsUp.size(); i++)
@@ -1131,7 +1132,7 @@ void CPlaySceneKeyHandler::Simon_StairUp()
 {
 	Simon *simon = ((CPlayScene*)scene)->simon;
 	int Stairnx = simon->stairnx;
-
+	//đg trên thang và có thể ra khỏi thang
 	if (simon->CanMoveUp == true)
 	{
 		if (simon->isOnStair == true)
@@ -1150,7 +1151,7 @@ void CPlaySceneKeyHandler::Simon_StairUp()
 
 		return;
 	}
-	
+	//
 	if (simon->CanMoveUOut == false)
 	{
 		return;

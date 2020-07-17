@@ -101,8 +101,8 @@ void Boss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObject, bool stopMovement)
 			Boss_relax->Start();
 			infinity = true;
 			wait = false;
-			float VX = abs(target->GetPositionX() - this->x);
-			float VY = abs(target->GetPositionY() - this->y);
+			float VX = abs((target->GetPositionX()+ SIMON_BBOX_WIDTH/2) - this->x);
+			float VY = abs((target->GetPositionY()+SIMON_BBOX_WIDTH) - this->y);
 			vx = (float)(VX/ BOSS_TIME_ATK) * Nx;
 			vy = (float)(VY/ BOSS_TIME_ATK) * Ny;
 		}
