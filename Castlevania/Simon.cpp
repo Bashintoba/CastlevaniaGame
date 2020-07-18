@@ -426,7 +426,6 @@ void Simon::Render()
 			break;
 		}
 	}
-	
 	animation_set->at(tempState)->Render(nx,x, y,alpha);
 	animation_set->at(state)->SetFrame(animation_set->at(tempState)->GetCurrentFrame());
 	//RenderBoundingBox();

@@ -98,8 +98,6 @@ void CPlayScene::SwitchMap(int map, vector<vector<string>> FileInFMap ,vector<ve
 	hud->SetBoss(NULL);
 	boss = NULL;
 	Load();
-	gridstatic->PushObjIntoGrid(listObjectsstatic);
-	gridmoving->PushObjIntoGrid(listObjectsmoving);
 	simon->IdCurrMap = simon->IdSwithMap = map;
 }
 
@@ -260,30 +258,37 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: 
 	{
 		int st = atof(tokens[4].c_str());
+		int row = atof(tokens[6].c_str());
+		int col = atof(tokens[5].c_str());
 		obj = new Ground();
 		obj->SetPosition(x, y);
 		obj->ani = st;
-		listObjectsstatic.push_back(obj);
+		gridstatic->pushObjIntoGrid(obj, col , row);
 		break;
 	}
 	case OBJECT_TYPE_CANDLE: 
 	{
 		int st = atof(tokens[3].c_str());
 		int id = atof(tokens[4].c_str());
+		int row = atof(tokens[6].c_str());
+		int col = atof(tokens[5].c_str());
 		listobj = new Candle();
 		listobj->SetPosition(x, y);
 		listobj->SetState(st);
 		listobj->IDitems = id;
 		listObjectsmoving.push_back(listobj);
+		gridmoving->pushObjIntoGrid(listobj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_GATE:
 	{
 		int switchmap = atof(tokens[3].c_str());
+		int row = atof(tokens[5].c_str());
+		int col = atof(tokens[4].c_str());
 		obj = new Gate();
 		obj->SetPosition(x, y);
 		obj->IdNextMap = switchmap;
-		listObjectsstatic.push_back(obj);
+		gridstatic->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_STAIR:
@@ -291,37 +296,47 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int st = atof(tokens[4].c_str());
 		int type = atof(tokens[5].c_str());
 		int nx = atof(tokens[3].c_str());
+		int row = atof(tokens[7].c_str());
+		int col = atof(tokens[6].c_str());
 		obj = new Stair(type);
 		obj->SetPosition(x, y);
 		obj->ani = st;
 		obj->nx = nx;
-		listObjectsstatic.push_back(obj);
+		gridstatic->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_BREAKBRICK:
 	{
 		int st = atof(tokens[3].c_str());
 		int id = atof(tokens[4].c_str());
+		int row = atof(tokens[6].c_str());
+		int col = atof(tokens[5].c_str());
 		obj = new BreakBrick();
 		obj->SetPosition(x, y);
 		obj->ani = st;
 		obj->IDitems = id;
 		listObjectsmoving.push_back(obj);
+		gridmoving->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_MOVINGPLATFORM:
 	{
 		int st = atof(tokens[3].c_str());
+		int row = atof(tokens[5].c_str());
+		int col = atof(tokens[4].c_str());
 		obj = new MovingPlatform();
 		obj->SetPosition(x, y);
 		obj->ani = st;
 		listObjectsmoving.push_back(obj);
+		gridmoving->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_KNIGHT:
 	{
 		int Xstart = atof(tokens[6].c_str());
 		int Xend = atof(tokens[7].c_str());
+		int row = atof(tokens[9].c_str());
+		int col = atof(tokens[8].c_str());
 		obj = new Knight(Xstart, Xend);
 		int idaniset = atof(tokens[3].c_str());
 		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -333,11 +348,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->nx = nX;	
 		obj->SetPosition(x, y);
 		listObjectsmoving.push_back(obj);
+		gridmoving->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_DARKENBAT:
 	{
 		int st = atof(tokens[4].c_str());
+		int row = atof(tokens[6].c_str());
+		int col = atof(tokens[5].c_str());
 		obj = new Darkenbat(simon);
 		int idaniset = atof(tokens[3].c_str());
 		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -346,11 +364,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->SetState(st);
 		listObjectsmoving.push_back(obj);
+		gridmoving->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_GHOST:
 	{
 		int st = atof(tokens[4].c_str());
+		int row = atof(tokens[6].c_str());
+		int col = atof(tokens[5].c_str());
 		obj = new Ghost(simon);
 		int idaniset = atof(tokens[3].c_str());
 		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -359,11 +380,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->SetState(st);
 		listObjectsmoving.push_back(obj);
+		gridmoving->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_MONKEY:
 	{
 		int st = atof(tokens[4].c_str());
+		int row = atof(tokens[6].c_str());
+		int col = atof(tokens[5].c_str());
 		obj = new Monkey(simon);
 		int idaniset = atof(tokens[3].c_str());
 		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -372,11 +396,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->SetState(st);
 		listObjectsmoving.push_back(obj);
+		gridmoving->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_SKELETON:
 	{
 		int st = atof(tokens[4].c_str());
+		int row = atof(tokens[6].c_str());
+		int col = atof(tokens[5].c_str());
 		obj = new Skeleton(simon);
 		int idaniset = atof(tokens[3].c_str());
 		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -385,12 +412,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->SetState(st);
 		listObjectsmoving.push_back(obj);
+		gridmoving->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_RAVEN:
 	{
 		int st = atof(tokens[5].c_str());
 		float dist = atof(tokens[4].c_str());
+		int row = atof(tokens[7].c_str());
+		int col = atof(tokens[6].c_str());
 		obj = new Raven(simon,dist);
 		int idaniset = atof(tokens[3].c_str());
 		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -399,11 +429,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->SetState(st);
 		listObjectsmoving.push_back(obj);
+		gridmoving->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_ZOMBIE:
 	{
 		int st = atof(tokens[4].c_str());
+		int row = atof(tokens[6].c_str());
+		int col = atof(tokens[5].c_str());
 		obj = new Zombie(simon);
 		int idaniset = atof(tokens[3].c_str());
 		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -412,12 +445,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj->SetPosition(x, y);
 		obj->SetState(st);
 		listObjectsmoving.push_back(obj);
+		gridmoving->pushObjIntoGrid(obj, col, row);
 		break;
 	}
 	case OBJECT_TYPE_BOSS:
 	{
 		int st = atof(tokens[4].c_str());
 		int id = atof(tokens[5].c_str());
+		int row = atof(tokens[7].c_str());
+		int col = atof(tokens[6].c_str());
 		boss = new Boss(simon);
 		hud->SetBoss(boss);
 		int idaniset = atof(tokens[3].c_str());
@@ -428,6 +464,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		boss->SetState(st);
 		boss->IDitems = id;
 		listObjectsmoving.push_back(boss);
+		gridmoving->pushObjIntoGrid(boss, col, row);
 		break;
 	}
 	default:
@@ -929,15 +966,14 @@ void CPlayScene::Render()
 	
 
 	simon->Render();
-	if (simon->IsAtk() == true)///////////////
+	if (simon->IsAtk() == true)
 	{
 		if (simon->isAtkWithWhip == true)
 		{
 			simon->GetWhip()->Render(simon->nx, simon->animation_set->at(simon->state)->GetCurrentFrame());
 		}
 	}
-	else
-		simon->GetWhip()->Render(simon->nx, -1);
+
 	for (int i = 0; i < 3; i++)
 	{
 		simon->GetListSubWeapon()[i]->Render(simon->animation_set->at(simon->GetState())->GetCurrentFrame());

@@ -23,17 +23,9 @@ Grid::~Grid()
 {
 }
 
-void Grid::PushObjIntoGrid(vector<LPGAMEOBJECT> lists)
+void Grid::pushObjIntoGrid(LPGAMEOBJECT obj, int col, int row)
 {
-	for (int i = 0; i < lists.size(); i++)
-	{
-		int row = (int)(lists[i]->GetPositionY() / cell_height);
-		int col = (int)(lists[i]->GetPositionX() / cell_width);
-		if (lists[i]->isDone == false)
-		{
-			cells[row][col].push_back(lists[i]);
-		}
-	}
+	cells[row][col].push_back(obj);
 }
 
 void Grid::GetObjFromGrid(float Camx,float Camy,vector<LPGAMEOBJECT>& lists)
